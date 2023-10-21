@@ -1,0 +1,335 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DutchDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="MatchId" Type="int" Nullable="false" />
+          <Property Name="PointsPlayer1" Type="int" Nullable="false" />
+          <Property Name="MistakesPlayer1" Type="int" Nullable="false" />
+          <Property Name="PointsPlayer2" Type="int" Nullable="false" />
+          <Property Name="MistakesPlayer2" Type="int" Nullable="false" />
+          <Property Name="Win" Type="int" Nullable="false" />
+          <Property Name="Opening" Type="int" Nullable="false" />
+          <Property Name="Dutch" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="MatchId" />
+          </Key>
+          <Property Name="MatchId" Type="int" Nullable="false" />
+          <Property Name="Player1_Id" Type="int" Nullable="false" />
+          <Property Name="Player2_Id" Type="int" Nullable="false" />
+          <Property Name="TournamentId" Type="int" Nullable="false" />
+          <Property Name="BonusGamePlayer1" Type="bit" />
+          <Property Name="BonusGamePlayer2" Type="bit" />
+          <Property Name="FormatBo" Type="int" />
+          <Property Name="Judge" Type="int" />
+          <Property Name="PlayDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="Nickname" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Rating" Type="float" />
+          <Property Name="Active" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DutchDatabase.dbo.PlayerSet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="PlayerSet">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+            <PropertyRef Name="Ranking" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="TournamentId" Type="int" Nullable="false" />
+          <Property Name="Ranking" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TournamentResults">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+            <PropertyRef Name="Place" />
+            <PropertyRef Name="RankingGet" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="TournamentId" Type="int" Nullable="false" />
+          <Property Name="Place" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="RankingGet" Type="int" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="Prize" Type="float" />
+        </EntityType>
+        <EntityType Name="Tournaments">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+          </Key>
+          <Property Name="TournamentId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="StartDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="Location" Type="varchar" MaxLength="100" />
+          <Property Name="Theme" Type="varchar" MaxLength="100" />
+          <Property Name="Info" Type="varchar" MaxLength="100" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'DutchDatabase.dbo.Users' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Pass" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Pass" Type="char" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DutchDatabaseModelStoreContainer">
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tournaments" EntityType="Self.Tournaments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [PlayerSet].[TournamentId] AS [TournamentId], 
+    [PlayerSet].[Ranking] AS [Ranking], 
+    [PlayerSet].[PlayerId] AS [PlayerId]
+    FROM [dbo].[PlayerSet] AS [PlayerSet]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TournamentResults].[TournamentId] AS [TournamentId], 
+    [TournamentResults].[Place] AS [Place], 
+    [TournamentResults].[RankingGet] AS [RankingGet], 
+    [TournamentResults].[PlayerId] AS [PlayerId], 
+    [TournamentResults].[Prize] AS [Prize]
+    FROM [dbo].[TournamentResults] AS [TournamentResults]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Users" EntityType="Self.Users" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Users].[Username] AS [Username], 
+    [Users].[Pass] AS [Pass]
+    FROM [dbo].[Users] AS [Users]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DutchDatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="MatchId" Type="Int32" Nullable="false" />
+          <Property Name="PointsPlayer1" Type="Int32" Nullable="false" />
+          <Property Name="MistakesPlayer1" Type="Int32" Nullable="false" />
+          <Property Name="PointsPlayer2" Type="Int32" Nullable="false" />
+          <Property Name="MistakesPlayer2" Type="Int32" Nullable="false" />
+          <Property Name="Win" Type="Int32" Nullable="false" />
+          <Property Name="Opening" Type="Int32" Nullable="false" />
+          <Property Name="Dutch" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="MatchId" />
+          </Key>
+          <Property Name="MatchId" Type="Int32" Nullable="false" />
+          <Property Name="Player1_Id" Type="Int32" Nullable="false" />
+          <Property Name="Player2_Id" Type="Int32" Nullable="false" />
+          <Property Name="TournamentId" Type="Int32" Nullable="false" />
+          <Property Name="BonusGamePlayer1" Type="Boolean" />
+          <Property Name="BonusGamePlayer2" Type="Boolean" />
+          <Property Name="FormatBo" Type="Int32" />
+          <Property Name="Judge" Type="Int32" />
+          <Property Name="PlayDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Nickname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Rating" Type="Double" />
+          <Property Name="Active" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="Tournaments">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+          </Key>
+          <Property Name="TournamentId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Theme" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="PlayerSet">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+            <PropertyRef Name="Ranking" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="TournamentId" Type="Int32" Nullable="false" />
+          <Property Name="Ranking" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TournamentResults">
+          <Key>
+            <PropertyRef Name="TournamentId" />
+            <PropertyRef Name="Place" />
+            <PropertyRef Name="RankingGet" />
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="TournamentId" Type="Int32" Nullable="false" />
+          <Property Name="Place" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RankingGet" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="Prize" Type="Double" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Pass" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="DutchDatabaseEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Games" EntityType="Self.Games" />
+          <EntitySet Name="Matches" EntityType="Self.Matches" />
+          <EntitySet Name="Players" EntityType="Self.Players" />
+          <EntitySet Name="Tournaments" EntityType="Self.Tournaments" />
+          <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" />
+          <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" />
+          <EntitySet Name="Users" EntityType="Self.Users" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DutchDatabaseModelStoreContainer" CdmEntityContainer="DutchDatabaseEntities">
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Games">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="MatchId" ColumnName="MatchId" />
+                <ScalarProperty Name="PointsPlayer1" ColumnName="PointsPlayer1" />
+                <ScalarProperty Name="MistakesPlayer1" ColumnName="MistakesPlayer1" />
+                <ScalarProperty Name="PointsPlayer2" ColumnName="PointsPlayer2" />
+                <ScalarProperty Name="MistakesPlayer2" ColumnName="MistakesPlayer2" />
+                <ScalarProperty Name="Win" ColumnName="Win" />
+                <ScalarProperty Name="Opening" ColumnName="Opening" />
+                <ScalarProperty Name="Dutch" ColumnName="Dutch" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matches">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Matches">
+              <MappingFragment StoreEntitySet="Matches">
+                <ScalarProperty Name="MatchId" ColumnName="MatchId" />
+                <ScalarProperty Name="Player1_Id" ColumnName="Player1_Id" />
+                <ScalarProperty Name="Player2_Id" ColumnName="Player2_Id" />
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="BonusGamePlayer1" ColumnName="BonusGamePlayer1" />
+                <ScalarProperty Name="BonusGamePlayer2" ColumnName="BonusGamePlayer2" />
+                <ScalarProperty Name="FormatBo" ColumnName="FormatBo" />
+                <ScalarProperty Name="Judge" ColumnName="Judge" />
+                <ScalarProperty Name="PlayDate" ColumnName="PlayDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Players">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="Active" ColumnName="Active" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tournaments">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Tournaments">
+              <MappingFragment StoreEntitySet="Tournaments">
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Theme" ColumnName="Theme" />
+                <ScalarProperty Name="Info" ColumnName="Info" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerSet">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.PlayerSet">
+              <MappingFragment StoreEntitySet="PlayerSet">
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="Ranking" ColumnName="Ranking" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TournamentResults">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.TournamentResults">
+              <MappingFragment StoreEntitySet="TournamentResults">
+                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="RankingGet" ColumnName="RankingGet" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Users">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Pass" ColumnName="Pass" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,47 @@
+﻿@model DutchServisMCV.Models.Users
+
+@{
+    ViewBag.Title = "Login";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h2>Logowanie</h2>
+    <p class="text-danger">Uwaga! Ta strona jest dla ADMINÓW. Jeśli nie jesteś adminem nie poptrzebujesz się logować.</p>
+    <hr />
+    @Html.ValidationSummary(true, "")
+    <!-- , new { class="text-danger"} -->
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Username, "Nazwa admina", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Username)
+            @Html.ValidationMessageFor(model => model.Username, "")
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Pass, "Hasło", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Pass)
+            @Html.ValidationMessageFor(model => model.Pass, "")
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Zaloguj" class="btn btn-default" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <label>@ViewBag.Notification</label>
+        </div>
+    </div>
+</div>
+}
+
