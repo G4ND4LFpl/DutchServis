@@ -23,8 +23,8 @@ namespace DutchServisMCV
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/css/bootstrap-light.css",
+                      "~/Content/css/site.css"));
         }
     }
 }

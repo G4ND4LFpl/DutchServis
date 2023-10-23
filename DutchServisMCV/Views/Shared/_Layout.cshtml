@@ -17,25 +17,57 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Dutch Federation", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img class="icon f-left" src="@Url.Content("~/Content/images/logo.png")" />
+                    <p class="f-left">Dutch<br/>Federation</p>
+                </a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
                     <li>@Html.ActionLink("Lista Graczy", "Players", "Home")</li>
+                    <li>@Html.ActionLink("Klany", "Clans", "Home")</li>
                     <li>@Html.ActionLink("Turnieje", "Turnaments", "Home")</li>
                     <li>@Html.ActionLink("Ligi", "Leagues", "Home")</li>
                     <li>@Html.ActionLink("Zasady gry", "Rules", "Home")</li>
                     <li>@Html.ActionLink("Gra treningowa", "Botgame", "Home")</li>
-                    <!--<li>
-                        <div class="dropdown">
-                            <a class="dropdown-header" href="">Rozgrywki</a>
-                            <ul class="dropdown-content nav navbar-nav">
-                                <li>@Html.ActionLink("Turnieje", "Turnaments", "Home")</li>
-                                <li>@Html.ActionLink("Ligi", "Leagues", "Home")</li>
-                            </ul>
+                </ul>
+                <div class="navbar-item f-right">
+                    @if (Session["Username"] != null)
+                    {
+                        <aside class="f-left">@Html.ActionLink(Session["Username"].ToString(), "admin", "Home")</aside>
+                        <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Home")</aside>
+                    }
+                    else
+                    {
+                        <aside>@Html.ActionLink("Zaloguj", "Login", "Home")</aside>
+                    }
+                </div>
+            </div>
+            <div class="big-screen-olny">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
+                    <li class="drop">
+                        <button class="drop-header">Gracze</button>
+                        <div class="drop-content">
+                            @Html.ActionLink("Lista Graczy", "Players", "Home")
+                            @Html.ActionLink("Klany", "Clans", "Home")
                         </div>
-                    </li>-->
+                    </li>
+                    <li class="drop">
+                        <button class="drop-header">Rozgrywki</button>
+                        <div class="drop-content">
+                            @Html.ActionLink("Turnieje", "Turnaments", "Home")
+                            @Html.ActionLink("Ligi", "Leagues", "Home")
+                        </div>
+                    </li>
+                    <li class="drop">
+                        <button class="drop-header">Rozgrywki</button>
+                        <div class="drop-content">
+                            @Html.ActionLink("Zasady gry", "Rules", "Home")
+                            @Html.ActionLink("Gra treningowa", "Botgame", "Home")
+                        </div>
+                    </li>
                 </ul>
                 <div class="navbar-item f-right">
                     @if (Session["Username"] != null)
@@ -50,6 +82,7 @@
                 </div>
             </div>
         </div>
+        <!-- tutaj blue-line jeśli ma przesuwać się z rozwijanym menu -->
     </div>
     <div class="blue-line"></div>
 
