@@ -4350,11 +4350,8 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .navbar-brand {
     float: left;
     height: 50px;
-    /* Edycja */
-    /*font-size: 18px;*/
-    /*padding: 15px 15px;*/
-    padding: 5px 5px;
-    font-size: 24px;
+    font-size: 18px;
+    padding: 15px 15px;
     line-height: 20px;
 }
 .navbar-brand:hover,
@@ -4406,7 +4403,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 20px;
-    /* Edycja */
     font-size: 18px;
 }
 @media (max-width: 767px) {
@@ -4674,14 +4670,11 @@ fieldset[disabled] .navbar-default .btn-link:focus {
   border-color: #080808;
 }
 .navbar-inverse .navbar-brand {
-    /* Edycja */
-    /*color: #9d9d9d;*/
-    color: cornflowerblue;
+    color: #9d9d9d;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-    /* Edycja */
-    /*color: #fff;*/
+    color: #fff;
     background-color: transparent;
 }
 .navbar-inverse .navbar-text {

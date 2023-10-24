@@ -17,9 +17,9 @@ namespace DutchServisMCV.Models
         public int GameId { get; set; }
         public int MatchId { get; set; }
         public int PointsPlayer1 { get; set; }
-        public int MistakesPlayer1 { get; set; }
         public int PointsPlayer2 { get; set; }
-        public int MistakesPlayer2 { get; set; }
+        public Nullable<int> MistakesPlayer1 { get; set; }
+        public Nullable<int> MistakesPlayer2 { get; set; }
         public int Win { get; set; }
         public int Opening { get; set; }
         public int Dutch { get; set; }

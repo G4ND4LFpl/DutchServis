@@ -132,41 +132,45 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBmodel.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBmodel.Context.tt</DependentUpon>
+    <Compile Include="Models\Clans.cs">
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBmodel.cs">
+    <Compile Include="Models\DataBaseModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBmodel.Designer.cs">
+    <Compile Include="Models\DataBaseModels.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>DBmodel.edmx</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\DataBaseModels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataBaseModels.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\Games.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Matches.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Players.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerSet.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TournamentResults.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Tournaments.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Users.cs">
-      <DependentUpon>DBmodel.tt</DependentUpon>
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -176,29 +180,30 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\images\avatar.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\css\Site.css" />
-    <Content Include="Models\DBmodel.Context.tt">
+    <Content Include="Models\DataBaseModels.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>DBmodel.Context.cs</LastGenOutput>
-      <DependentUpon>DBmodel.edmx</DependentUpon>
+      <DependentUpon>DataBaseModels.edmx</DependentUpon>
+      <LastGenOutput>DataBaseModels.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\DBmodel.tt">
+    <Content Include="Models\DataBaseModels.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBmodel.edmx</DependentUpon>
-      <LastGenOutput>DBmodel.cs</LastGenOutput>
+      <DependentUpon>DataBaseModels.edmx</DependentUpon>
+      <LastGenOutput>DataBaseModels.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <EntityDeploy Include="Models\DBmodel.edmx">
+    <EntityDeploy Include="Models\DataBaseModels.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBmodel.Designer.cs</LastGenOutput>
+      <LastGenOutput>DataBaseModels.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\DBmodel.edmx.diagram">
-      <DependentUpon>DBmodel.edmx</DependentUpon>
+    <Content Include="Models\DataBaseModels.edmx.diagram">
+      <DependentUpon>DataBaseModels.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
@@ -225,6 +230,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Players.cshtml" />
+    <Content Include="Views\Home\PlayerList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

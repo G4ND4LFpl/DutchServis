@@ -11,14 +11,10 @@ namespace DutchServisMCV.Models
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Users
     {
-        [Key]
         public string Username { get; set; }
-
-        [DataType(DataType.Password)]
         public string Pass { get; set; }
     }
 }

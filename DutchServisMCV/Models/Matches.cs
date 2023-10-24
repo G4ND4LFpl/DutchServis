@@ -18,10 +18,10 @@ namespace DutchServisMCV.Models
         public int Player1_Id { get; set; }
         public int Player2_Id { get; set; }
         public int TournamentId { get; set; }
+        public System.DateTime PlayDate { get; set; }
         public Nullable<bool> BonusGamePlayer1 { get; set; }
         public Nullable<bool> BonusGamePlayer2 { get; set; }
-        public Nullable<int> FormatBo { get; set; }
+        public int FormatBo { get; set; }
         public Nullable<int> Judge { get; set; }
-        public Nullable<System.DateTime> PlayDate { get; set; }
     }
 }

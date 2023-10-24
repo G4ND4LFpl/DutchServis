@@ -50,7 +50,7 @@ input, select, textarea {
 table, th, td {
     border: 1px solid black;
 }
-.icon {
+.img-icon {
     height: 100%;
     margin-right: 10px;
 }
@@ -106,4 +106,32 @@ table, th, td {
     .drop:hover .drop-header {
         color: white;
     }
+}
+.table-style > td {
+    height: 80px;
+    text-align: center;
+}
+.table-style > th {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 700;
+}
+.table-style > td, th > div, img {
+    margin: auto;
+}
+.cell-1 {
+    width: 10%;
+}
+.cell-2 {
+    width: 20%;
+}
+.cell-3 {
+    width: 30%;
+}
+.align-center {
+    margin: auto;
+}
+.cell-text {
+    margin-top: 20px;
+    font-size: 18px;
 }

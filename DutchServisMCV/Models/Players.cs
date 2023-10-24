@@ -18,7 +18,9 @@ namespace DutchServisMCV.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Nickname { get; set; }
+        public Nullable<int> ClanId { get; set; }
         public Nullable<double> Rating { get; set; }
+        public string ImgPath { get; set; }
         public Nullable<bool> Active { get; set; }
     }
 }

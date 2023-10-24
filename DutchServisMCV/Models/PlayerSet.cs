@@ -15,7 +15,7 @@ namespace DutchServisMCV.Models
     public partial class PlayerSet
     {
         public int TournamentId { get; set; }
-        public int Ranking { get; set; }
+        public double Ranking { get; set; }
         public int PlayerId { get; set; }
     }
 }
