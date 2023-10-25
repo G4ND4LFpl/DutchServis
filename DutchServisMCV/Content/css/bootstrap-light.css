@@ -2300,9 +2300,13 @@ th {
   text-align: left;
 }
 .table {
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 20px;
+    max-width: 100%;
+    margin-bottom: 20px;
+    /* Edycja */
+    /*width: 100%*/
+    width: -webkit-fill-available;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,

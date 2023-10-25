@@ -18,12 +18,15 @@
 <table class="table table-striped table-hover">
     <thead>
         <tr class="table-style">
-            <th class="cell-1">Pozycja</th>
-            <th class="cell-1">Awatar</th>
+            <th class="cell-1 cell-sm">Pozycja</th>
+            <th class="cell-1 cell-only-xs">Poz.</th>
+            <th class="cell-1 cell-lg">Awatar</th>
             <th class="cell-2">Gracz &#11183;</th>
-            <th class="cell-2">Klan</th>
-            <th class="cell-1">Ranking</th>
-            <th class="cell-1">Rating</th>
+            <th class="cell-2 cell-md">Klan</th>
+            <th class="cell-1 cell-sm">Ranking</th>
+            <th class="cell-1 cell-only-xs">Rank.</th>
+            <th class="cell-1 cell-sm">Rating</th>
+            <th class="cell-1 cell-only-xs">Elo.</th>
         </tr>
     </thead>
 
@@ -34,13 +37,13 @@
                 <td class="cell-1">
                     <div class="cell-text">@(i + 1) .</div>
                 </td>
-                <td class="cell-1">
+                <td class="cell-1 cell-lg">
                     <img class="img-responsive" src="@Url.Content("~/Content/images/avatar.png")" />
                 </td>
                 <td class="cell-2">
                     <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Nickname)</div>
                 </td>
-                <td class="cell-2">
+                <td class="cell-2 cell-md">
                     <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Clan)</div>
                 </td>
                 <td class="cell-1">

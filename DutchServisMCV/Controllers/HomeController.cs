@@ -10,7 +10,7 @@ namespace DutchServisMCV.Controllers
 {
     public class HomeController : Controller
     {
-        DutchDatabaseEntities database = new DutchDatabaseEntities();
+        DataBaseManager dbmanager = new DataBaseManager();
 
         public ActionResult Index()
         {
@@ -21,8 +21,7 @@ namespace DutchServisMCV.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(Users userInfo)
         {
-            var logincheck = database.Users.Where(x => x.Username.Equals(userInfo.Username) && x.Pass.Equals(userInfo.Pass)).FirstOrDefault();
-            if(logincheck != null)
+            if (dbmanager.IsLoginCorrect(userInfo))
             {
                 Session["Username"] = userInfo.Username.ToString();
                 return RedirectToAction("Index", "Home");
@@ -33,10 +32,12 @@ namespace DutchServisMCV.Controllers
             }
             return View();
         }
+
         public ActionResult Login()
         {
             return View();
         }
+
         public ActionResult Logout()
         {
             Session.Clear();
@@ -45,37 +46,7 @@ namespace DutchServisMCV.Controllers
 
         public ActionResult PlayerList()
         {
-            var query = from player in database.Players
-                        join clan in database.Clans
-                        on player.ClanId equals clan.ClanId
-                        into groupedclans
-                        where player.Active == true
-                        select new PlayerInfo
-                        {
-                            Nickname = player.Nickname,
-                            Img = player.ImgPath,
-                            Clan = groupedclans.FirstOrDefault().Name,
-                            Ranking = (from res in database.TournamentResults
-                                        where res.PlayerId == player.PlayerId
-                                        group res by res.PlayerId into gres
-                                        select new
-                                        {
-                                           Id = gres.Key,
-                                           Sum = gres.Sum(item => item.RankingGet),
-                                        }
-                                        ).FirstOrDefault().Sum + player.Rating.Value,
-                                       
-                            Rating = player.Rating.Value
-                        };
-
-            List<PlayerInfo> plist = query.OrderByDescending(x => x.Rating).ToList();
-
-            for(int i=0; i< plist.Count();i++)
-            {
-                if (plist.ElementAt(i).Ranking == null) plist.ElementAt(i).Ranking = plist.ElementAt(i).Rating;
-            }
-
-            return View(plist);
+            return View(dbmanager.Get_PlayerList(PlayerInfo.Attribute.Ranking, Order.DESC));
         }
     }
 }

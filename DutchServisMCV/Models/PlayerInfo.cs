@@ -12,5 +12,11 @@
         public string Clan { get; set; }
         public Nullable<double> Ranking { get; set; }
         public Nullable<double> Rating { get; set; }
+
+        public enum Attribute {
+            Nickname,
+            Ranking,
+            Rating
+        }
     }
 }
