@@ -25,7 +25,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Lista Graczy", "PlayerList", "Home")</li>
+                    <li>@Html.ActionLink("Lista Graczy", "Index", "Players")</li>
                     <li>@Html.ActionLink("Klany", "Clans", "Home")</li>
                     <li>@Html.ActionLink("Turnieje", "Turnaments", "Home")</li>
                     <li>@Html.ActionLink("Ligi", "Leagues", "Home")</li>
@@ -35,12 +35,12 @@
                 <div class="navbar-item f-right">
                     @if (Session["Username"] != null)
                     {
-                        <aside class="f-left">@Html.ActionLink(Session["Username"].ToString(), "admin", "Home")</aside>
-                        <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Home")</aside>
+                        <aside class="f-left">@Html.ActionLink(Session["Username"].ToString(), "Index", "Admin")</aside>
+                        <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Admin")</aside>
                     }
                     else
                     {
-                        <aside>@Html.ActionLink("Zaloguj", "Login", "Home")</aside>
+                        <aside>@Html.ActionLink("Zaloguj", "Login", "Admin")</aside>
                     }
                 </div>
             </div>
@@ -50,7 +50,7 @@
                     <li class="drop">
                         <button class="drop-header">Gracze</button>
                         <div class="drop-content">
-                            @Html.ActionLink("Lista Graczy", "PlayerList", "Home")
+                            @Html.ActionLink("Lista Graczy", "Index", "Players")
                             @Html.ActionLink("Klany", "Clans", "Home")
                         </div>
                     </li>
@@ -72,12 +72,12 @@
                 <div class="navbar-item f-right">
                     @if (Session["Username"] != null)
                     {
-                        <aside class="f-left">@Html.ActionLink(Session["Username"].ToString(), "admin", "Home")</aside>
-                        <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Home")</aside>
+                        <aside class="f-left">@Html.ActionLink(Session["Username"].ToString(), "Index", "Admin")</aside>
+                        <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Admin")</aside>
                     }
                     else
                     {
-                        <aside>@Html.ActionLink("Zaloguj", "Login", "Home")</aside>
+                        <aside>@Html.ActionLink("Zaloguj", "Login", "Admin")</aside>
                     }
                 </div>
             </div>

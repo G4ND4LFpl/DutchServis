@@ -122,11 +122,9 @@ table, th, td {
 .cell-1 {
     width: 10%;
 }
-
 .cell-2 {
     width: 20%;
 }
-
 .cell-3 {
     width: 30%;
 }
@@ -156,4 +154,8 @@ table, th, td {
 .cell-text {
     margin-top: 20px;
     font-size: 18px;
+}
+input[type="button"] {
+    border: none;
+    background-color: white;
 }

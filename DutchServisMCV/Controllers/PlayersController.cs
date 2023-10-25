@@ -1,26 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.Entity;
 using System.Linq;
-using DutchServisMCV.Models;
+using System.Net;
 using System.Web;
+using System.Web.Mvc;
+using DutchServisMCV.Models;
 
 namespace DutchServisMCV.Controllers
 {
-    public enum Order
-    {
-        ASC,
-        DESC
-    }
-    public class DataBaseManager
+    public class PlayersController : Controller
     {
         DutchDatabaseEntities database = new DutchDatabaseEntities();
+        string currentCol = "Ranking";
+        Order currentOrder = Order.DESC;
 
-        public bool IsLoginCorrect(Users user)
+        enum Order
         {
-            var check = database.Users.Where(x => x.Username.Equals(user.Username) && x.Pass.Equals(user.Pass)).FirstOrDefault();
-            return check != null;
+            ASC,
+            DESC
         }
-        public List<PlayerInfo> Get_PlayerList(PlayerInfo.Attribute sortAtt, Order order, bool onlyActive=true, string filter=null)
+
+        private Order SwitchOrder()
+        {
+            if (currentOrder == Order.ASC) return Order.DESC;
+            else return Order.ASC;
+        }
+
+        private List<PlayerInfo> Get_PlayerList(string sortAtt, Order order, bool onlyActive = true, string filter = null)
         {
             IQueryable<Players> playerFilter = null;
 
@@ -28,24 +36,24 @@ namespace DutchServisMCV.Controllers
             if (onlyActive)
             {
                 playerFilter = from player in database.Players
-                        where player.Active == true
-                        select player;
+                               where player.Active == true
+                               select player;
             }
             else
             {
                 playerFilter = from player in database.Players
-                        select player;
+                               select player;
             }
 
             // Filter nickname
-            if(filter != null)
+            if (filter != null)
             {
                 playerFilter = from player in playerFilter
                                where player.Nickname.Contains(filter)
                                select player;
             }
 
-            // Make list
+            // Make query
             var query = from player in playerFilter
                         join clan in database.Clans
                         on player.ClanId equals clan.ClanId
@@ -78,19 +86,19 @@ namespace DutchServisMCV.Controllers
             // Sort
             switch (sortAtt)
             {
-                case PlayerInfo.Attribute.Nickname:
+                case "Player":
                     {
                         if (order == Order.ASC) plist.Sort((x, y) => x.Nickname.CompareTo(y.Nickname));
                         else plist.Sort((x, y) => -(x.Nickname.CompareTo(y.Nickname)));
                         break;
                     }
-                case PlayerInfo.Attribute.Ranking:
+                case "Ranking":
                     {
                         if (order == Order.ASC) plist.Sort((x, y) => x.Ranking.Value.CompareTo(y.Ranking.Value));
                         else plist.Sort((x, y) => -(x.Ranking.Value.CompareTo(y.Ranking.Value)));
                         break;
                     }
-                case PlayerInfo.Attribute.Rating:
+                case "Rating":
                     {
                         if (order == Order.ASC) plist.Sort((x, y) => x.Rating.Value.CompareTo(y.Rating.Value));
                         else plist.Sort((x, y) => -(x.Rating.Value.CompareTo(y.Rating.Value)));
@@ -100,5 +108,22 @@ namespace DutchServisMCV.Controllers
 
             return plist;
         }
+
+        public ActionResult Index()
+        {
+            currentCol = "Ranking";
+            currentOrder = SwitchOrder();
+            return View(Get_PlayerList(currentCol, currentOrder));
+        }
+
+        [HttpGet]
+        public ActionResult Index(string sortColumn)
+        {
+            currentCol = sortColumn;
+            currentOrder = SwitchOrder();
+            return View(Get_PlayerList(currentCol, currentOrder));
+        }
+
+
     }
 }

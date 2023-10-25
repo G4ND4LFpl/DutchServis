@@ -21,16 +21,16 @@
             <th class="cell-1 cell-sm">Pozycja</th>
             <th class="cell-1 cell-only-xs">Poz.</th>
             <th class="cell-1 cell-lg">Awatar</th>
-            <th class="cell-2">Gracz &#11183;</th>
+            <th class="cell-2"><input type="button" id="player_sort" value="Gracz" onclick="sortPlayer()" /></th>
             <th class="cell-2 cell-md">Klan</th>
-            <th class="cell-1 cell-sm">Ranking</th>
-            <th class="cell-1 cell-only-xs">Rank.</th>
-            <th class="cell-1 cell-sm">Rating</th>
-            <th class="cell-1 cell-only-xs">Elo.</th>
+            <th class="cell-1 cell-sm"><input type="button" id="rank_sort1" value="Ranking" onclick="sortRanking()" /></th>
+            <th class="cell-1 cell-only-xs"><input type="button" id="rank_sort2" value="Rank." onclick="sortRanking()" /></th>
+            <th class="cell-1 cell-sm"><input type="button" id="elo_sort1" value="Rating" onclick="sortRating()" /></th>
+            <th class="cell-1 cell-only-xs"><input type="button" id="elo_sort2" value="Elo" onclick="sortRating()" /></th>
         </tr>
     </thead>
 
-    <tbody>
+    <tbody id="table_body">
         @for (var i = 0; i < Model.Count(); i++)
         {
             <tr class="table-style">
@@ -56,3 +56,7 @@
         }
     </tbody>
 </table>
+
+<script type="text/jscript">
+    var model = @Html.Raw(Json.Encode(Model));
+</script>
