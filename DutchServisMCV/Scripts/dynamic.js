@@ -4,7 +4,23 @@ var dataset = null;
 
 function refresh() {
     dataset = applyFilters(model);
-    dataset.sort(comparePlayer);
+
+    switch (sortColumn) {
+        case "Player": {
+            dataset.sort(comparePlayer);
+            break;
+        }
+        case "Ranking": {
+            dataset.sort(compareRanking);
+            break;
+        }
+        case "Rating": {
+            dataset.sort(compareRating)
+            break;
+        }
+    }
+
+    if (sordOrder === "Desc") dataset.reverse();
 
     updateData();
 }
@@ -148,30 +164,33 @@ function updateData() {
         innerHtmlCode += "<tr class=\"table-style\">";
 
         innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += "<div class=\"cell-text\" >" + (i + 1) + ".</div >";
+        innerHtmlCode += (i + 1) + ".";
         innerHtmlCode += "</td>";
-
-        innerHtmlCode += "<td class=\"cell-1 cell-lg\">";
-        innerHtmlCode += "<img class=\"img-responsive\" src=\"" + dataset[i].Img + "\"/>";
+ 
+        innerHtmlCode += "<td class=\"cell-1 cell-md\">";
+        
+        innerHtmlCode += "<img class=\"img-responsive img-rounded\" src=\"" + dataset[i].Img + "\"/>";
         innerHtmlCode += "</td>";
 
         innerHtmlCode += "<td class=\"cell-2\">";
-        innerHtmlCode += "<div class=\"cell-text\">" + dataset[i].Nickname + "</div>";
+        innerHtmlCode += "<a class=\"tablelink\" href=\"Players/Info?nickname=" + dataset[i].Nickname + "\">";
+        innerHtmlCode += dataset[i].Nickname;
+        innerHtmlCode += "</a>";
         innerHtmlCode += "</td>";
 
-        innerHtmlCode += "<td class=\"cell-2 cell-md\">";
-        innerHtmlCode += "<div class=\"cell-text\">" + dataset[i].Clan + "</div>";
+        innerHtmlCode += "<td class=\"cell-2 cell-lg\">";
+        innerHtmlCode += dataset[i].Clan;
         innerHtmlCode += "</td>";
 
         innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += "<div class=\"cell-text\">" + dataset[i].Ranking + "</div>";
+        innerHtmlCode += dataset[i].Ranking.toFixed(1);
         innerHtmlCode += "</td>";
 
         innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += "<div class=\"cell-text\">" + dataset[i].Rating + "</div>";
+        innerHtmlCode += dataset[i].Rating.toFixed(1);
         innerHtmlCode += "</td>";
 
-        innerHtmlCode += "</tr>"
+        innerHtmlCode += "</tr>";
     }
     document.getElementById("table_body").innerHTML = innerHtmlCode;
 }

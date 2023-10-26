@@ -1,74 +1,20 @@
-﻿@model DutchServisMCV.Models.Players
-
-@{
+﻿@{
     ViewBag.Title = "Details";
 }
 
 <h2>Details</h2>
 
-<div>
-    <h4>Players</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Nickname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nickname)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ClanId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ClanId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Rating)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Rating)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ImgPath)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ImgPath)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Active)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Active)
-        </dd>
-
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.PlayerId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+<h3>Model Player Data</h3>
+<ul>
+    <li><b>Z modelu Player</b></li>
+    <li>Imie</li>
+    <li>Nazwisko</li>
+    <li>Nickname</li>
+    <li>Rating</li>
+    <li>Aktywny</li>
+    <li>Zdjęcie</li>
+    <li><b>Z kwerendy na TournamentResults</b></li>
+    <li>Ranking</li>
+    <li><b>Z kwerendy na Clans</b></li>
+    <li>Klan</li>
+</ul>

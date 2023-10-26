@@ -14,7 +14,7 @@ namespace DutchServisMCV.Controllers
     {
         DutchDatabaseEntities database = new DutchDatabaseEntities();
 
-        private List<PlayerInfo> Get_PlayerList()
+        public ActionResult Index()
         {
             // Make query
             var query = from player in database.Players
@@ -41,20 +41,30 @@ namespace DutchServisMCV.Controllers
                         };
 
             // Replace null values by default
-            List<PlayerInfo> plist = query.ToList();
-            for (int i = 0; i < plist.Count(); i++)
+            List<PlayerInfo> listPI = query.ToList();
+            for (int i = 0; i < listPI.Count(); i++)
             {
-                if (plist.ElementAt(i).Ranking == null) plist.ElementAt(i).Ranking = plist.ElementAt(i).Rating;
-                if (plist.ElementAt(i).Clan == null) plist.ElementAt(i).Clan = "";
+                if (listPI.ElementAt(i).Ranking == null) listPI.ElementAt(i).Ranking = listPI.ElementAt(i).Rating;
+                if (listPI.ElementAt(i).Clan == null) listPI.ElementAt(i).Clan = "";
             }
 
-            // Return list
-            return plist;
+            // Return View
+            return View(listPI);
         }
 
-        public ActionResult Index()
+        public ActionResult Info(string nickname)
         {
-            return View(Get_PlayerList());
+            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Players p = database.Players.Where(item => item.Nickname == nickname).FirstOrDefault();
+            if(p == null) return HttpNotFound();
+
+            return View(p);
+        }
+
+        public ActionResult Details()
+        {
+            return View();
         }
     }
 }

@@ -29,6 +29,7 @@
                     <li>@Html.ActionLink("Klany", "Clans", "Home")</li>
                     <li>@Html.ActionLink("Turnieje", "Turnaments", "Home")</li>
                     <li>@Html.ActionLink("Ligi", "Leagues", "Home")</li>
+                    <li>@Html.ActionLink("Informacje", "Info", "Home")</li>
                     <li>@Html.ActionLink("Zasady gry", "Rules", "Home")</li>
                     <li>@Html.ActionLink("Gra treningowa", "Botgame", "Home")</li>
                 </ul>
@@ -39,7 +40,7 @@
                         <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Admin")</aside>
                     }
                     else
-                    {
+                    {   
                         <aside>@Html.ActionLink("Zaloguj", "Login", "Admin")</aside>
                     }
                 </div>
@@ -62,8 +63,9 @@
                         </div>
                     </li>
                     <li class="drop">
-                        <button class="drop-header">Rozgrywki</button>
+                        <button class="drop-header">Dla nowych graczy</button>
                         <div class="drop-content">
+                            @Html.ActionLink("Informacje", "Info", "Home")
                             @Html.ActionLink("Zasady gry", "Rules", "Home")
                             @Html.ActionLink("Gra treningowa", "Botgame", "Home")
                         </div>

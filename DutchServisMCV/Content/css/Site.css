@@ -47,9 +47,6 @@ input, select, textarea {
     height: 3px;
     background-color: cornflowerblue;
 }
-table, th, td {
-    border: 1px solid black;
-}
 .img-icon {
     height: 100%;
     margin-right: 10px;
@@ -108,8 +105,9 @@ table, th, td {
     }
 }
 .table-style > td {
-    height: 80px;
     text-align: center;
+    height: 100px;
+    font-size: 18px;
 }
 .table-style > th {
     text-align: center;
@@ -151,16 +149,18 @@ table, th, td {
 .align-center {
     margin: auto;
 }
-.cell-text {
-    margin-top: 20px;
-    font-size: 18px;
-}
 .sortbtn {
     border: none;
     background-color: white;
 }
 .mb-1 {
     margin-bottom: 1em;
+}
+.mt-1 {
+    margin-top: 1em;
+}
+.mt-2 {
+    margin-top: 2em;
 }
 .mx-1 {
     margin-left: 1em;
@@ -170,9 +170,38 @@ table, th, td {
     display: none;
     border-style: solid;
     border-width: 1px;
-    background-color: lightgray;
+    background-color: #f0f0f0;
     padding: 10px 10px 10px 10px;
 }
 .w-full {
     width: 100%;
+}
+a.tablelink {
+    color: #333333;
+    font-size: 20px;
+}
+a.tablelink:hover {
+    text-decoration: none;
+    font-weight: 900;
+    color: #6495ed;
+}
+.admincontroll {
+    padding: 5px 10px 5px 10px;
+    display: inline;
+    background-color: #f0f0f0;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #a94442;
+}
+.admincontroll:hover {
+    background-color: white;
+}
+.admincontroll > a {
+    color: #a94442;
+}
+.admincontroll > a:hover {
+    text-decoration: none;
+}
+h2 {
+    margin-top: 0px;
 }
