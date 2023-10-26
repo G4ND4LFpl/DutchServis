@@ -44,7 +44,7 @@ input, select, textarea {
 .blue-line {
     margin-top: 6px;
     width: 100%;
-    height: 6px;
+    height: 3px;
     background-color: cornflowerblue;
 }
 table, th, td {
@@ -155,7 +155,24 @@ table, th, td {
     margin-top: 20px;
     font-size: 18px;
 }
-input[type="button"] {
+.sortbtn {
     border: none;
     background-color: white;
+}
+.mb-1 {
+    margin-bottom: 1em;
+}
+.mx-1 {
+    margin-left: 1em;
+    margin-right: 1em;
+}
+.graybox {
+    display: none;
+    border-style: solid;
+    border-width: 1px;
+    background-color: lightgray;
+    padding: 10px 10px 10px 10px;
+}
+.w-full {
+    width: 100%;
 }

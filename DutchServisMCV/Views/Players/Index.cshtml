@@ -6,14 +6,30 @@
 
 <h2>Player List</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-
-<h3>Arrows</h3>
-<p style="font-size:16px;"> sort asc: &#11181;</p>
-<p style="font-size:16px;"> sort desc: &#11183;</p>
-<p style="font-size:16px;"> not sort: &#10606;</p>
+<div class="row mb-1">
+    <div class="col-xs-5 col-sm-6 col-md-8"></div>
+    <div class="col-xs-7 col-sm-6 col-md-4">
+        <div class="row">
+            <div class="col-xs-12">
+                <button class="w-full" onclick="openFilterMenu()">Filtry</button>
+            </div>
+        </div>
+        <div class="graybox" id="filter_menu">
+            <div class="row">
+                <div class="col-xs-12">
+                    <label>Nick gracza</label>
+                    <input class="mx-1 text-box single-line" id="filter_filed" type="text" onchange="refresh()"/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <label>Pokaż nieaktywnych</label>
+                    <input id="active_checkbox" type="checkbox" name="OnlyActive" onchange="refresh()"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <table class="table table-striped table-hover">
     <thead>
@@ -21,42 +37,32 @@
             <th class="cell-1 cell-sm">Pozycja</th>
             <th class="cell-1 cell-only-xs">Poz.</th>
             <th class="cell-1 cell-lg">Awatar</th>
-            <th class="cell-2"><input type="button" id="player_sort" value="Gracz" onclick="sortPlayer()" /></th>
+            <th class="cell-2">
+                <input class="sortbtn" type="button" id="player_sort" value="Gracz" onclick="sortPlayer()" />
+            </th>
             <th class="cell-2 cell-md">Klan</th>
-            <th class="cell-1 cell-sm"><input type="button" id="rank_sort1" value="Ranking" onclick="sortRanking()" /></th>
-            <th class="cell-1 cell-only-xs"><input type="button" id="rank_sort2" value="Rank." onclick="sortRanking()" /></th>
-            <th class="cell-1 cell-sm"><input type="button" id="elo_sort1" value="Rating" onclick="sortRating()" /></th>
-            <th class="cell-1 cell-only-xs"><input type="button" id="elo_sort2" value="Elo" onclick="sortRating()" /></th>
+            <th class="cell-1 cell-sm">
+                <input class="sortbtn" type="button" id="rank_sort1" value="Ranking" onclick="sortRanking()" />
+            </th>
+            <th class="cell-1 cell-only-xs">
+                <input class="sortbtn" type="button" id="rank_sort2" value="Rank." onclick="sortRanking()" />
+            </th>
+            <th class="cell-1 cell-sm">
+                <input class="sortbtn" type="button" id="elo_sort1" value="Rating" onclick="sortRating()" />
+            </th>
+            <th class="cell-1 cell-only-xs">
+                <input class="sortbtn" type="button" id="elo_sort2" value="Elo" onclick="sortRating()" />
+            </th>
         </tr>
     </thead>
 
     <tbody id="table_body">
-        @for (var i = 0; i < Model.Count(); i++)
-        {
-            <tr class="table-style">
-                <td class="cell-1">
-                    <div class="cell-text">@(i + 1) .</div>
-                </td>
-                <td class="cell-1 cell-lg">
-                    <img class="img-responsive" src="@Url.Content("~/Content/images/avatar.png")" />
-                </td>
-                <td class="cell-2">
-                    <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Nickname)</div>
-                </td>
-                <td class="cell-2 cell-md">
-                    <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Clan)</div>
-                </td>
-                <td class="cell-1">
-                    <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Ranking)</div>
-                </td>
-                <td class="cell-1">
-                    <div class="cell-text">@Html.DisplayFor(modelItem => Model.ElementAt(i).Rating)</div>
-                </td>
-            </tr>
-        }
     </tbody>
 </table>
 
 <script type="text/jscript">
     var model = @Html.Raw(Json.Encode(Model));
+    var path = @Url.Content("~/Content/");
+
+    sortRanking();
 </script>

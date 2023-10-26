@@ -13,48 +13,11 @@ namespace DutchServisMCV.Controllers
     public class PlayersController : Controller
     {
         DutchDatabaseEntities database = new DutchDatabaseEntities();
-        string currentCol = "Ranking";
-        Order currentOrder = Order.DESC;
 
-        enum Order
+        private List<PlayerInfo> Get_PlayerList()
         {
-            ASC,
-            DESC
-        }
-
-        private Order SwitchOrder()
-        {
-            if (currentOrder == Order.ASC) return Order.DESC;
-            else return Order.ASC;
-        }
-
-        private List<PlayerInfo> Get_PlayerList(string sortAtt, Order order, bool onlyActive = true, string filter = null)
-        {
-            IQueryable<Players> playerFilter = null;
-
-            // Only active
-            if (onlyActive)
-            {
-                playerFilter = from player in database.Players
-                               where player.Active == true
-                               select player;
-            }
-            else
-            {
-                playerFilter = from player in database.Players
-                               select player;
-            }
-
-            // Filter nickname
-            if (filter != null)
-            {
-                playerFilter = from player in playerFilter
-                               where player.Nickname.Contains(filter)
-                               select player;
-            }
-
             // Make query
-            var query = from player in playerFilter
+            var query = from player in database.Players
                         join clan in database.Clans
                         on player.ClanId equals clan.ClanId
                         into groupedclans
@@ -73,7 +36,8 @@ namespace DutchServisMCV.Controllers
                                        }
                                         ).FirstOrDefault().Sum + player.Rating.Value,
 
-                            Rating = player.Rating.Value
+                            Rating = player.Rating.Value,
+                            Active = player.Active
                         };
 
             // Replace null values by default
@@ -81,49 +45,16 @@ namespace DutchServisMCV.Controllers
             for (int i = 0; i < plist.Count(); i++)
             {
                 if (plist.ElementAt(i).Ranking == null) plist.ElementAt(i).Ranking = plist.ElementAt(i).Rating;
+                if (plist.ElementAt(i).Clan == null) plist.ElementAt(i).Clan = "";
             }
 
-            // Sort
-            switch (sortAtt)
-            {
-                case "Player":
-                    {
-                        if (order == Order.ASC) plist.Sort((x, y) => x.Nickname.CompareTo(y.Nickname));
-                        else plist.Sort((x, y) => -(x.Nickname.CompareTo(y.Nickname)));
-                        break;
-                    }
-                case "Ranking":
-                    {
-                        if (order == Order.ASC) plist.Sort((x, y) => x.Ranking.Value.CompareTo(y.Ranking.Value));
-                        else plist.Sort((x, y) => -(x.Ranking.Value.CompareTo(y.Ranking.Value)));
-                        break;
-                    }
-                case "Rating":
-                    {
-                        if (order == Order.ASC) plist.Sort((x, y) => x.Rating.Value.CompareTo(y.Rating.Value));
-                        else plist.Sort((x, y) => -(x.Rating.Value.CompareTo(y.Rating.Value)));
-                        break;
-                    }
-            }
-
+            // Return list
             return plist;
         }
 
         public ActionResult Index()
         {
-            currentCol = "Ranking";
-            currentOrder = SwitchOrder();
-            return View(Get_PlayerList(currentCol, currentOrder));
+            return View(Get_PlayerList());
         }
-
-        [HttpGet]
-        public ActionResult Index(string sortColumn)
-        {
-            currentCol = sortColumn;
-            currentOrder = SwitchOrder();
-            return View(Get_PlayerList(currentCol, currentOrder));
-        }
-
-
     }
 }

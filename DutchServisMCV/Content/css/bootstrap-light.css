@@ -186,6 +186,8 @@ optgroup {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  /* Edycja */
+  clear: both;
 }
 td,
 th {
@@ -2303,10 +2305,7 @@ th {
     max-width: 100%;
     margin-bottom: 20px;
     /* Edycja */
-    /*width: 100%*/
-    width: -webkit-fill-available;
-    margin-left: 10px;
-    margin-right: 10px;
+    width: 100%
 }
 .table > thead > tr > th,
 .table > tbody > tr > th,

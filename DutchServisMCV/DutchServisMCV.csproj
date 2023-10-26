@@ -185,6 +185,11 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\images\avatar.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\playerdata\argset.png" />
+    <Content Include="Content\images\playerdata\gandalf.png" />
+    <Content Include="Content\images\playerdata\mostow.png" />
+    <Content Include="Content\images\playerdata\pablo.png" />
+    <Content Include="Content\images\playerdata\ruda.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -199,7 +204,7 @@
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
       <LastGenOutput>DataBaseModels.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\ajax.js" />
+    <Content Include="Scripts\dynamic.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\DataBaseModels.edmx">
