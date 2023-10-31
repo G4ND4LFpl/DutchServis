@@ -133,11 +133,8 @@ function applyFilters(data) {
 
         array.push(data[i]);
 
-        if (data[i].Img != null && !data[i].Img.includes(path.toString())) {
-            array[array.length - 1].Img = path + "/images/playerdata/" + data[i].Img;
-        }
-        else if (data[i].Img == null) {
-            array[array.length - 1].Img = path + "/images/avatar.png";
+        if (data[i].Img === null || !data[i].Img.includes(path.toString())) {
+            array[array.length - 1].Img = getPath(data[i].Img);
         }
     }
 

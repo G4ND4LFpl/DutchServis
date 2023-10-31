@@ -10,108 +10,114 @@ using DutchServisMCV.Models;
 
 namespace DutchServisMCV.Controllers
 {
-    public class GamesController : Controller
+    public class MatchesController : Controller
     {
-        private DutchDatabaseEntities db = new DutchDatabaseEntities();
+        private DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
 
-        // GET: Games
-        public ActionResult Index()
+        public ActionResult Turnaments()
         {
-            return View(db.Tournaments.ToList());
+            return View();
         }
 
-        // GET: Games/Details/5
+
+        // GET: Matches
+        public ActionResult Index()
+        {
+            return View(database.Games.ToList());
+        }
+
+        // GET: Matches/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournaments tournaments = db.Tournaments.Find(id);
-            if (tournaments == null)
+            Games games = database.Games.Find(id);
+            if (games == null)
             {
                 return HttpNotFound();
             }
-            return View(tournaments);
+            return View(games);
         }
 
-        // GET: Games/Create
+        // GET: Matches/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Games/Create
+        // POST: Matches/Create
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "TournamentId,Name,Type,StartDate,EndDate,Location,Theme,Info")] Tournaments tournaments)
+        public ActionResult Create([Bind(Include = "GameId,MatchId,PointsPlayer1,PointsPlayer2,MistakesPlayer1,MistakesPlayer2,Win,Opening,Dutch")] Games games)
         {
             if (ModelState.IsValid)
             {
-                db.Tournaments.Add(tournaments);
-                db.SaveChanges();
+                database.Games.Add(games);
+                database.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(tournaments);
+            return View(games);
         }
 
-        // GET: Games/Edit/5
+        // GET: Matches/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournaments tournaments = db.Tournaments.Find(id);
-            if (tournaments == null)
+            Games games = database.Games.Find(id);
+            if (games == null)
             {
                 return HttpNotFound();
             }
-            return View(tournaments);
+            return View(games);
         }
 
-        // POST: Games/Edit/5
+        // POST: Matches/Edit/5
         // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
         // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "TournamentId,Name,Type,StartDate,EndDate,Location,Theme,Info")] Tournaments tournaments)
+        public ActionResult Edit([Bind(Include = "GameId,MatchId,PointsPlayer1,PointsPlayer2,MistakesPlayer1,MistakesPlayer2,Win,Opening,Dutch")] Games games)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tournaments).State = EntityState.Modified;
-                db.SaveChanges();
+                database.Entry(games).State = EntityState.Modified;
+                database.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(tournaments);
+            return View(games);
         }
 
-        // GET: Games/Delete/5
+        // GET: Matches/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tournaments tournaments = db.Tournaments.Find(id);
-            if (tournaments == null)
+            Games games = database.Games.Find(id);
+            if (games == null)
             {
                 return HttpNotFound();
             }
-            return View(tournaments);
+            return View(games);
         }
 
-        // POST: Games/Delete/5
+        // POST: Matches/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Tournaments tournaments = db.Tournaments.Find(id);
-            db.Tournaments.Remove(tournaments);
-            db.SaveChanges();
+            Games games = database.Games.Find(id);
+            database.Games.Remove(games);
+            database.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -119,7 +125,7 @@ namespace DutchServisMCV.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                database.Dispose();
             }
             base.Dispose(disposing);
         }

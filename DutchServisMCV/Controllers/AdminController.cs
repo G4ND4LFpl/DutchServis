@@ -12,7 +12,7 @@ namespace DutchServisMCV.Controllers
 {
     public class AdminController : Controller
     {
-        DutchDatabaseEntities database = new DutchDatabaseEntities();
+        DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
 
         private bool IsLoginCorrect(Users user)
         {

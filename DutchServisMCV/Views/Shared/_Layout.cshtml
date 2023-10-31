@@ -27,11 +27,11 @@
                     <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
                     <li>@Html.ActionLink("Lista Graczy", "Index", "Players")</li>
                     <li>@Html.ActionLink("Klany", "Clans", "Home")</li>
-                    <li>@Html.ActionLink("Turnieje", "Turnaments", "Home")</li>
+                    <li>@Html.ActionLink("Turnieje", "Turnaments", "Matches")</li>
                     <li>@Html.ActionLink("Ligi", "Leagues", "Home")</li>
                     <li>@Html.ActionLink("Informacje", "Info", "Home")</li>
                     <li>@Html.ActionLink("Zasady gry", "Rules", "Home")</li>
-                    <li>@Html.ActionLink("Gra treningowa", "Botgame", "Home")</li>
+                    <li>@Html.ActionLink("Gra treningowa", "Index", "Game")</li>
                 </ul>
                 <div class="navbar-item f-right">
                     @if (Session["Username"] != null)
@@ -45,29 +45,29 @@
                     }
                 </div>
             </div>
-            <div class="big-screen-olny">
+            <div class="display-lg">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Strona główna", "Index", "Home")</li>
-                    <li class="drop">
+                    <li class="drop nav-dropdown">
                         <button class="drop-header">Gracze</button>
                         <div class="drop-content">
                             @Html.ActionLink("Lista Graczy", "Index", "Players")
                             @Html.ActionLink("Klany", "Clans", "Home")
                         </div>
                     </li>
-                    <li class="drop">
+                    <li class="drop nav-dropdown">
                         <button class="drop-header">Rozgrywki</button>
                         <div class="drop-content">
                             @Html.ActionLink("Turnieje", "Turnaments", "Home")
                             @Html.ActionLink("Ligi", "Leagues", "Home")
                         </div>
                     </li>
-                    <li class="drop">
+                    <li class="drop nav-dropdown">
                         <button class="drop-header">Dla nowych graczy</button>
                         <div class="drop-content">
                             @Html.ActionLink("Informacje", "Info", "Home")
                             @Html.ActionLink("Zasady gry", "Rules", "Home")
-                            @Html.ActionLink("Gra treningowa", "Botgame", "Home")
+                            @Html.ActionLink("Gra treningowa", "Index", "Game")
                         </div>
                     </li>
                 </ul>

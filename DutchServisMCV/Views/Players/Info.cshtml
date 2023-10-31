@@ -1,20 +1,56 @@
-﻿@model DutchServisMCV.Models.Players
+﻿@model DutchServisMCV.Models.PlayerData
 
 @{
     ViewBag.Title = "Info";
 }
 
 <div class="row mt-2">
-    <div class="col-xs-4 col-md-3">
-        <img class="img-responsive img-rounded" src="@Url.Content("~/Content/images/playerdata/" + Model.ImgPath)" />
+    <div class="col-xs-12 col-sm-4 col-md-3">
+        <img class="img-responsive img-rounded border-1" id="profile_img"/>
     </div>
-    <div class="col-xs-8 col-md-9">
-        <h2>@Model.Nickname</h2>
+    <div class="col-xs-12 col-sm-8 col-md-9">
+        <h2 class="mt-0">@Model.Nickname</h2>
         <h3 style="font-style: italic;">@Model.Name @Model.Surname</h3>
 
-        <ul class="list-unstyled">
-            <li></li>
+        <ul class="list-stat list-unstyled">
+            <li>Ogólne informacje</li>
+            <li><b>Status:</b> @Model.Status</li>
+            <li><b>Data dołączenia:</b> @Model.JoinDate.ToShortDateString()</li>
+            <li><b>Klan:</b> @Model.Clan</li>
         </ul>
+
+        @if (Session["Username"] != null)
+        {
+            <div class="admincontroll">
+                @Html.ActionLink("Edytuj", "Edit")
+            </div>
+        }
     </div>
 </div>
+<div class="row-no-gutters">
+    <ul class="list-stat list-unstyled">
+        <li>Statystyki</li>
+        <li><b>Ranking:</b> @Model.Ranking</li>
+        <li><b>Rating:</b> @Model.Rating</li>
+        <li>
+            <b>Win rate:</b> @Model.Winratio%
+            <div class="f-right">@Model.WinGames / @Model.TotalGames</div>
+        </li>
+        <li>
+            <b>Opening win rate:</b> @Model.OpenWinration%
+            <div class="f-right">@Model.WinOpenings / @Model.Openings</div>
+        </li>
+        <li>
+            <b>Dutch win rate:</b> @Model.DutchWinration%
+            <div class="f-right">@Model.WinDutchs / @Model.Dutchs</div>
+        </li>
+    </ul>
+</div>
+
+<script type="text/jscript">
+    var model = @Html.Raw(Json.Encode(Model));
+    var path = @Url.Content("~/Content/");
+
+    setPath('profile_img', '@Model.Img');
+</script>
 

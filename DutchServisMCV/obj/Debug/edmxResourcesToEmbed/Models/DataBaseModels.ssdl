@@ -43,6 +43,7 @@
     <Property Name="Name" Type="varchar" MaxLength="50" />
     <Property Name="Surname" Type="varchar" MaxLength="50" />
     <Property Name="Nickname" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="JoinDate" Type="date" />
     <Property Name="ClanId" Type="int" />
     <Property Name="Rating" Type="float" />
     <Property Name="ImgPath" Type="varchar" MaxLength="50" />

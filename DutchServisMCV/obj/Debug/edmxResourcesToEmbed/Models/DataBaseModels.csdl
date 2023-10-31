@@ -47,6 +47,7 @@
     <Property Name="Rating" Type="Double" />
     <Property Name="ImgPath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" />
+    <Property Name="JoinDate" Type="DateTime" Precision="0" />
   </EntityType>
   <EntityType Name="Tournaments">
     <Key>

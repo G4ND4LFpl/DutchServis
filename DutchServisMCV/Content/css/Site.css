@@ -45,7 +45,7 @@ input, select, textarea {
     margin-top: 6px;
     width: 100%;
     height: 3px;
-    background-color: cornflowerblue;
+    background-color: #6495ed;
 }
 .img-icon {
     height: 100%;
@@ -55,20 +55,24 @@ input, select, textarea {
     float: left;
     max-width: 100px;
 }
-.big-screen-olny
-{
-    display: none;
-}
 .drop {
     line-height: 20px;
     font-size: 18px;
 }
+.display-lg {
+    display: none;
+}
+@media(max-width: 540px) {
+    .display-sm {
+        display: none;
+    }
+}
 @media(min-width: 993px) and (orientation: landscape)
 {
-    .big-screen-olny {
+    .display-lg {
         display: block;
     }
-    .drop-header {
+    .nav-dropdown > .drop-header {
         background-color: transparent;
         border: none;
         padding: 15px 15px 15px 15px;
@@ -76,7 +80,11 @@ input, select, textarea {
     }
     .drop-content {
         display: none;
+        min-width: 160px;
         position: absolute;
+        z-index: 1;
+    }
+    .nav-dropdown > .drop-content {
         background-color: #222;
         min-width: 160px;
         border: solid;
@@ -86,7 +94,12 @@ input, select, textarea {
         border-top-width: 1px;
         border-top-color: #9d9d9d;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-        z-index: 1;
+    }
+    .drop:hover .drop-content {
+        display: block;
+    }
+    .nav-dropdown:hover .drop-header {
+        color: white;
     }
     .drop-content a {
         color: #9d9d9d;
@@ -95,12 +108,6 @@ input, select, textarea {
         display: block;
     }
     .drop-content a:hover {
-        color: white;
-    }
-    .drop:hover .drop-content {
-        display: block;
-    }
-    .drop:hover .drop-header {
         color: white;
     }
 }
@@ -156,6 +163,9 @@ input, select, textarea {
 .mb-1 {
     margin-bottom: 1em;
 }
+.mt-0 {
+    margin-top: 0px;
+}
 .mt-1 {
     margin-top: 1em;
 }
@@ -202,6 +212,123 @@ a.tablelink:hover {
 .admincontroll > a:hover {
     text-decoration: none;
 }
-h2 {
-    margin-top: 0px;
+.board {
+    margin-top: 3em;
+    border-style: outset;
+    border-width: 3px;
+    border-color: #222;
+    border-radius: 10px;
+    background-color: #687d60;
+    padding: 15px 15px 15px 15px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.card {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: white;
+    border: solid;
+    border-width: 2px;
+    border-radius: 6px;
+    border-color: black;
+    padding: 5px 20px 5px 20px;
+    font-family: 'Comic Sans MS';
+}
+.active {
+    border-color: goldenrod;
+    border-width: 2px;
+}
+.active:hover {
+    border-color: greenyellow;
+}
+.card-color {
+    height: 15px;
+}
+.card-awers {
+    border-top: solid;
+    border-bottom: solid;
+    border-width: 1px;
+    border-color: black;
+    margin-top: 5px;
+    margin-bottom: 5px;
+
+    font-size: 3.5em;
+    text-align: center;
+}
+.card-empty {
+    margin-top: calc(0.5em + 5px);
+    margin-bottom: calc(0.5em + 5px);
+    font-size: 3em;
+    text-align: center;
+}
+.backgroud-img {
+    background-image: url('reverse.jpg');
+    height: 9em;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+}
+@media(min-width: 540px) {
+    .card-color {
+        height: 20px;
+    }
+    .card-awers {
+        font-size: 5em;
+    }
+    .card-empty {
+        margin-top: calc(1em + 4px);
+        margin-bottom: calc(1em + 4px);
+    }
+    .backgroud-img {
+        height: calc(12em - 2px);
+    }
+}
+.c-red {
+    color: red;
+}
+.c-black {
+    color: black;
+}
+.border-1 {
+    border: solid;
+    border-width: 1px;
+}
+.list-stat {
+    margin-top: 30px;
+} 
+.list-stat > li {
+    font-size: 18px;
+    max-width: 90%;
+}
+@media(min-width: 540px) {
+    .list-stat > li {
+        max-width: 75%;
+    }
+}
+@media(min-width: 993px) and (orientation: landscape) {
+    .list-stat > li {
+        max-width: 50%;
+    }
+}
+.list-stat > li:first-child {
+    font-size: 20px;
+    font-weight: 700;
+    border-bottom-style: solid;
+    border-bottom-color: #6495ed;
+    border-bottom-width: 2px;
+    margin-bottom: 10px;
+}
+ul > li > b {
+    font-size: 16px;
+    font-weight: 600;
+}
+label {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+.gutters-5 {
+    margin-left: -5px;
+    margin-right: -5px;
+}
+.single-line {
+    width: 100%;
 }

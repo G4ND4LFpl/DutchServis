@@ -42,6 +42,7 @@
     <EntitySetMapping Name="Players">
       <EntityTypeMapping TypeName="DutchDatabaseModel.Players">
         <MappingFragment StoreEntitySet="Players">
+          <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
           <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Surname" ColumnName="Surname" />

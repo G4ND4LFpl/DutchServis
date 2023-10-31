@@ -1,0 +1,88 @@
+﻿@model DutchServisMCV.Models.Games
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Games</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.MatchId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MatchId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PointsPlayer1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PointsPlayer1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PointsPlayer2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PointsPlayer2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MistakesPlayer1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MistakesPlayer1)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MistakesPlayer2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MistakesPlayer2)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Win)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Win)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opening)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opening)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Dutch)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dutch)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

@@ -129,8 +129,9 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\GamesController.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -159,6 +160,7 @@
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerData.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Players.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
@@ -184,12 +186,18 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\images\avatar.png" />
+    <Content Include="Content\images\karo.png" />
+    <Content Include="Content\images\kier.png" />
     <Content Include="Content\images\logo.png" />
+    <Content Include="Content\images\pik.png" />
     <Content Include="Content\images\playerdata\argset.png" />
     <Content Include="Content\images\playerdata\gandalf.png" />
     <Content Include="Content\images\playerdata\mostow.png" />
     <Content Include="Content\images\playerdata\pablo.png" />
     <Content Include="Content\images\playerdata\ruda.png" />
+    <Content Include="Content\css\reverse.jpg" />
+    <Content Include="Content\css\reverse2.jpg" />
+    <Content Include="Content\images\trefl.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -204,7 +212,7 @@
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
       <LastGenOutput>DataBaseModels.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\dynamic.js" />
+    <Content Include="Scripts\dynamic_table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <EntityDeploy Include="Models\DataBaseModels.edmx">
@@ -215,6 +223,8 @@
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
+    <Content Include="Scripts\game.js" />
+    <Content Include="Scripts\general.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery-3.4.1.slim.js" />
@@ -243,12 +253,13 @@
     <Content Include="Views\Players\Delete.cshtml" />
     <Content Include="Views\Players\Details.cshtml" />
     <Content Include="Views\Players\Edit.cshtml" />
-    <Content Include="Views\Games\Create.cshtml" />
-    <Content Include="Views\Games\Delete.cshtml" />
-    <Content Include="Views\Games\Details.cshtml" />
-    <Content Include="Views\Games\Edit.cshtml" />
-    <Content Include="Views\Games\Index.cshtml" />
     <Content Include="Views\Players\Info.cshtml" />
+    <Content Include="Views\Matches\Create.cshtml" />
+    <Content Include="Views\Matches\Delete.cshtml" />
+    <Content Include="Views\Matches\Details.cshtml" />
+    <Content Include="Views\Matches\Edit.cshtml" />
+    <Content Include="Views\Matches\Index.cshtml" />
+    <Content Include="Views\Game\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

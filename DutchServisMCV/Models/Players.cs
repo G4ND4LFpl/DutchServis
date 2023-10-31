@@ -22,5 +22,6 @@ namespace DutchServisMCV.Models
         public Nullable<double> Rating { get; set; }
         public string ImgPath { get; set; }
         public Nullable<bool> Active { get; set; }
+        public Nullable<System.DateTime> JoinDate { get; set; }
     }
 }

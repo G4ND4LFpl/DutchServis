@@ -13,9 +13,9 @@ namespace DutchServisMCV.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DutchDatabaseEntities : DbContext
+    public partial class DutchDatabaseEntities1 : DbContext
     {
-        public DutchDatabaseEntities()
+        public DutchDatabaseEntities1()
             : base("name=DutchDatabaseEntities1")
         {
         }
