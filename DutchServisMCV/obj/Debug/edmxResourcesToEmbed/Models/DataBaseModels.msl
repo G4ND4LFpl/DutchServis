@@ -57,6 +57,7 @@
     <EntitySetMapping Name="Tournaments">
       <EntityTypeMapping TypeName="DutchDatabaseModel.Tournaments">
         <MappingFragment StoreEntitySet="Tournaments">
+          <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
           <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="Type" ColumnName="Type" />

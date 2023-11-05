@@ -88,6 +88,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
     <Property Name="Location" Type="varchar" MaxLength="100" />
     <Property Name="Theme" Type="varchar" MaxLength="100" />
     <Property Name="Info" Type="varchar" MaxLength="100" />
+    <Property Name="ImgPath" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

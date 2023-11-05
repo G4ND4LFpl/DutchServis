@@ -93,6 +93,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="Location" Type="varchar" MaxLength="100" />
           <Property Name="Theme" Type="varchar" MaxLength="100" />
           <Property Name="Info" Type="varchar" MaxLength="100" />
+          <Property Name="ImgPath" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -190,6 +191,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="Location" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Theme" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ImgPath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -293,6 +295,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <EntitySetMapping Name="Tournaments">
             <EntityTypeMapping TypeName="DutchDatabaseModel.Tournaments">
               <MappingFragment StoreEntitySet="Tournaments">
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
                 <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />

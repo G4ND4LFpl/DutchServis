@@ -14,17 +14,32 @@ namespace DutchServisMCV.Controllers
     {
         private DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
 
-        public ActionResult Turnaments()
-        {
-            return View();
-        }
-
-
-        // GET: Matches
         public ActionResult Index()
         {
-            return View(database.Games.ToList());
+            return RedirectToAction("Tournaments");
         }
+
+        public ActionResult Tournaments()
+        {
+            // Make query
+            var query = from tourn in database.Tournaments
+                        where tourn.Type == "tournament"
+                        select new TournamentInfo
+                        {
+                            Name = tourn.Name,
+                            Date = tourn.StartDate,
+                            Location = tourn.Location,
+                            Theme = tourn.Theme,
+                            Info = tourn.Info,
+                            Img = tourn.ImgPath
+                        };
+
+            query = query.OrderByDescending(item => item.Date);
+
+            // Return View
+            return View(query);
+        }
+        
 
         // GET: Matches/Details/5
         public ActionResult Details(int? id)

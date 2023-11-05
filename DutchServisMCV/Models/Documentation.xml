@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<dock>
+	<class name="PlayerInfo">
+		<PlayerInfo>
+			<summary>
+				Klasa będąca modelem danych wyświetlanych w tabeli graczy w widoku "/Players" oraz "/Players/Index".
+				<list type="bullet">
+					<item>
+						<term>Nickname</term>
+						<value>Nick gracza</value>
+					</item>
+					<item>
+						<term>Img</term>
+						<value>Nazwa pliku zawierającego awatar gracza</value>
+					</item>
+					<item>
+						<term>Clan</term>
+						<value>Nazwa klanu do którego należy gracza</value>
+					</item>
+					<item>
+						<term>Ranking</term>
+						<value>Ranking gracza</value>
+					</item>
+					<item>
+						<term>Rating</term>
+						<value>Rating gracza</value>
+					</item>
+					<item>
+						<term>Active</term>
+						<value>Informacja czy gracz jest aktywny</value>
+					</item>
+				</list>
+			</summary>
+		</PlayerInfo>
+		<Nickname>
+			<summary>
+				<value>Właściwość reprezentucjąca nick gracza.</value>
+				<remarks>Nickname jest typem <see langword="string"/>.</remarks>
+			</summary>
+		</Nickname>
+		<Img>
+			<summary>
+				<value>Właściwość reprezentucjąca nazwę pliku (.jpg/.png) zawierającego awatar gracza.</value>
+				<remarks>Img jest typem <see langword="string"/>.</remarks>
+			</summary>
+		</Img>
+		<Clan>
+			<summary>
+				<value>Właściwość reprezentucjąca nazwę klanu do którego należy gracza</value>
+				<remarks>Clan jest typem <see langword="string"/>.</remarks>
+			</summary>
+		</Clan>
+		<Ranking>
+			<summary>
+				<value>Właściwość reprezentucjąca ranking gracza.</value>
+				<remarks>Ranking jest typem <see cref="Nullable"/>&lt;<see langword="double"/>&gt;.</remarks>
+			</summary>
+		</Ranking>
+		<Rating>
+			<summary>
+				<value>Właściwość reprezentucjąca rating gracza.</value>
+				<remarks>Rating jest typem <see cref="Nullable"/>&lt;<see langword="double"/>&gt;.</remarks>
+			</summary>
+		</Rating>
+		<Active>
+			<summary>
+				<value>Właściwość informująca czy gracz jest aktywny.</value>
+				<remarks>Active jest typem <see langword="bool"/>?.</remarks>
+			</summary>
+		</Active>
+	</class>
+</dock> 

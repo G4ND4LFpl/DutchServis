@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DutchServisMCV.Models.TournamentInfo>
+
+@{
+    ViewBag.Title = "Tournaments";
+}
+
+<h2>Turnieje Dutch</h2>
+
+<div class="row block">
+    <div class="col-xs-12">
+        @if (Session["Username"] != null)
+        {
+            <div class="admincontroll mx-left">
+                @Html.ActionLink("Utwórz nowy turniej", "Create")
+            </div>
+        }
+    </div>
+</div>
+
+@foreach (DutchServisMCV.Models.TournamentInfo item in Model)
+{
+    <div class="row border-block">
+        <div class="col-xs-12 col-sm-7 col-md-8">
+            <ul class="list-unstyled list-stat">
+                <li><a class="unstyled bluehover" href="">@item.Name</a></li>
+                <li>Data: @item.Date.ToShortDateString()</li>
+                <li>Miejsce: @item.Location</li>
+                <li class="cell-md">Motyw: @item.Theme</li>
+                <li class="cell-md">Informacje: @item.Info</li>
+            </ul>
+        </div>
+        <div class="col-sm-5 col-md-4 cell-sm col-height">
+            <img class="img-responsive img-rounded border-1" src="@Url.Content("~/Content/images/tournamentdata/"+item.Img)" />
+        </div>
+    </div>
+}

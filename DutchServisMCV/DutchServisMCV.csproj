@@ -168,6 +168,7 @@
     <Compile Include="Models\PlayerSet.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\TournamentInfo.cs" />
     <Compile Include="Models\TournamentResults.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -196,7 +197,8 @@
     <Content Include="Content\images\playerdata\pablo.png" />
     <Content Include="Content\images\playerdata\ruda.png" />
     <Content Include="Content\css\reverse.jpg" />
-    <Content Include="Content\css\reverse2.jpg" />
+    <Content Include="Content\images\tournamentdata\winner.jpg" />
+    <Content Include="Content\images\tournamentdata\winner2.jpg" />
     <Content Include="Content\images\trefl.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -250,16 +252,16 @@
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Players\Index.cshtml" />
     <Content Include="Views\Players\Create.cshtml" />
-    <Content Include="Views\Players\Delete.cshtml" />
-    <Content Include="Views\Players\Details.cshtml" />
     <Content Include="Views\Players\Edit.cshtml" />
     <Content Include="Views\Players\Info.cshtml" />
-    <Content Include="Views\Matches\Create.cshtml" />
+    <Content Include="Views\Matches\AddGame.cshtml" />
     <Content Include="Views\Matches\Delete.cshtml" />
     <Content Include="Views\Matches\Details.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
     <Content Include="Views\Matches\Index.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Matches\Tournaments.cshtml" />
+    <Content Include="Views\Matches\CreateTournament.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

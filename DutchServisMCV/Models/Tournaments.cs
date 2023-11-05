@@ -22,5 +22,6 @@ namespace DutchServisMCV.Models
         public string Location { get; set; }
         public string Theme { get; set; }
         public string Info { get; set; }
+        public string ImgPath { get; set; }
     }
 }
