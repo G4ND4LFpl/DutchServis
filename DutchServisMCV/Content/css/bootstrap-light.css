@@ -1543,8 +1543,8 @@ pre code {
   margin-left: auto;
 }
 .row {
-  margin-right: -15px;
-  margin-left: -15px;
+    margin-right: -15px;
+    margin-left: -15px;
 }
 .row-no-gutters {
   margin-right: 0;

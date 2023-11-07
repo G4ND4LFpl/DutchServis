@@ -6,12 +6,11 @@ using System.Data.Entity.Infrastructure;
 
 namespace DutchServisMCV.Models
 {
-    public class TournamentInfo
+    public class LeaugeInfo
     {
         public string Name { get; set; }
-        public DateTime DateTime { get; set; }
-        public string Location { get; set; }
-        public string Theme { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
         public List<Match> Matches { get; set; }

@@ -1,20 +1,22 @@
 ﻿@model IEnumerable<DutchServisMCV.Models.PlayerInfo>
 
 @{
-    ViewBag.Title = "PlayerList";
+    ViewBag.Title = "Lista graczy";
 }
 
 <script type="text/jscript" src="@Url.Content("~/Scripts/dynamic_table.js")"></script>
 
-<h2 class="mb-1">Lista graczy</h2>
+<header>
+    <h1 class="mb-1">Lista graczy</h1>
+</header>
 
 <div class="row mb-1">
     <div class="col-xs-12 col-sm-4 col-md-6 col-lg-8">
         @if (Session["Username"] != null)
         {
-            <div class="admincontroll">
+            <aside class="admincontroll">
                 @Html.ActionLink("Dodaj gracza", "Add")
-            </div>
+            </aside>
         }
     </div>
     <div class="col-xs-12 col-sm-8 col-md-6 col-lg-4">
@@ -69,7 +71,7 @@
         </tr>
     </thead>
 
-    <tbody id="table_body">
+    <tbody id="table_body" class="h-100">
     </tbody>
 </table>
 

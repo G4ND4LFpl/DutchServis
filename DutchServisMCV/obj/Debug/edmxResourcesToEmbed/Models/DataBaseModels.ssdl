@@ -13,8 +13,8 @@
     </Key>
     <Property Name="GameId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="MatchId" Type="int" Nullable="false" />
-    <Property Name="PointsPlayer1" Type="int" Nullable="false" />
-    <Property Name="PointsPlayer2" Type="int" Nullable="false" />
+    <Property Name="PointsPlayer1" Type="int" />
+    <Property Name="PointsPlayer2" Type="int" />
     <Property Name="MistakesPlayer1" Type="int" />
     <Property Name="MistakesPlayer2" Type="int" />
     <Property Name="Win" Type="int" Nullable="false" />
@@ -82,7 +82,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
     <Property Name="TournamentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="100" Nullable="false" />
     <Property Name="Type" Type="varchar" MaxLength="100" Nullable="false" />
-    <Property Name="StartDate" Type="date" Nullable="false" />
+    <Property Name="StartDate" Type="datetime" Nullable="false" />
     <Property Name="EndDate" Type="date" />
     <Property Name="Location" Type="varchar" MaxLength="100" />
     <Property Name="Theme" Type="varchar" MaxLength="100" />

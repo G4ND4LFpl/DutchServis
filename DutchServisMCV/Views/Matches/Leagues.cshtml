@@ -1,12 +1,12 @@
-﻿@model IEnumerable<DutchServisMCV.Models.TournamentInfo>
+﻿@model IEnumerable<DutchServisMCV.Models.LeaugeInfo>
 
 @{
-    ViewBag.Title = "Turnieje";
+    ViewBag.Title = "Ligi";
 }
 
 <header class="text-center">
-    <h1>Turnieje Dutch</h1>
-</header>
+    <h1>Ligi Dutch</h1>
+</header>   
 
 <script type="text/jscript">
     var path = @Url.Content("~/Content/");
@@ -17,23 +17,22 @@
         @if (Session["Username"] != null)
         {
             <aside class="admincontroll mx-left">
-                @Html.ActionLink("Utwórz nowy turniej", "Create")
+                @Html.ActionLink("Utwórz nową Ligę", "Create")
             </aside>
         }
     </div>
 </div>
 
-@foreach (DutchServisMCV.Models.TournamentInfo item in Model)
+@foreach (DutchServisMCV.Models.LeaugeInfo item in Model)
 {
     <article class="row border-block">
         <div class="col-xs-12 col-sm-7 col-md-8">
             <ul class="list-unstyled list-stat">
                 <li>
-                    <h4><a class="unstyled bluehover" href="@Url.Action("TournamentInfo", "Matches", new { name = item.Name})">@item.Name</a></h4>
+                    <h4><a class="unstyled bluehover" href="@Url.Action("LeagueInfo", "Matches", new { name = item.Name})">@item.Name</a></h4>
                 </li>
-                <li>Data: @item.DateTime.ToShortDateString()</li>
-                <li>Miejsce: @item.Location</li>
-                <li class="cell-md">Motyw: @item.Theme</li>
+                <li>Rozpoczęcie: @item.StartDate.ToShortDateString()</li>
+                <li>Koniec: @item.EndDate.ToShortDateString()</li>
                 <li class="cell-md">Informacje: @item.Info</li>
             </ul>
         </div>
@@ -46,3 +45,4 @@
         </div>
     </article>
 }
+

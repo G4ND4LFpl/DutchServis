@@ -154,10 +154,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\GameNamespace.cs" />
     <Compile Include="Models\Games.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -169,6 +169,7 @@
     <Compile Include="Models\PlayerSet.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\LeaugeInfo.cs" />
     <Compile Include="Models\TournamentInfo.cs" />
     <Compile Include="Models\TournamentResults.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
@@ -189,6 +190,7 @@
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\images\.gitignore" />
     <Content Include="Content\images\avatar.png" />
+    <Content Include="Content\images\empty.png" />
     <Content Include="Content\images\karo.png" />
     <Content Include="Content\images\kier.png" />
     <Content Include="Content\images\logo.png" />
@@ -200,7 +202,6 @@
     <Content Include="Content\images\playerdata\ruda.png" />
     <Content Include="Content\css\reverse.jpg" />
     <Content Include="Content\images\tournamentdata\winner.jpg" />
-    <Content Include="Content\images\tournamentdata\winner2.jpg" />
     <Content Include="Content\images\trefl.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -266,6 +267,7 @@
     <Content Include="Views\Matches\Tournaments.cshtml" />
     <Content Include="Views\Matches\CreateTournament.cshtml" />
     <Content Include="Views\Matches\TournamentInfo.cshtml" />
+    <Content Include="Views\Matches\Leagues.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

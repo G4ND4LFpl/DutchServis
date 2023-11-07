@@ -27,76 +27,145 @@ namespace DutchServisMCV.Controllers
                         select new TournamentInfo
                         {
                             Name = tourn.Name,
-                            Date = tourn.StartDate,
+                            DateTime = tourn.StartDate,
                             Location = tourn.Location,
                             Theme = tourn.Theme,
                             Info = tourn.Info,
                             Img = tourn.ImgPath
                         };
 
-            query = query.OrderByDescending(item => item.Date);
+            query = query.OrderByDescending(item => item.DateTime);
 
             // Return View
             return View(query);
         }
+
+        public ActionResult Leagues()
+        {
+            // Make query
+            var query = from tourn in database.Tournaments
+                        where tourn.Type == "league"
+                        select new LeaugeInfo
+                        {
+                            Name = tourn.Name,
+                            StartDate = tourn.StartDate,
+                            EndDate = (DateTime)tourn.EndDate,
+                            Info = tourn.Info,
+                            Img = tourn.ImgPath
+                        };
+
+            query = query.OrderByDescending(item => item.StartDate);
+
+            // Return View
+            return View(query);
+        }
+
+        private IQueryable<Models.GameNamespace.PlayerItem> GetPlayerSet(string name)
+        {
+            return (from set in database.PlayerSet
+                    join tourn in database.Tournaments
+                    on set.TournamentId equals tourn.TournamentId
+                    join players in database.Players
+                    on set.PlayerId equals players.PlayerId
+                    join res in (from res in database.TournamentResults
+                                 join tourn in database.Tournaments
+                                 on res.TournamentId equals tourn.TournamentId
+                                 where tourn.Name == name
+                                 select res
+                                 )
+                    on set.PlayerId equals res.PlayerId
+                    where tourn.Name == name
+                    select new Models.GameNamespace.PlayerItem
+                    {
+                        Nickname = players.Nickname,
+                        RankingBefore = set.Ranking,
+                        Place = res.Place,
+                        RankingGet = res.RankingGet,
+                        Price = res.Prize
+                    });
+        }
+        private IQueryable<Models.GameNamespace.GamesSum> GamesSumByMatch(int player)
+        {
+            if(player == 1)
+            {
+                return (from games in database.Games
+                        join matches in database.Matches
+                        on games.MatchId equals matches.MatchId
+                        join players in database.Players
+                        on matches.Player1_Id equals players.PlayerId
+                        group games by new
+                        {
+                            matches.MatchId,
+                            players.Nickname
+                        } into gruped
+                        select new Models.GameNamespace.GamesSum
+                        {
+                            MatchId = gruped.Key.MatchId,
+                            Nickname = gruped.Key.Nickname,
+                            Points = gruped.Count(x => x.Win == 1)
+                        });
+            }
+            else
+            {
+                return (from games in database.Games
+                        join matches in database.Matches
+                        on games.MatchId equals matches.MatchId
+                        join players in database.Players
+                        on matches.Player2_Id equals players.PlayerId
+                        group games by new
+                        {
+                            matches.MatchId,
+                            players.Nickname
+                        } into gruped
+                        select new Models.GameNamespace.GamesSum
+                        {
+                            MatchId = gruped.Key.MatchId,
+                            Nickname = gruped.Key.Nickname,
+                            Points = gruped.Count(x => x.Win == 2)
+                        });
+            }
+        }
+        private IQueryable<Models.GameNamespace.Match> GetMatchList(string name, 
+            IQueryable<Models.GameNamespace.GamesSum> games1,
+            IQueryable<Models.GameNamespace.GamesSum> games2)
+        {
+            return (from matches in database.Matches
+                    join tourn in database.Tournaments
+                    on matches.TournamentId equals tourn.TournamentId
+                    join player1 in games1
+                    on matches.MatchId equals player1.MatchId
+                    join player2 in games2
+                    on matches.MatchId equals player2.MatchId
+                    where tourn.Name == name
+                    select new Models.GameNamespace.Match
+                    {
+                        Id = matches.MatchId,
+                        Player1 = player1.Nickname,
+                        PointsPlayer1 = player1.Points,
+                        Player2 = player2.Nickname,
+                        PointsPlayer2 = player2.Points,
+                        PlayDate = matches.PlayDate,
+                        FormatBo = matches.FormatBo
+                    });
+        }
         
         public ActionResult TournamentInfo(string name)
         {
+            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
+
+            // Get players
+            var playerslist = GetPlayerSet(name);
+
             // Games won player 1
-            var player1_games = from games in database.Games
-                                join matches in database.Matches
-                                on games.MatchId equals matches.MatchId
-                                join players in database.Players
-                                on matches.Player1_Id equals players.PlayerId
-                                group games by new
-                                {
-                                    matches.MatchId,
-                                    players.Nickname
-                                } into gruped
-                                select new
-                                {
-                                    gruped.Key.MatchId,
-                                    gruped.Key.Nickname,
-                                    Points = gruped.Count(x => x.Win == 1)
-                                };
+            var player1_games = GamesSumByMatch(1);
 
             // Games won player 2
-            var player2_games = from games in database.Games
-                                join matches in database.Matches
-                                on games.MatchId equals matches.MatchId
-                                join players in database.Players
-                                on matches.Player2_Id equals players.PlayerId
-                                group games by new
-                                {
-                                    matches.MatchId,
-                                    players.Nickname
-                                } into gruped
-                                select new
-                                {
-                                    gruped.Key.MatchId,
-                                    gruped.Key.Nickname,
-                                    Points = gruped.Count(x => x.Win == 2)
-                                };
+            var player2_games = GamesSumByMatch(2);
 
             // Get matches
-            var matchlist = from matches in database.Matches
-                            join tourn in database.Tournaments
-                            on matches.TournamentId equals tourn.TournamentId
-                            join player1 in player1_games
-                            on matches.MatchId equals player1.MatchId
-                            join player2 in player2_games
-                            on matches.MatchId equals player2.MatchId
-                            where tourn.Name == name
-                            select new Match
-                            {
-                                Id = matches.MatchId,
-                                Player1 = player1.Nickname,
-                                PointsPlayer1 = player1.Points,
-                                Player2 = player2.Nickname,
-                                PointsPlayer2 = player2.Points,
-                                PlayDate = matches.PlayDate,
-                                FormatBo = matches.FormatBo
-                            };
+            var matchlist = GetMatchList(name, player1_games, player2_games);
 
             // Make query
             var query = from tourn in database.Tournaments
@@ -104,18 +173,56 @@ namespace DutchServisMCV.Controllers
                         select new TournamentInfo
                         {
                             Name = tourn.Name,
-                            Date = tourn.StartDate,
+                            DateTime = tourn.StartDate,
                             Location = tourn.Location,
                             Theme = tourn.Theme,
                             Info = tourn.Info,
                             Img = tourn.ImgPath,
-                            Matches = matchlist.ToList()
+                            Matches = matchlist.ToList(),
+                            Players = playerslist.ToList()
                         };
 
             // Return View
             return View(query.FirstOrDefault());
         }
-        
+
+        public ActionResult LeagueInfo(string name)
+        {
+            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
+
+            // Get players
+            var playerslist = GetPlayerSet(name);
+
+            // Games won player 1
+            var player1_games = GamesSumByMatch(1);
+
+            // Games won player 2
+            var player2_games = GamesSumByMatch(2);
+
+            // Get matches
+            var matchlist = GetMatchList(name, player1_games, player2_games);
+
+            // Make query
+            var query = from tourn in database.Tournaments
+                        where tourn.Name == name
+                        select new TournamentInfo
+                        {
+                            Name = tourn.Name,
+                            DateTime = tourn.StartDate,
+                            Location = tourn.Location,
+                            Theme = tourn.Theme,
+                            Info = tourn.Info,
+                            Img = tourn.ImgPath,
+                            Matches = matchlist.ToList(),
+                            Players = playerslist.ToList()
+                        };
+
+            // Return View
+            return View(query.FirstOrDefault());
+        }
+
         // GET: Matches/Details/5
         public ActionResult Details(int? id)
         {

@@ -5,6 +5,7 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
+    font-size: 18px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -115,9 +116,20 @@ input, select, textarea {
         color: white;
     }
 }
+header > h1, header > h2 {
+    margin-top: 30px;
+}
+h4 {
+    font-size: 20px;
+    font-weight: 700;
+    padding-bottom: 5px;
+    border-bottom-style: solid;
+    border-bottom-color: #6495ed;
+    border-bottom-width: 2px;
+    margin-bottom: 10px;
+}
 .table-style > td {
     text-align: center;
-    height: 100px;
     font-size: 18px;
 }
 .table-style > th {
@@ -127,6 +139,19 @@ input, select, textarea {
 }
 .table-style > td, th > div, img {
     margin: auto;
+}
+.h-100 > tr > td {
+    height: 100px;
+}
+@media (min-width: 540px) {
+    .width-small {
+        width: 70%;
+    }
+}
+@media (min-width: 767px) {
+    .width-medium {
+        width: 70%;
+    }
 }
 .cell-1 {
     width: 10%;
@@ -204,16 +229,17 @@ a.tablelink:hover {
 }
 .admincontroll {
     padding: 5px 10px 5px 10px;
-    display: inline;
+    display: inline-block;
     background-color: #f0f0f0;
     border-style: solid;
     border-width: 2px;
     border-color: #a94442;
+    border-radius: 3px;
 }
 .admincontroll:hover {
     background-color: white;
 }
-.admincontroll > a {
+.admincontroll > a, .admincontroll-text > a {
     color: #a94442;
 }
 .admincontroll > a:hover {
@@ -313,14 +339,6 @@ a.tablelink:hover {
         max-width: 50%;
     }
 }
-.list-stat > li:first-child {
-    font-size: 20px;
-    font-weight: 700;
-    border-bottom-style: solid;
-    border-bottom-color: #6495ed;
-    border-bottom-width: 2px;
-    margin-bottom: 10px;
-}
 ul > li > b {
     font-size: 16px;
     font-weight: 600;
@@ -361,6 +379,14 @@ label {
     border-color: #6495ed;
     border-radius: 8px;
 }
+.big {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 600;
+}
 .col-height {
     height: 100%;
+}
+footer {
+    font-size: 14px;
 }

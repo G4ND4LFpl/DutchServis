@@ -1,22 +1,158 @@
 ﻿@model DutchServisMCV.Models.TournamentInfo
 @{
-    ViewBag.Title = "TournamentInfo";
+    ViewBag.Title = @Model.Name;
 }
 
-<h2>@ViewBag.Name</h2>
-<ul>
-    <li>Data: @Model.Date</li>
-    <li>Lokalizacja: @Model.Location</li>
-</ul>
+<article>
+    <div class="row mt-2">
+        <section class="col-xs-12 col-md-7">
+            <h2 class="mt-0">@Model.Name</h2>
 
-@foreach (DutchServisMCV.Models.Match match in Model.Matches)
-{
-    <h3>Mecz @match.Id</h3>
-    <ul>
-        <li>Gracz 1: @match.Player1 - @match.PointsPlayer1</li>
-        <li>Gracz 2: @match.Player2 - @match.PointsPlayer2</li>
-        <li>Data: @match.PlayDate.ToShortDateString()</li>
-        <li>Format: Bo @match.FormatBo</li>
-    </ul>
-}
+            <ul class="list-stat mt-2 mb-1 list-unstyled">
+                <li><h4>Ogólne informacje</h4></li>
+                <li><b>Data:</b> @Model.DateTime.ToLongDateString()</li>
+                <li><b>Godzina:</b> @Model.DateTime.ToShortTimeString()</li>
+                <li><b>Lokalizacja:</b> @Model.Location</li>
+            </ul>
+
+            @if (Session["Username"] != null)
+            {
+                <aside class="admincontroll">
+                    @Html.ActionLink("Edytuj informacje o turnieju", "TournamentEdit", new { name = Model.Name })
+                </aside>
+            }
+        </section>
+        <div class="col-xs-12 col-md-5">
+            <img class="img-responsive img-rounded border-1" id="tournament_picture" />
+        </div>
+    </div>
+</article>
+
+<section>
+    <h4>Lista graczy</h4>
+    @if (Session["Username"] != null)
+    {
+        <aside class="admincontroll">
+            @Html.ActionLink("Dodaj gracza", "AddToPlayerSet", new { name = Model.Name })
+        </aside>
+    }
+
+    <table class="table table-striped width-small">
+        <thead>
+            <tr class="table-style">
+                <th class="cell-1 cell-sm">Rozstawienie</th>
+                <th class="cell-1 cell-only-xs">Roz.</th>
+                <th class="cell-2">Gracz</th>
+                <th class="cell-2 cell-sm">Ranking</th>
+                <th class="cell-2 cell-only-xs">Rank.</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ Model.Players.Sort(DutchServisMCV.Models.GameNamespace.PlayerItem.CompareByRankingBefore);}
+            @for (int i = 0; i < Model.Players.Count(); i++)
+            {
+                <tr class="table-style">
+                    <td class="cell-1">@(i+1).</td>
+                    <td class="cell-2">@Model.Players[i].Nickname</td>
+                    <td class="cell-2">@Model.Players[i].RankingBefore</td>
+                </tr>
+            }
+            @if (Model.Players.Count() == 0)
+            {
+                <tr>
+                    <td colspan="3" class="text-center">
+                        Do turnieju nie są zapisanie jeszcze żadni gracze.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<section>
+    <h4>Rozegrane mecze</h4>
+    <div class="block">
+        @if (Session["Username"] != null)
+        {
+            <aside class="admincontroll">
+                @Html.ActionLink("Dodaj mecz", "MatchAdd", new { name = Model.Name })
+            </aside>
+        }
+    </div>
+
+    @foreach (DutchServisMCV.Models.GameNamespace.Match match in Model.Matches)
+    {
+    <div class="block border-1">
+        <div class="row">
+            <div class="col-xs-3 big">@match.Player1</div>
+            <div class="col-xs-3 big">@match.Player2</div>
+            <div class="col-xs-2"></div>
+            <div class="col-xs-2"><b>Data:</b> @match.PlayDate.ToShortDateString()</div>
+            <div class="col-xs-2 text-center">
+                @if (Session["Username"] != null)
+                {
+                    <aside class="admincontroll-text">@Html.ActionLink("Edytuj", "Edit", new { id = match.Id })</aside>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-3 big">@match.PointsPlayer1</div>
+            <div class="col-xs-3 big">@match.PointsPlayer2</div>
+            <div class="col-xs-2"></div>
+            <div class="col-xs-2"><b>Format:</b> Bo@(match.FormatBo)</div>
+            <div class="col-xs-2 text-center">
+                @Html.ActionLink("Szczegóły", "Details", new { id = match.Id })
+            </div>
+        </div>
+    </div>
+    }
+</section>
+
+<section>
+    <h4>Wyniki</h4>
+    @if (Session["Username"] != null)
+    {
+        <aside class="admincontroll">
+            @Html.ActionLink("Dodaj wynik", "AddResult", new { name = Model.Name })
+        </aside>
+    }
+
+    <table class="table table-striped width-medium">
+        <thead>
+            <tr class="table-style">
+                <th class="cell-1">Miejsce</th>
+                <th class="cell-2">Gracz</th>
+                <th class="cell-2 cell-sm">Zdobyte punkty</th>
+                <th class="cell-2 cell-only-xs">Punkty</th>
+                <th class="cell-1">Nagroda</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ Model.Players.Sort(DutchServisMCV.Models.GameNamespace.PlayerItem.CompareByRankingGet);}
+            @for (int i = Model.Players.Count() - 1; i >= 0; i--)
+            {
+                <tr class="table-style">
+                    <td class="cell-1">@(Model.Players[i].Place).</td>
+                    <td class="cell-2">@Model.Players[i].Nickname</td>
+                    <td class="cell-2">@Model.Players[i].RankingGet</td>
+                    <td class="cell-1">@Model.Players[i].Price</td>
+                </tr>
+            }
+            @if (Model.Players.Count() == 0)
+            {
+                <tr>
+                    <td colspan="4" class="text-center">
+                        Wyniki nie zostały jeszcze ogłoszone.
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</section>
+
+<script type="text/jscript">
+    var path = @Url.Content("~/Content/");
+
+    setPath('tournament_picture', 'tournamentdata/', '@Model.Img', 'empty.png');
+</script>
 
