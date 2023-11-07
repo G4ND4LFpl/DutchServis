@@ -13,5 +13,6 @@ namespace DutchServisMCV.Models
         public string Theme { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
+        public List<Match> Matches { get; set; }
     }
 }

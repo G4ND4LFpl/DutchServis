@@ -1,11 +1,11 @@
-﻿function getPath(img) {
+﻿function getPath(catalog, img, placeholder) {
     if (img === null || img === "" || path === null) {
-        return path + "/images/avatar.png";
+        return path + "/images/" + placeholder;
     }
     else {
-        return path + "/images/playerdata/" + img;
+        return path + "/images/" + catalog + img;
     }
 }
-function setPath(id, img) {
-    document.getElementById(id).setAttribute("src", getPath(img));
+function setPath(id, catalog, img, placeholder) {
+    document.getElementById(id).setAttribute("src", getPath(catalog, img, placeholder));
 }

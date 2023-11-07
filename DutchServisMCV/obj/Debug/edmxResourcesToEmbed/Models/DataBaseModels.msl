@@ -35,7 +35,6 @@
           <ScalarProperty Name="BonusGamePlayer1" ColumnName="BonusGamePlayer1" />
           <ScalarProperty Name="BonusGamePlayer2" ColumnName="BonusGamePlayer2" />
           <ScalarProperty Name="FormatBo" ColumnName="FormatBo" />
-          <ScalarProperty Name="Judge" ColumnName="Judge" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

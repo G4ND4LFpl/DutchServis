@@ -27,7 +27,7 @@ namespace DutchServisMCV.Controllers
             if (IsLoginCorrect(userInfo))
             {
                 Session["Username"] = userInfo.Username.ToString();
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Admin");
             }
             else
             {
@@ -43,7 +43,7 @@ namespace DutchServisMCV.Controllers
         public ActionResult Logout()
         {
             Session.Clear();
-            return RedirectToAction("Index", "Home");
+            return Redirect(Request.Headers["Referer"].ToString());
         }
     }
 }

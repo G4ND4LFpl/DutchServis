@@ -33,7 +33,6 @@
     <Property Name="BonusGamePlayer1" Type="Boolean" />
     <Property Name="BonusGamePlayer2" Type="Boolean" />
     <Property Name="FormatBo" Type="Int32" Nullable="false" />
-    <Property Name="Judge" Type="Int32" />
   </EntityType>
   <EntityType Name="Players">
     <Key>

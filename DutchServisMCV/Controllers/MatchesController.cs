@@ -40,7 +40,82 @@ namespace DutchServisMCV.Controllers
             return View(query);
         }
         
+        public ActionResult TournamentInfo(string name)
+        {
+            // Games won player 1
+            var player1_games = from games in database.Games
+                                join matches in database.Matches
+                                on games.MatchId equals matches.MatchId
+                                join players in database.Players
+                                on matches.Player1_Id equals players.PlayerId
+                                group games by new
+                                {
+                                    matches.MatchId,
+                                    players.Nickname
+                                } into gruped
+                                select new
+                                {
+                                    gruped.Key.MatchId,
+                                    gruped.Key.Nickname,
+                                    Points = gruped.Count(x => x.Win == 1)
+                                };
 
+            // Games won player 2
+            var player2_games = from games in database.Games
+                                join matches in database.Matches
+                                on games.MatchId equals matches.MatchId
+                                join players in database.Players
+                                on matches.Player2_Id equals players.PlayerId
+                                group games by new
+                                {
+                                    matches.MatchId,
+                                    players.Nickname
+                                } into gruped
+                                select new
+                                {
+                                    gruped.Key.MatchId,
+                                    gruped.Key.Nickname,
+                                    Points = gruped.Count(x => x.Win == 2)
+                                };
+
+            // Get matches
+            var matchlist = from matches in database.Matches
+                            join tourn in database.Tournaments
+                            on matches.TournamentId equals tourn.TournamentId
+                            join player1 in player1_games
+                            on matches.MatchId equals player1.MatchId
+                            join player2 in player2_games
+                            on matches.MatchId equals player2.MatchId
+                            where tourn.Name == name
+                            select new Match
+                            {
+                                Id = matches.MatchId,
+                                Player1 = player1.Nickname,
+                                PointsPlayer1 = player1.Points,
+                                Player2 = player2.Nickname,
+                                PointsPlayer2 = player2.Points,
+                                PlayDate = matches.PlayDate,
+                                FormatBo = matches.FormatBo
+                            };
+
+            // Make query
+            var query = from tourn in database.Tournaments
+                        where tourn.Name == name
+                        select new TournamentInfo
+                        {
+                            Name = tourn.Name,
+                            Date = tourn.StartDate,
+                            Location = tourn.Location,
+                            Theme = tourn.Theme,
+                            Info = tourn.Info,
+                            Img = tourn.ImgPath,
+                            Matches = matchlist.ToList()
+                        };
+
+            // Return View
+            return View(query.FirstOrDefault());
+        }
+        
         // GET: Matches/Details/5
         public ActionResult Details(int? id)
         {

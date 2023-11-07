@@ -22,6 +22,5 @@ namespace DutchServisMCV.Models
         public Nullable<bool> BonusGamePlayer1 { get; set; }
         public Nullable<bool> BonusGamePlayer2 { get; set; }
         public int FormatBo { get; set; }
-        public Nullable<int> Judge { get; set; }
     }
 }

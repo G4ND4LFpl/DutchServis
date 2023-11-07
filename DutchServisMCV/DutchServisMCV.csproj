@@ -157,6 +157,7 @@
     <Compile Include="Models\Games.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -186,6 +187,7 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\images\.gitignore" />
     <Content Include="Content\images\avatar.png" />
     <Content Include="Content\images\karo.png" />
     <Content Include="Content\images\kier.png" />
@@ -214,6 +216,7 @@
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
       <LastGenOutput>DataBaseModels.cs</LastGenOutput>
     </Content>
+    <Content Include="Models\Documentation.xml" />
     <Content Include="Scripts\dynamic_table.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -262,6 +265,7 @@
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Matches\Tournaments.cshtml" />
     <Content Include="Views\Matches\CreateTournament.cshtml" />
+    <Content Include="Views\Matches\TournamentInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

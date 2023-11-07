@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Data.Entity.Infrastructure;
 
-    public partial class PlayerData
+    public class PlayerData
     {
         public string Nickname { get; set; }
         public string Name { get; set; }
@@ -26,4 +26,6 @@
         public int Dutchs { get; set; }
         public string Status { get; set; }
     }
+
+   
 }

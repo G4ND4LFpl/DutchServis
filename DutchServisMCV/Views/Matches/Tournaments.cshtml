@@ -6,6 +6,11 @@
 
 <h2>Turnieje Dutch</h2>
 
+<script type="text/jscript">
+    var model = @Html.Raw(Json.Encode(Model));
+    var path = @Url.Content("~/Content/");
+</script>
+
 <div class="row block">
     <div class="col-xs-12">
         @if (Session["Username"] != null)
@@ -22,7 +27,7 @@
     <div class="row border-block">
         <div class="col-xs-12 col-sm-7 col-md-8">
             <ul class="list-unstyled list-stat">
-                <li><a class="unstyled bluehover" href="">@item.Name</a></li>
+                <li><a class="unstyled bluehover" href="@Url.Action("TournamentInfo", "Matches", new { name = item.Name})">@item.Name</a></li>
                 <li>Data: @item.Date.ToShortDateString()</li>
                 <li>Miejsce: @item.Location</li>
                 <li class="cell-md">Motyw: @item.Theme</li>
@@ -30,7 +35,11 @@
             </ul>
         </div>
         <div class="col-sm-5 col-md-4 cell-sm col-height">
-            <img class="img-responsive img-rounded border-1" src="@Url.Content("~/Content/images/tournamentdata/"+item.Img)" />
+            <img class="img-responsive img-rounded border-1" id="@item.Name" />
+
+            <script type="text/jscript">
+                setPath('@item.Name', 'tournamentdata/', '@item.Img', 'empty.png');
+            </script>
         </div>
     </div>
 }

@@ -38,7 +38,6 @@
           <Property Name="BonusGamePlayer1" Type="bit" />
           <Property Name="BonusGamePlayer2" Type="bit" />
           <Property Name="FormatBo" Type="int" Nullable="false" />
-          <Property Name="Judge" Type="int" />
         </EntityType>
         <EntityType Name="Players">
           <Key>
@@ -163,7 +162,6 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="BonusGamePlayer1" Type="Boolean" />
           <Property Name="BonusGamePlayer2" Type="Boolean" />
           <Property Name="FormatBo" Type="Int32" Nullable="false" />
-          <Property Name="Judge" Type="Int32" />
         </EntityType>
         <EntityType Name="Players">
           <Key>
@@ -273,7 +271,6 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
                 <ScalarProperty Name="BonusGamePlayer1" ColumnName="BonusGamePlayer1" />
                 <ScalarProperty Name="BonusGamePlayer2" ColumnName="BonusGamePlayer2" />
                 <ScalarProperty Name="FormatBo" ColumnName="FormatBo" />
-                <ScalarProperty Name="Judge" ColumnName="Judge" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

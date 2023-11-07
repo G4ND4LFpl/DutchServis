@@ -1,7 +1,7 @@
 ﻿@model DutchServisMCV.Models.PlayerData
 
 @{
-    ViewBag.Title = "Info";
+    ViewBag.Title = "Profile";
 }
 
 <div class="row mt-2">
@@ -51,6 +51,6 @@
     var model = @Html.Raw(Json.Encode(Model));
     var path = @Url.Content("~/Content/");
 
-    setPath('profile_img', '@Model.Img');
+    setPath('profile_img', 'playerdata/', '@Model.Img', 'avatar.png');
 </script>
 

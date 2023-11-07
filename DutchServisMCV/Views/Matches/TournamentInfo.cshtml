@@ -1,0 +1,22 @@
+﻿@model DutchServisMCV.Models.TournamentInfo
+@{
+    ViewBag.Title = "TournamentInfo";
+}
+
+<h2>@ViewBag.Name</h2>
+<ul>
+    <li>Data: @Model.Date</li>
+    <li>Lokalizacja: @Model.Location</li>
+</ul>
+
+@foreach (DutchServisMCV.Models.Match match in Model.Matches)
+{
+    <h3>Mecz @match.Id</h3>
+    <ul>
+        <li>Gracz 1: @match.Player1 - @match.PointsPlayer1</li>
+        <li>Gracz 2: @match.Player2 - @match.PointsPlayer2</li>
+        <li>Data: @match.PlayDate.ToShortDateString()</li>
+        <li>Format: Bo @match.FormatBo</li>
+    </ul>
+}
+
