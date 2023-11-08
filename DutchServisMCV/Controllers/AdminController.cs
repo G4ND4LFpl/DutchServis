@@ -24,6 +24,8 @@ namespace DutchServisMCV.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(Users userInfo)
         {
+            // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
+            // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
             if (IsLoginCorrect(userInfo))
             {
                 Session["Username"] = userInfo.Username.ToString();

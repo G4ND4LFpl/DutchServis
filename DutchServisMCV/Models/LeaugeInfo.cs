@@ -14,6 +14,13 @@ namespace DutchServisMCV.Models
         public string Info { get; set; }
         public string Img { get; set; }
         public List<Match> Matches { get; set; }
-        public List<PlayerItem> Players { get; set; }
+        public List<PlayerLeagueItem> Players { get; set; }
+
+        public static int CompareByRankingGet(PlayerLeagueItem p1, PlayerLeagueItem p2)
+        {
+            if (p1.Points > p2.Points) return 1;
+            else if (p1.Points == p2.Points) return 0;
+            else return -1;
+        }
     }
 }

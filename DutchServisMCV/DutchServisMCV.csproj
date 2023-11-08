@@ -251,12 +251,12 @@
     <Content Include="Views\Matches\Delete.cshtml" />
     <Content Include="Views\Matches\Details.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
-    <Content Include="Views\Matches\Index.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Matches\Tournaments.cshtml" />
-    <Content Include="Views\Matches\CreateTournament.cshtml" />
+    <Content Include="Views\Matches\Create.cshtml" />
     <Content Include="Views\Matches\TournamentInfo.cshtml" />
     <Content Include="Views\Matches\Leagues.cshtml" />
+    <Content Include="Views\Matches\LeagueInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

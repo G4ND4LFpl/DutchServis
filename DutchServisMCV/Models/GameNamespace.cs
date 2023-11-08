@@ -21,23 +21,22 @@ namespace DutchServisMCV.Models
         public class PlayerItem
         {
             public string Nickname { get; set; }
+            public Nullable<double> Price { get; set; }
+        }
+
+        public class PlayerTournItem : PlayerItem
+        {
             public double RankingBefore { get; set; }
             public string Place { get; set; }
             public double RankingGet { get; set; }
-            public Nullable<double> Price { get; set; }
+        }
 
-            public static int CompareByRankingBefore(PlayerItem p1, PlayerItem p2)
-            {
-                if (p1.RankingBefore > p2.RankingBefore) return 1;
-                else if (p1.RankingBefore == p2.RankingBefore) return 0;
-                else return -1;
-            }
-            public static int CompareByRankingGet(PlayerItem p1, PlayerItem p2)
-            {
-                if (p1.RankingGet > p2.RankingGet) return 1;
-                else if (p1.RankingGet == p2.RankingGet) return 0;
-                else return -1;
-            }
+        public class PlayerLeagueItem : PlayerItem
+        {
+            public int Points { get; set; }
+            public int Won { get; set; }
+            public int Loose { get; set; }
+            public int Draw { get; set; }
         }
 
         public class GamesSum

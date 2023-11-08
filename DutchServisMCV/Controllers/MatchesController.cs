@@ -60,7 +60,7 @@ namespace DutchServisMCV.Controllers
             return View(query);
         }
 
-        private IQueryable<Models.GameNamespace.PlayerItem> GetPlayerSet(string name)
+        private IQueryable<Models.GameNamespace.PlayerTournItem> GetPlayerSet(string name)
         {
             return (from set in database.PlayerSet
                     join tourn in database.Tournaments
@@ -75,13 +75,69 @@ namespace DutchServisMCV.Controllers
                                  )
                     on set.PlayerId equals res.PlayerId
                     where tourn.Name == name
-                    select new Models.GameNamespace.PlayerItem
+                    select new Models.GameNamespace.PlayerTournItem
                     {
                         Nickname = players.Nickname,
                         RankingBefore = set.Ranking,
                         Place = res.Place,
                         RankingGet = res.RankingGet,
-                        Price = res.Prize
+                        Price = res.Prize,
+                    });
+        }
+        private IQueryable<Models.GameNamespace.PlayerLeagueItem> GetPlayerSet(string name, IQueryable<Models.GameNamespace.Match> matchlist)
+        {
+            var stat_table = from matches in (
+                from matches in matchlist
+                group matches by matches.Player1 into gruped
+                select new
+                {
+                    gruped.Key,
+                    Won = gruped.Count(x => x.PointsPlayer1 > x.PointsPlayer2),
+                    Loose = gruped.Count(x => x.PointsPlayer1 < x.PointsPlayer2),
+                    Draw = gruped.Count(x => x.PointsPlayer1 == x.PointsPlayer2)
+                }).Union(
+                    from matches in matchlist
+                    group matches by matches.Player2 into gruped
+                    select new
+                    {
+                        gruped.Key,
+                        Won = gruped.Count(x => x.PointsPlayer2 > x.PointsPlayer1),
+                        Loose = gruped.Count(x => x.PointsPlayer2 < x.PointsPlayer1),
+                        Draw = gruped.Count(x => x.PointsPlayer2 == x.PointsPlayer1)
+                    })
+                        group matches by matches.Key into gruped
+                        select new
+                        {
+                            Player = gruped.Key,
+                            Points = gruped.Sum(x => x.Won * 3 + x.Draw),
+                            Won = gruped.Sum(x => x.Won),
+                            Loose = gruped.Sum(x => x.Loose),
+                            Draw = gruped.Sum(x => x.Draw)
+                        };
+
+            return (from set in database.PlayerSet
+                    join tourn in database.Tournaments
+                    on set.TournamentId equals tourn.TournamentId
+                    join players in database.Players
+                    on set.PlayerId equals players.PlayerId
+                    join res in (from res in database.TournamentResults
+                                 join tourn in database.Tournaments
+                                 on res.TournamentId equals tourn.TournamentId
+                                 where tourn.Name == name
+                                 select res
+                                 )
+                    on set.PlayerId equals res.PlayerId
+                    join stats in stat_table
+                    on players.Nickname equals stats.Player
+                    where tourn.Name == name
+                    select new Models.GameNamespace.PlayerLeagueItem
+                    {
+                        Nickname = players.Nickname,
+                        Price = res.Prize,
+                        Points = stats.Points,
+                        Won = stats.Won,
+                        Loose = stats.Loose,
+                        Draw = stats.Draw
                     });
         }
         private IQueryable<Models.GameNamespace.GamesSum> GamesSumByMatch(int player)
@@ -155,9 +211,6 @@ namespace DutchServisMCV.Controllers
 
             if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
 
-            // Get players
-            var playerslist = GetPlayerSet(name);
-
             // Games won player 1
             var player1_games = GamesSumByMatch(1);
 
@@ -166,6 +219,9 @@ namespace DutchServisMCV.Controllers
 
             // Get matches
             var matchlist = GetMatchList(name, player1_games, player2_games);
+
+            // Get players
+            var playerslist = GetPlayerSet(name);
 
             // Make query
             var query = from tourn in database.Tournaments
@@ -192,9 +248,6 @@ namespace DutchServisMCV.Controllers
 
             if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
 
-            // Get players
-            var playerslist = GetPlayerSet(name);
-
             // Games won player 1
             var player1_games = GamesSumByMatch(1);
 
@@ -204,15 +257,17 @@ namespace DutchServisMCV.Controllers
             // Get matches
             var matchlist = GetMatchList(name, player1_games, player2_games);
 
+            // Get players
+            var playerslist = GetPlayerSet(name, matchlist);
+
             // Make query
             var query = from tourn in database.Tournaments
                         where tourn.Name == name
-                        select new TournamentInfo
+                        select new LeaugeInfo
                         {
                             Name = tourn.Name,
-                            DateTime = tourn.StartDate,
-                            Location = tourn.Location,
-                            Theme = tourn.Theme,
+                            StartDate = tourn.StartDate,
+                            EndDate = tourn.EndDate.Equals(null) ? DateTime.MinValue : (DateTime)tourn.EndDate,
                             Info = tourn.Info,
                             Img = tourn.ImgPath,
                             Matches = matchlist.ToList(),
@@ -222,6 +277,9 @@ namespace DutchServisMCV.Controllers
             // Return View
             return View(query.FirstOrDefault());
         }
+
+
+        /* WYGENEROWANE AUTOMATYCZNIE FUKCJE */
 
         // GET: Matches/Details/5
         public ActionResult Details(int? id)
@@ -277,8 +335,7 @@ namespace DutchServisMCV.Controllers
         }
 
         // POST: Matches/Edit/5
-        // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
-        // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "GameId,MatchId,PointsPlayer1,PointsPlayer2,MistakesPlayer1,MistakesPlayer2,Win,Opening,Dutch")] Games games)
