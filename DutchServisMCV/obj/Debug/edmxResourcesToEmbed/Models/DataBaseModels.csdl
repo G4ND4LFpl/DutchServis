@@ -67,7 +67,7 @@
       <PropertyRef Name="Username" />
     </Key>
     <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="Pass" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="Pass" Type="String" MaxLength="64" FixedLength="true" Unicode="false" Nullable="false" />
   </EntityType>
   <EntityType Name="PlayerSet">
     <Key>

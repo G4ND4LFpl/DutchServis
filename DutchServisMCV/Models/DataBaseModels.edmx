@@ -99,7 +99,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="varchar" MaxLength="30" Nullable="false" />
-          <Property Name="Pass" Type="char" MaxLength="30" Nullable="false" />
+          <Property Name="Pass" Type="char" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityContainer Name="DutchDatabaseModelStoreContainer">
           <EntitySet Name="Clans" EntityType="Self.Clans" Schema="dbo" store:Type="Tables" />
@@ -196,7 +196,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
             <PropertyRef Name="Username" />
           </Key>
           <Property Name="Username" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Pass" Type="String" MaxLength="30" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Pass" Type="String" MaxLength="64" FixedLength="true" Unicode="false" Nullable="false" />
         </EntityType>
         <EntityType Name="PlayerSet">
           <Key>

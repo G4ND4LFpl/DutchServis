@@ -1,0 +1,72 @@
+﻿@model DutchServisMCV.Models.PassChange
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container">
+    <header>
+        <h2>@Session["Username"]</h2>
+    </header>
+
+    <h4>Funkcje</h4>
+    <ul class="list-unstyled">
+        <li>
+            @Html.ActionLink("Dodaj gracza", "Add", "Players")
+        </li>
+        <li>
+            @Html.ActionLink("Utwórz klan", "Add", "Players")
+        </li>
+        <li>
+            @Html.ActionLink("Utwórz turniej", "Create", "Matches")
+        </li>
+    </ul>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Zmiana hasła</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.CurrentPass, "Aktualne hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.CurrentPass, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="col-md-9 col-md-offset-3 text-danger">@ViewBag.ValidationText1</div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.NewPass, "Nowe hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.NewPass, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="col-md-9 col-md-offset-3 text-danger">@ViewBag.ValidationText2</div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.RepeatPass, "Powtórz hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.RepeatPass, new { htmlAttributes = new { @class = "form-control" } })
+                </div>
+                <div class="col-md-9 col-md-offset-3 text-danger">@ViewBag.ValidationText3</div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <input type="submit" value="Zmień hasło" class="btn btn-default" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-3 col-md-9">
+                    <label class="text-success">@ViewBag.Notification</label>
+                </div>
+            </div>
+        </div>
+     }
+</div>
+
