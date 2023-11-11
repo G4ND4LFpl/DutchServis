@@ -11,17 +11,36 @@ namespace DutchServisMCV.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.Web;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public partial class Players
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int PlayerId { get; set; }
+
         public string Name { get; set; }
+
         public string Surname { get; set; }
+
         public string Nickname { get; set; }
+
         public Nullable<int> ClanId { get; set; }
+
+        [Required]
         public Nullable<double> Rating { get; set; }
-        public string ImgPath { get; set; }
+
+        [Required]
         public Nullable<bool> Active { get; set; }
+
+        [Required]
         public Nullable<System.DateTime> JoinDate { get; set; }
+
+        public string Img { get; set; }
+
+        public HttpPostedFileBase File { get; set; }
     }
 }

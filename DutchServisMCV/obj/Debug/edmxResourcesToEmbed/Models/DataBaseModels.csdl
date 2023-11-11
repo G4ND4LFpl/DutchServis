@@ -44,9 +44,9 @@
     <Property Name="Nickname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="ClanId" Type="Int32" />
     <Property Name="Rating" Type="Double" />
-    <Property Name="ImgPath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Active" Type="Boolean" />
     <Property Name="JoinDate" Type="DateTime" Precision="0" />
+    <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
   <EntityType Name="Tournaments">
     <Key>

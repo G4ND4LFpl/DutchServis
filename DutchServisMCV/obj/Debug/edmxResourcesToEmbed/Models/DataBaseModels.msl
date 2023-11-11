@@ -41,6 +41,7 @@
     <EntitySetMapping Name="Players">
       <EntityTypeMapping TypeName="DutchDatabaseModel.Players">
         <MappingFragment StoreEntitySet="Players">
+          <ScalarProperty Name="Img" ColumnName="Img" />
           <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
           <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
@@ -48,7 +49,6 @@
           <ScalarProperty Name="Nickname" ColumnName="Nickname" />
           <ScalarProperty Name="ClanId" ColumnName="ClanId" />
           <ScalarProperty Name="Rating" ColumnName="Rating" />
-          <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
           <ScalarProperty Name="Active" ColumnName="Active" />
         </MappingFragment>
       </EntityTypeMapping>

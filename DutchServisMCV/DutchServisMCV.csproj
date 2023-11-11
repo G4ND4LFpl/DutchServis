@@ -132,7 +132,8 @@
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
-    <Compile Include="Controllers\PasswordHasher.cs" />
+    <Compile Include="Logic\FileManager.cs" />
+    <Compile Include="Logic\PasswordHasher.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -246,7 +247,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Admin\Login.cshtml" />
     <Content Include="Views\Players\Index.cshtml" />
-    <Content Include="Views\Players\Create.cshtml" />
+    <Content Include="Views\Players\Add.cshtml" />
     <Content Include="Views\Players\Edit.cshtml" />
     <Content Include="Views\Players\Info.cshtml" />
     <Content Include="Views\Matches\AddGame.cshtml" />

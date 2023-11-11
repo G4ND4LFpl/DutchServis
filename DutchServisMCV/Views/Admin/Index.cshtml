@@ -32,7 +32,7 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
-                @Html.LabelFor(model => model.CurrentPass, "Aktualne hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <label class="control-label col-md-3" for="CurrentPass">Aktualne hasło</label>
                 <div class="col-md-9">
                     @Html.EditorFor(model => model.CurrentPass, new { htmlAttributes = new { @class = "form-control" } })
                 </div>
@@ -40,17 +40,17 @@
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.NewPass, "Nowe hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <label class="control-label col-md-3" for="NewPass">Nowe hasło</label>
                 <div class="col-md-9">
-                    @Html.EditorFor(model => model.NewPass, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.NewPass, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
                 </div>
                 <div class="col-md-9 col-md-offset-3 text-danger">@ViewBag.ValidationText2</div>
             </div>
 
             <div class="form-group">
-                @Html.LabelFor(model => model.RepeatPass, "Powtórz hasło", htmlAttributes: new { @class = "control-label col-md-3" })
+                <label class="control-label col-md-3" for="RepeatPass">Powtórz hasło</label>
                 <div class="col-md-9">
-                    @Html.EditorFor(model => model.RepeatPass, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.RepeatPass, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
                 </div>
                 <div class="col-md-9 col-md-offset-3 text-danger">@ViewBag.ValidationText3</div>
             </div>

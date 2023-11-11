@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DutchServisMCV.Models;
+using DutchServisMCV.Logic;
 
 namespace DutchServisMCV.Controllers
 {

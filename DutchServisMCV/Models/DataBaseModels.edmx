@@ -50,7 +50,7 @@
           <Property Name="JoinDate" Type="date" />
           <Property Name="ClanId" Type="int" />
           <Property Name="Rating" Type="float" />
-          <Property Name="ImgPath" Type="varchar" MaxLength="50" />
+          <Property Name="Img" Type="varchar" MaxLength="50" />
           <Property Name="Active" Type="bit" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -173,9 +173,9 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="Nickname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ClanId" Type="Int32" />
           <Property Name="Rating" Type="Double" />
-          <Property Name="ImgPath" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Active" Type="Boolean" />
           <Property Name="JoinDate" Type="DateTime" Precision="0" />
+          <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Tournaments">
           <Key>
@@ -277,6 +277,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <EntitySetMapping Name="Players">
             <EntityTypeMapping TypeName="DutchDatabaseModel.Players">
               <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="Img" ColumnName="Img" />
                 <ScalarProperty Name="JoinDate" ColumnName="JoinDate" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -284,7 +285,6 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
                 <ScalarProperty Name="Nickname" ColumnName="Nickname" />
                 <ScalarProperty Name="ClanId" ColumnName="ClanId" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
-                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
                 <ScalarProperty Name="Active" ColumnName="Active" />
               </MappingFragment>
             </EntityTypeMapping>

@@ -1,0 +1,92 @@
+﻿@model DutchServisMCV.Models.Players
+
+@{
+    ViewBag.Title = "Add";
+}
+
+<header>
+    <h2>Dodaj gracza</h2>
+</header>
+
+
+@using (Html.BeginForm("Add", "Players", FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Nickname">Nick</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                <div class="text-danger">@ViewBag.NickValidationMsg</div>
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Name">Imię</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Surname">Nazwisko</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ClanId">Klan</label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    <select class="list-box form-control" id="ClanId" name="ClanId">
+                        <option selected="selected" value="null">Brak</option>
+                        @foreach (DutchServisMCV.Models.Clans clan in ViewBag.Clans)
+                        {
+                            <option value="@clan.ClanId">@clan.Name</option>
+                        }
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Active">Aktywny</label>
+            <div class="col-md-10">
+                <div class="checkbox">
+                    <select class="list-box form-control" id="Active" name="Active">
+                        <option selected="selected" value="true">Tak</option>
+                        <option value="false">Nie</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="File">Awatar</label>
+            <div class="col-md-10">
+                <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;"/>
+                <div class="text-danger">@ViewBag.FileValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dodaj gracza do bazy" class="btn-warning"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label class="text-success">@ViewBag.Notification</label>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -2,17 +2,20 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using DutchServisMCV.Models;
+using DutchServisMCV.Logic;
 
 namespace DutchServisMCV.Controllers
 {
     public class PlayersController : Controller
     {
         DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        const double baseRating = 1000;
 
         public ActionResult Index()
         {
@@ -24,7 +27,7 @@ namespace DutchServisMCV.Controllers
                         select new PlayerInfo
                         {
                             Nickname = player.Nickname,
-                            Img = player.ImgPath,
+                            Img = player.Img,
                             Clan = groupedclans.FirstOrDefault().Name,
                             Ranking = (from res in database.TournamentResults
                                        where res.PlayerId == player.PlayerId
@@ -177,16 +180,22 @@ namespace DutchServisMCV.Controllers
             if( database.Players.Where(item => item.Nickname == nickname).FirstOrDefault() == null) return HttpNotFound();
 
             // Ranking
-            var rank = from res in database.TournamentResults
-                       join player in database.Players
-                       on res.PlayerId equals player.PlayerId
-                       where player.Nickname == nickname
-                       group res by player.Nickname into gres
-                       select new
-                       {
-                           Id = gres.Key,
-                           Sum = gres.Sum(item => item.RankingGet),
-                       };
+            var rank_query = from res in database.TournamentResults
+                             join player in database.Players
+                             on res.PlayerId equals player.PlayerId
+                             where player.Nickname == nickname
+                             group res by player.Nickname into gres
+                             select new
+                             {
+                                 Id = gres.Key,
+                                 Sum = gres.Sum(item => item.RankingGet),
+                             };
+
+            double rank = 0;
+            if (rank_query.Count() != 0)
+            {
+                rank = rank_query.FirstOrDefault().Sum;
+            }
 
             // Win ration
             var gamesTot = SelectWhere(nickname, false);
@@ -214,9 +223,9 @@ namespace DutchServisMCV.Controllers
                             JoinDate = (
                                 player.JoinDate != null ? (DateTime)player.JoinDate : DateTime.Now
                             ),
-                            Img = player.ImgPath,
-                            Clan = (grupedclans.FirstOrDefault().Name != null ? grupedclans.FirstOrDefault().Name : "Brak"),
-                            Ranking = rank.FirstOrDefault().Sum + player.Rating.Value,
+                            Img = player.Img,
+                            Clan = grupedclans.FirstOrDefault().Name ?? "Brak",
+                            Ranking = rank + player.Rating.Value,
                             Winratio = gamesTot.Count() != 0 ? (double?)Math.Floor((double)gamesWin.Count() / gamesTot.Count() * 100.0) : null,
                             WinGames = gamesWin.Count(),
                             TotalGames = gamesTot.Count(),
@@ -237,6 +246,89 @@ namespace DutchServisMCV.Controllers
         public ActionResult Details()
         {
             // Return View
+            return View();
+        }
+
+        public ActionResult Add()
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            ViewBag.Clans = database.Clans;
+
+            return View();
+        }
+
+        private void SetContext(string field, string msg)
+        {
+            ViewBag.Clans = database.Clans;
+
+            if (field == "nick") ViewBag.NickValidationMsg = msg;
+            if (field == "file") ViewBag.FileValidationMsg = msg;
+            if (field == "notification") ViewBag.Notification = msg;
+        }
+
+        [HttpPost]
+        public ActionResult Add(Players player)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // If empty
+            if (player.Nickname == null || player.Nickname.Replace(" ", "") == "")
+            {
+                SetContext("nick", "Pole Nick nie może być puste");
+                return View();
+            }
+
+            player.Nickname = player.Nickname.Trim();
+
+            // If unique
+            var repetitions = from players in database.Players
+                              where players.Nickname == player.Nickname
+                              select players;
+            if (repetitions.Count() != 0)
+            {
+                SetContext("nick", "Pole Nick musi być unikalne");
+                return View();
+            }
+
+            // File valid
+            if (player.File != null)
+            {
+                string ext = Path.GetExtension(player.File.FileName);
+                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
+                {
+                    SetContext("file", "Przesłany plik nie posiada akceptowanego rozszerzenia");
+                    return View();
+                }
+            }
+
+            // Save file
+            if (player.File != null)
+            {
+                string path = Server.MapPath("~/Content/images/playerdata/") + player.File.FileName;
+
+                try
+                {
+                    FileManager.Save(player.File, path);
+                    player.Img = player.File?.FileName;
+                }
+                catch (OverrideException ex)
+                {
+                    SetContext("file", ex.Message);
+                    return View();
+                }
+            }
+
+            // Add to database
+            player.JoinDate = DateTime.Now;
+            player.Rating = baseRating;
+
+            database.Players.Add(player);
+            database.SaveChanges();
+
+            // Return view
+            ModelState.Clear();
+            SetContext("notification", "Gracz został dodany");
             return View();
         }
     }
