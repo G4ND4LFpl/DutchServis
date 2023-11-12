@@ -238,12 +238,10 @@ a.tablelink:hover {
 }
 .admincontroll:hover {
     background-color: white;
-}
-.admincontroll > a, .admincontroll-text > a {
-    color: #a94442;
-}
-.admincontroll > a:hover {
     text-decoration: none;
+}
+.admincontroll, .admincontroll-text > a {
+    color: #a94442;
 }
 .board {
     margin-top: 3em;
@@ -386,6 +384,9 @@ label {
 }
 .col-height {
     height: 100%;
+}
+.disp-none {
+    display: none;
 }
 footer {
     font-size: 14px;

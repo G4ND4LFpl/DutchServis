@@ -37,6 +37,7 @@ namespace DutchServisMCV.Models
         public Nullable<bool> Active { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public Nullable<System.DateTime> JoinDate { get; set; }
 
         public string Img { get; set; }

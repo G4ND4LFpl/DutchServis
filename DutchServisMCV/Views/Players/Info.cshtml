@@ -22,8 +22,10 @@
 
             @if (Session["Username"] != null)
             {
-                <aside class="admincontroll">
-                    @Html.ActionLink("Edytuj", "Edit")
+                <aside>
+                    <a href="@Url.Action("Edit", new { nickname = Model.Nickname })">
+                        <div class="admincontroll">Edytuj</div>
+                    </a>
                 </aside>
             }
         </section>

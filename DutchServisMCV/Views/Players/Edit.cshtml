@@ -4,88 +4,147 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<header>
+    <h2>@Model.Nickname</h2>
+    <h3>Profil gracza</h3>
+</header>
 
-
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Players", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Players</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.PlayerId)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
+<div class="form-horizontal">
+    <hr />
+    <h4>Edycja informacji</h4>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group disp-none">
+        @Html.TextBoxFor(model => model.PlayerId, new { @readonly = "readonly", htmlAttributes = new { @autocomplete = "off" } })
+    </div>
+    <div class="form-group disp-none">
+        @Html.TextBoxFor(model => model.Img, new { @readonly = "readonly", htmlAttributes = new { @autocomplete = "off" } })
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Nickname">Nick</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            <div class="text-danger">@ViewBag.NickValidationMsg</div>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Surname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Surname, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Name">Imię</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Nickname, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Nickname, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Nickname, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Surname">Nazwisko</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Surname, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClanId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ClanId, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ClanId, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Surname">Data dołączenia</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.JoinDate, new { htmlAttributes = new { @class = "form-control" } })
+            <div class="text-danger">@ViewBag.DateValidationMsg</div>
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ImgPath, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ImgPath, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ImgPath, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Active, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Active)
-                    @Html.ValidationMessageFor(model => model.Active, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        <label class="control-label col-md-2" for="ClanId">Klan</label>
+        <div class="col-md-10">
+            <div class="checkbox">
+                <select class="list-box form-control" id="ClanId" name="ClanId">
+                    <option selected="selected" value="null">Brak</option>
+                    @foreach (DutchServisMCV.Models.Clans clan in ViewBag.Clans)
+                    {
+                        if (clan.ClanId == Model.ClanId)
+                        {
+                            <option value="@clan.ClanId" selected="selected">@clan.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@clan.ClanId">@clan.Name</option>
+                        }
+                    }
+                </select>
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Active">Aktywny</label>
+        <div class="col-md-10">
+            <div class="checkbox">
+                <select class="list-box form-control" id="Active" name="Active">
+                    @if (Model.Active == true)
+                    {
+                        <option value="true" selected="selected">Tak</option>
+                        <option value="false">Nie</option>
+                    }
+                    else
+                    {
+                        <option value="true">Tak</option>
+                        <option value="false" selected="selected">Nie</option>
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="File">Awatar</label>
+        <div class="col-md-3">
+            <img class="img-responsive img-rounded border-1" id="profile_img" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="File">Nowy awatar</label>
+        <div class="col-md-10">
+            <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;" data-buttonText="Your label here." />
+            <div class="text-danger">@ViewBag.FileValidationMsg</div>
+        </div>
+    </div>
+
+    <hr />
+    <h4>Edycja danych</h4>
+    <p class="text-danger">
+        Uwaga! Dane w tej sekcji są aktualizowane automatycznie i należy je edytować <b>tylko</b> w przypadku <b>zmian w już wprowadzonych</b> rozgrywkach.
+    </p>
+
+    <div class="form-group">
+        <label class="control-label col-md-2" for="Rating">Rating</label>
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            <div class="text-danger">@ViewBag.RatingValidationMsg</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Zatwierdź zmiany" class="btn-warning" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <label class="text-success">@ViewBag.Notification</label>
+        </div>
+    </div>
+</div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script type="text/jscript">
+    var path = @Url.Content("~/Content/");
+
+    setPath('profile_img', 'playerdata/', '@Model.Img', 'avatar.png');
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

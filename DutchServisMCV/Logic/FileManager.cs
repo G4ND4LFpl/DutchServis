@@ -24,5 +24,13 @@ namespace DutchServisMCV.Logic
                 file.SaveAs(path);
             }
         }
+        public static void Remove(string path)
+        {
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
+            else throw new FileNotFoundException("Plik o nazwie " + Path.GetFileName(path) + " nie istnieje");
+        }
     }
 }

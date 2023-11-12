@@ -17,8 +17,24 @@ namespace DutchServisMCV.Controllers
         DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
         const double baseRating = 1000;
 
+        struct SResponse
+        {
+            public SResponse(bool good, string message)
+            {
+                Good = good;
+                Message = message;
+            }
+            public bool Good { get; }
+            public string Message { get; }
+        }
+
         public ActionResult Index()
         {
+            if (HttpContext.Request.Path.EndsWith("/"))
+            {
+                return RedirectToAction("Index");
+            }
+
             // Make query
             var query = from player in database.Players
                         join clan in database.Clans
@@ -175,6 +191,7 @@ namespace DutchServisMCV.Controllers
 
         public ActionResult Info(string nickname)
         {
+            // Validate adress
             if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             if( database.Players.Where(item => item.Nickname == nickname).FirstOrDefault() == null) return HttpNotFound();
@@ -243,12 +260,6 @@ namespace DutchServisMCV.Controllers
             return View(query.FirstOrDefault());
         }
 
-        public ActionResult Details()
-        {
-            // Return View
-            return View();
-        }
-
         public ActionResult Add()
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
@@ -258,51 +269,62 @@ namespace DutchServisMCV.Controllers
             return View();
         }
 
-        private void SetContext(string field, string msg)
+        private SResponse NicknameIsValid(string nickname, int id = -1)
         {
-            ViewBag.Clans = database.Clans;
+            if (nickname == null || nickname.Replace(" ", "") == "")
+            {
+                return new SResponse(false, "Pole Nick nie może być puste");
+            }
+            
+            var repetitions = from players in database.Players
+                              where players.Nickname == nickname.Replace(" ", "") && players.PlayerId != id
+                              select players;
+            if (repetitions.Count() != 0)
+            {
+                return new SResponse(false, "Pole Nick musi być unikalne");
+            }
 
-            if (field == "nick") ViewBag.NickValidationMsg = msg;
-            if (field == "file") ViewBag.FileValidationMsg = msg;
-            if (field == "notification") ViewBag.Notification = msg;
+            return new SResponse(true, "");
+        }
+        private SResponse FileExtIsValid(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                string ext = Path.GetExtension(file.FileName);
+                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
+                {
+                    return new SResponse(false, "Przesłany plik nie posiada akceptowanego rozszerzenia");
+                }
+            }
+            return new SResponse(true, "");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Add(Players player)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
-            // If empty
-            if (player.Nickname == null || player.Nickname.Replace(" ", "") == "")
-            {
-                SetContext("nick", "Pole Nick nie może być puste");
+            ViewBag.Clans = database.Clans;
+
+            // Nickname Validation
+            SResponse response = NicknameIsValid(player.Nickname);
+            if (!response.Good)
+            {  
+                ViewBag.NickValidationMsg = response.Message;
                 return View();
             }
-
             player.Nickname = player.Nickname.Trim();
 
-            // If unique
-            var repetitions = from players in database.Players
-                              where players.Nickname == player.Nickname
-                              select players;
-            if (repetitions.Count() != 0)
+            // File Validation
+            response = FileExtIsValid(player.File);
+            if(!response.Good)
             {
-                SetContext("nick", "Pole Nick musi być unikalne");
+                ViewBag.FileValidationMsg = response.Message;
                 return View();
             }
 
-            // File valid
-            if (player.File != null)
-            {
-                string ext = Path.GetExtension(player.File.FileName);
-                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
-                {
-                    SetContext("file", "Przesłany plik nie posiada akceptowanego rozszerzenia");
-                    return View();
-                }
-            }
-
-            // Save file
+            // Save File
             if (player.File != null)
             {
                 string path = Server.MapPath("~/Content/images/playerdata/") + player.File.FileName;
@@ -314,22 +336,107 @@ namespace DutchServisMCV.Controllers
                 }
                 catch (OverrideException ex)
                 {
-                    SetContext("file", ex.Message);
+                    ViewBag.FileValidationMsg = ex.Message;
                     return View();
                 }
             }
 
-            // Add to database
+            // Add To Database
             player.JoinDate = DateTime.Now;
             player.Rating = baseRating;
 
             database.Players.Add(player);
             database.SaveChanges();
 
-            // Return view
+            // Return View
             ModelState.Clear();
-            SetContext("notification", "Gracz został dodany");
+            ViewBag.Notification = "Gracz został dodany";
             return View();
+        }
+
+        public ActionResult Edit(string nickname)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Validate adress
+            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Players p = database.Players.Where(item => item.Nickname == nickname).FirstOrDefault();
+            if (p == null) return HttpNotFound();
+
+            // Prepare
+            ViewBag.Clans = database.Clans;
+
+            // Return View
+            return View(p);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Players player)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            ViewBag.Clans = database.Clans;
+
+            // Nickname Validation
+            SResponse response = NicknameIsValid(player.Nickname, player.PlayerId);
+            if (!response.Good)
+            {
+                ViewBag.NickValidationMsg = response.Message;
+                return View(player);
+            }
+            player.Nickname = player.Nickname.Trim();
+
+            // File Validation
+            response = FileExtIsValid(player.File);
+            if (!response.Good)
+            {      
+                ViewBag.FileValidationMsg = response.Message;
+                return View(player);
+            }
+
+            // Data Validation
+            if (!player.JoinDate.HasValue)
+            {
+                ViewBag.DateValidationMsg = "Niepoprawny format daty. Oczekiwanym formatem daty jest DD.MM.YYYY";
+                return View(player);
+            }
+
+            // Rating Validation
+            if (!player.Rating.HasValue)
+            {
+                ViewBag.RatingValidationMsg = "Nieprawidłowa wartość Pola Rating. Prawidłowym separatorem części dziesiętnych jest przecinek";
+                return View(player);
+            }
+
+            // Save File
+            if (player.File != null)
+            {
+                string path = Server.MapPath("~/Content/images/playerdata/") + player.File.FileName;
+
+                try
+                {
+                    FileManager.Save(player.File, path);
+                    if (player.Img != null)
+                    {
+                        FileManager.Remove(Server.MapPath("~/Content/images/playerdata/") + player.Img);
+                    }
+                    player.Img = player.File.FileName;
+                }
+                catch (OverrideException ex)
+                {
+                    ViewBag.FileValidationMsg = ex.Message;
+                    return View(player);
+                }
+            }
+
+            // Edit In Database
+            database.Entry(player).State = EntityState.Modified;
+            database.SaveChanges();
+
+            // Redirect
+            return RedirectToAction("Info", new { nickname = player.Nickname });
         }
     }
 }
