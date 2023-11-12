@@ -17,17 +17,6 @@ namespace DutchServisMCV.Controllers
         DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
         const double baseRating = 1000;
 
-        struct SResponse
-        {
-            public SResponse(bool good, string message)
-            {
-                Good = good;
-                Message = message;
-            }
-            public bool Good { get; }
-            public string Message { get; }
-        }
-
         public ActionResult Index()
         {
             if (HttpContext.Request.Path.EndsWith("/"))

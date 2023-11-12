@@ -77,6 +77,36 @@ namespace DutchServisMCV.Controllers
             return false;
         }
 
+        private SResponse PasswordIsValid(string password, string username)
+        {
+            if (hasher.Verify(password, database.Users.Find(username).Pass))
+            {
+                return new SResponse(false, "Nowe hasło nie może być takie samo");
+            }
+            if (password.Contains(username))
+            {
+                return new SResponse(false, "Hasło nie może zawierać nazwy użytkownika");
+            }
+            if (password == null || password.Length < 6)
+            {
+                return new SResponse(false, "Hasło nie może być krótsze niż 6 znaków");
+            }
+            if (!ContainsChars(password, 65, 90) && !ContainsChars(password, 97, 122))
+            {
+                return new SResponse(false, "Hasło musi zawierać litery");
+            }
+            if (!ContainsChars(password, 48, 57))
+            {
+                return new SResponse(false, "Hasło musi zawierać liczby");
+            }
+            if (!ContainsChars(password, new[] { '.', ',', '!', '#', '$', '%', '&', '-', '+', '=', '?', '*', '^' }))
+            {
+                return new SResponse(false, "Hasło musi zawierać znaki specjalne");
+            }
+
+            return new SResponse(true, "");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Index(PassChange form)
@@ -89,37 +119,15 @@ namespace DutchServisMCV.Controllers
                 ViewBag.ValidationText1 = "Nieprawidłowe hasło";
                 return View();
             }
+
             // New password
-            if (hasher.Verify(form.NewPass, database.Users.Find(username).Pass))
+            SResponse response = PasswordIsValid(form.NewPass, username);
+            if(!response.Good)
             {
-                ViewBag.ValidationText2 = "Nowe hasło nie może być takie samo";
+                ViewBag.ValidationText2 = response.Message;
                 return View();
             }
-            if (form.NewPass == null || form.NewPass.Length < 6)
-            {
-                ViewBag.ValidationText2 = "Hasło nie może być krótsze niż 6 znaków";
-                return View();
-            }
-            if (form.NewPass.Contains(username))
-            {
-                ViewBag.ValidationText2 = "Hasło nie może zawierać nazwy użytkownika";
-                return View();
-            }
-            if (!ContainsChars(form.NewPass, 65, 90) && !ContainsChars(form.NewPass, 97, 122))
-            {
-                ViewBag.ValidationText2 = "Hasło musi zawierać litery";
-                return View();
-            }
-            if (!ContainsChars(form.NewPass, 48, 57))
-            {
-                ViewBag.ValidationText2 = "Hasło musi zawierać liczby";
-                return View();
-            }
-            if (!ContainsChars(form.NewPass, new[] {'.', ',','!', '#', '$', '%', '&', '-', '+', '=', '?', '*', '^' }))
-            {
-                ViewBag.ValidationText2 = "Hasło musi zawierać znaki specjalne";
-                return View();
-            }
+            
             // Repeat password
             if (form.NewPass != form.RepeatPass)
             {

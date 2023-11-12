@@ -138,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Logic\SResponse.cs" />
     <Compile Include="Models\Clans.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
