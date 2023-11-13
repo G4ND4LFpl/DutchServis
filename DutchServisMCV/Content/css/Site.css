@@ -116,7 +116,7 @@ input, select, textarea {
         color: white;
     }
 }
-header > h1, header > h2 {
+header h1, header h2 {
     margin-top: 30px;
 }
 h4 {
@@ -131,6 +131,7 @@ h4 {
 .table-style > td {
     text-align: center;
     font-size: 18px;
+    height: 40px;
 }
 .table-style > th {
     text-align: center;
@@ -153,6 +154,10 @@ h4 {
         width: 70%;
     }
 }
+.blue-header {
+    background-color: #6495ed;
+    color: whitesmoke;
+}
 .cell-1 {
     width: 10%;
 }
@@ -163,22 +168,32 @@ h4 {
     width: 30%;
 }
 @media(min-width: 540px) {
-    .cell-only-xs {
+    .disp-only-xs {
+        display: none;
+    }
+}
+@media(min-width: 768px) {
+    .disp-only-sm {
         display: none;
     }
 }
 @media(max-width: 993px) {
-    .cell-lg {
+    .disp-lg {
         display: none;
     }
 }
+@media (min-width: 994px) {
+    .cell-2-lg {
+        width: 20%;
+    }
+}
 @media(max-width: 767px) {
-    .cell-md {
+    .disp-md {
         display: none;
     }
 }
 @media(max-width: 539px) {
-    .cell-sm {
+    .disp-sm {
         display: none;
     }
 } 
@@ -218,14 +233,21 @@ h4 {
 .w-full {
     width: 100%;
 }
-a.tablelink {
+a.boldlink {
     color: #333333;
     font-size: 20px;
 }
-a.tablelink:hover {
+a.textlink {
+    color: #333333;
+}
+a.boldlink:hover, a.textlink:hover {
     text-decoration: none;
-    font-weight: 900;
     color: #6495ed;
+}
+@media (min-width: 768px) {
+    a.boldlink:hover {
+        font-weight: 900;
+    }
 }
 .admincontroll {
     padding: 5px 10px 5px 10px;
@@ -323,6 +345,9 @@ a.tablelink:hover {
     border: solid;
     border-width: 1px;
 }
+.border-none {
+    border: none;
+}
 .list-stat > li {
     font-size: 18px;
     max-width: 90%;
@@ -390,4 +415,23 @@ label {
 }
 footer {
     font-size: 14px;
+}
+.disp-inline-block {
+    display: inline-block;
+}
+.buttonlike {
+    margin-left: 10px;
+    padding: 0px 5px 0px 5px;
+    border-style: ridge;
+    border-color: grey;
+    border-width: 2px 3px 3px 2px;
+    background-color: lightgray;
+    color: black;
+}
+.buttonlike:hover {
+    background-color: darkgray;
+    color: white;
+}
+.italic {
+   font-style: italic;
 }

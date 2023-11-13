@@ -35,9 +35,9 @@
                         @Html.ActionLink(item.Name, "LeagueInfo", "Matches", new { name = item.Name }, new { @class = "unstyled bluehover" })
                     </h4>
                 </li>
-                <li>Rozpoczęcie: @item.StartDate.ToShortDateString()</li>
-                <li>Koniec: @item.EndDate.ToShortDateString()</li>
-                <li class="cell-md">Informacje: @item.Info</li>
+                <li><b>Rozpoczęcie:</b> @item.StartDate.ToShortDateString()</li>
+                <li><b>Koniec:</b> @item.EndDate.ToShortDateString()</li>
+                <li class="cell-md"><b>Informacje:</b> @item.Info</li>
             </ul>
         </div>
         <div class="col-sm-5 col-md-4 cell-sm col-height">

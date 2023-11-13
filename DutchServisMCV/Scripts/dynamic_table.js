@@ -164,18 +164,18 @@ function updateData() {
         innerHtmlCode += (i + 1) + ".";
         innerHtmlCode += "</td>";
  
-        innerHtmlCode += "<td class=\"cell-1 cell-md\">";
+        innerHtmlCode += "<td class=\"cell-1 disp-md\">";
         
         innerHtmlCode += "<img class=\"img-responsive img-rounded\" src=\"" + dataset[i].Img + "\"/>";
         innerHtmlCode += "</td>";
 
         innerHtmlCode += "<td class=\"cell-2\">";
-        innerHtmlCode += "<a class=\"tablelink\" href=\"Players/Info?nickname=" + dataset[i].Nickname + "\">";
+        innerHtmlCode += "<a class=\"boldlink\" href=\"Players/Info?nickname=" + dataset[i].Nickname + "\">";
         innerHtmlCode += dataset[i].Nickname;
         innerHtmlCode += "</a>";
         innerHtmlCode += "</td>";
 
-        innerHtmlCode += "<td class=\"cell-2 cell-lg\">";
+        innerHtmlCode += "<td class=\"cell-2 disp-lg\">";
         innerHtmlCode += dataset[i].Clan;
         innerHtmlCode += "</td>";
 

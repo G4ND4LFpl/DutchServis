@@ -129,7 +129,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Logic\FileManager.cs" />
@@ -161,6 +160,7 @@
     <Compile Include="Models\Games.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MatchData.cs" />
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -253,15 +253,15 @@
     <Content Include="Views\Players\Info.cshtml" />
     <Content Include="Views\Matches\AddGame.cshtml" />
     <Content Include="Views\Matches\Delete.cshtml" />
-    <Content Include="Views\Matches\Details.cshtml" />
+    <Content Include="Views\Matches\DetailsAuto.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
-    <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Matches\Tournaments.cshtml" />
     <Content Include="Views\Matches\Create.cshtml" />
     <Content Include="Views\Matches\TournamentInfo.cshtml" />
     <Content Include="Views\Matches\Leagues.cshtml" />
     <Content Include="Views\Matches\LeagueInfo.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
+    <Content Include="Views\Matches\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

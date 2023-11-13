@@ -7,17 +7,6 @@ namespace DutchServisMCV.Models
 {
     namespace GameNamespace
     {
-        public class Match
-        {
-            public int Id { get; set; }
-            public string Player1 { get; set; }
-            public Nullable<int> PointsPlayer1 { get; set; }
-            public string Player2 { get; set; }
-            public Nullable<int> PointsPlayer2 { get; set; }
-            public string Tournament { get; set; }
-            public DateTime PlayDate { get; set; }
-            public int FormatBo { get; set; }
-        }
         public class PlayerItem
         {
             public string Nickname { get; set; }

@@ -13,7 +13,7 @@ namespace DutchServisMCV.Models
         public DateTime EndDate { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
-        public List<Match> Matches { get; set; }
+        public List<MatchData> Matches { get; set; }
         public List<PlayerLeagueItem> Players { get; set; }
 
         public static int CompareByRankingGet(PlayerLeagueItem p1, PlayerLeagueItem p2)

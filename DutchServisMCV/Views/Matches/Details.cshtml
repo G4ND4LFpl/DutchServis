@@ -1,82 +1,89 @@
-﻿@model DutchServisMCV.Models.Games
+﻿@model DutchServisMCV.Models.MatchData
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<header>
+    <h2 class="text-center italic disp-sm">@Model.Player1 @Model.PointsPlayer1 - @Model.PointsPlayer2 @Model.Player2</h2>
+    <h2 class="text-center italic disp-only-xs">@Model.Player1 @Model.Player2<br />@Model.PointsPlayer1 - @Model.PointsPlayer2 </h2>
+</header>
 
-<div>
-    <h4>Games</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.MatchId)
-        </dt>
+<section class="row">
+    <div class="col-sm-12 col-md-5">
+        <ul class="mb-1 list-unstyled">
+            <li><h4 class="mt-2">Podstawowe dane</h4></li>
+            <li><b>Turniej:</b> @Html.ActionLink(@Model.Tournament, "Link", "Matches", new { name = @Model.Tournament }, new { @class = "textlink" })</li>
+            <li><b>Data:</b> @Model.PlayDate.ToShortDateString()</li>
+            <li><b>Format:</b> Bo@(Model.FormatBo)</li>
+        </ul>
+    </div>
+    <div class="col-sm-12 col-md-5 col-md-offset-1">
+        <ul class="mb-1 list-unstyled">
+            <li><h4 class="mt-2 disp-md">Inne</h4></li>
+            <li><b>Rozpoczynał:</b> @(Model.Games[0].Opening == 1 ? Model.Player1 : Model.Player2)</li>
+            @if (Model.BonusGamePlayer1 == true)
+            {
+                <li><b>Bonusowa runda: </b> @Model.Player1</li>
+            }
+            @if (Model.BonusGamePlayer2 == true)
+            {
+                <li><b>Bonusowa runda: </b> @Model.Player2</li>
+            }
+        </ul>
+    </div>
+</section>
 
-        <dd>
-            @Html.DisplayFor(model => model.MatchId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PointsPlayer1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PointsPlayer1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PointsPlayer2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PointsPlayer2)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MistakesPlayer1)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MistakesPlayer1)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MistakesPlayer2)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MistakesPlayer2)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Win)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Win)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Opening)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Opening)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Dutch)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Dutch)
-        </dd>
-
-    </dl>
+<div class="row">
+    @if (Session["Username"] != null)
+    {
+        <aside class="col-xs-12 col-sm-12 col-md-12">
+            <a href="@Url.Action("Edit")">
+                <div class="admincontroll">Edytuj mecz</div>
+            </a>
+        </aside>
+    }
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.GameId }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<section>
+    <h4 class="border-none text-center">Dane gry</h4>
+    <table class="table table-bordered">
+        <tr class="table-style blue-header">
+            <th></th>
+            <th colspan="2">@Model.Player1</th>
+            <th colspan="2">@Model.Player2</th>
+            <th colspan="2" class="disp-sm">Ogólne</th>
+        </tr>
+        <tr class="table-style blue-header">
+            <th class="cell-1 disp-md">Nr. partii</th>
+            <th class="cell-1 disp-only-sm">Nr.</th>
+            <th class="cell-1 cell-2-lg">Punkty</th>
+            <th class="cell-1">Błędy</th>
+            <th class="cell-1 cell-2-lg">Punkty</th>
+            <th class="cell-1">Błędy</th>
+            <th class="cell-1 disp-sm">Otwarcie</th>
+            <th class="cell-1 disp-sm">Dutch</th>
+        </tr>
+        @for (int i = 0; i < Model.Games.Count(); i++)
+        {
+            <tr class="table-style">
+                <td>@(i+1).</td>
+                <td>@(Model.Games[i].PointsPlayer1 != null ? Model.Games[i].PointsPlayer1.ToString() : "C")</td>
+                <td>@Model.Games[i].MistakesPlayer1</td>
+                <td>@(Model.Games[i].PointsPlayer2 != null ? Model.Games[i].PointsPlayer2.ToString() : "C")</td>
+                <td>@Model.Games[i].MistakesPlayer2</td>
+                <td class="disp-md">@(Model.Games[i].Opening == 1 ? Model.Player1 : Model.Player2)</td>
+                <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Opening</td>
+                <td class="disp-md">@(Model.Games[i].Dutch == 1 ? Model.Player1 : Model.Player2)</td>
+                <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Dutch</td>
+            </tr>
+        }
+    </table>
+
+    <p class="disp-only-xs italic text-warning">Część danych została ukryta z uwagi na zbyt małą wielkość ekranu.</p>
+</section>
+
+@Html.ActionLink("Powrót", "Link", "Matches", new { name = @Model.Tournament }, new { @class = "boldlink" })
+
+
+

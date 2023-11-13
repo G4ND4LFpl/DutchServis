@@ -35,10 +35,10 @@
                         @Html.ActionLink(item.Name, "TournamentInfo", "Matches", new { name = item.Name }, new { @class="unstyled bluehover"})
                     </h4>
                 </li>
-                <li>Data: @item.DateTime.ToShortDateString()</li>
-                <li>Miejsce: @item.Location</li>
-                <li class="cell-md">Motyw: @item.Theme</li>
-                <li class="cell-md">Informacje: @item.Info</li>
+                <li><b>Data:</b> @item.DateTime.ToShortDateString()</li>
+                <li><b>Miejsce:</b> @item.Location</li>
+                <li class="cell-md"><b>Motyw:</b> @item.Theme</li>
+                <li class="cell-md"><b>Informacje:</b> @item.Info</li>
             </ul>
         </div>
         <div class="col-sm-5 col-md-4 cell-sm col-height">

@@ -15,6 +15,16 @@
                 <li><b>Lokalizacja:</b> @Model.Location</li>
             </ul>
 
+            @if (@Model.Info != null)
+            {
+                <ul class="list-stat mt-2 mb-1 list-unstyled">
+                    <li><h4>Opis</h4></li>
+                    <li>
+                        @Model.Info
+                    </li>
+                </ul>
+            }
+
             @if (Session["Username"] != null)
             {
                 <aside>
@@ -44,20 +54,22 @@
     <table class="table table-striped width-small">
         <thead>
             <tr class="table-style">
-                <th class="cell-1 cell-sm">Rozstawienie</th>
-                <th class="cell-1 cell-only-xs">Roz.</th>
-                <th class="cell-2">Gracz</th>
-                <th class="cell-2 cell-sm">Ranking</th>
-                <th class="cell-2 cell-only-xs">Rank.</th>
+                <th class="cell-1 disp-sm">Rozstawienie</th>
+                <th class="cell-1 disp-only-xs">Roz.</th>
+                <th class="cell-4">Gracz</th>
+                <th class="cell-2 disp-sm">Ranking</th>
+                <th class="cell-2 disp-only-xs">Rank.</th>
             </tr>
         </thead>
         <tbody>
-            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingBefore);}
+            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingBefore); }
             @for (int i = 0; i < Model.Players.Count(); i++)
             {
                 <tr class="table-style">
                     <td class="cell-1">@(i+1).</td>
-                    <td class="cell-2">@Model.Players[i].Nickname</td>
+                    <td class="cell-3">
+                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                    </td>
                     <td class="cell-2">@Model.Players[i].RankingBefore</td>
                 </tr>
             }
@@ -87,7 +99,7 @@
     </div>
 
     <div>
-        @foreach (DutchServisMCV.Models.GameNamespace.Match match in Model.Matches)
+        @foreach (DutchServisMCV.Models.MatchData match in Model.Matches)
         {
             <div class="block border-1">
                 <div class="row">
@@ -132,8 +144,8 @@
             <tr class="table-style">
                 <th class="cell-1">Miejsce</th>
                 <th class="cell-2">Gracz</th>
-                <th class="cell-2 cell-sm">Zdobyte punkty</th>
-                <th class="cell-2 cell-only-xs">Punkty</th>
+                <th class="cell-2 disp-sm">Zdobyte punkty</th>
+                <th class="cell-2 disp-only-xs">Punkty</th>
                 <th class="cell-1">Nagroda</th>
             </tr>
         </thead>
@@ -143,7 +155,9 @@
             {
                 <tr class="table-style">
                     <td class="cell-1">@(Model.Players[i].Place).</td>
-                    <td class="cell-2">@Model.Players[i].Nickname</td>
+                    <td class="cell-2">
+                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                    </td>
                     <td class="cell-2">@Model.Players[i].RankingGet</td>
                     <td class="cell-1">@Model.Players[i].Price</td>
                 </tr>
