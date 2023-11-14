@@ -23,7 +23,7 @@
             @if (Session["Username"] != null)
             {
                 <aside>
-                    <a href="@Url.Action("Edit", new { nickname = Model.Nickname })">
+                    <a href="@Url.Action("Edit", new { name = Model.Nickname })">
                         <div class="admincontroll">Edytuj</div>
                     </a>
                 </aside>

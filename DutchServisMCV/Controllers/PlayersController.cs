@@ -178,18 +178,18 @@ namespace DutchServisMCV.Controllers
             }
         }
 
-        public ActionResult Info(string nickname)
+        public ActionResult Info(string name)
         {
             // Validate adress
-            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if( database.Players.Where(item => item.Nickname == nickname).FirstOrDefault() == null) return HttpNotFound();
+            if( database.Players.Where(item => item.Nickname == name).FirstOrDefault() == null) return HttpNotFound();
 
             // Ranking
             var rank_query = from res in database.TournamentResults
                              join player in database.Players
                              on res.PlayerId equals player.PlayerId
-                             where player.Nickname == nickname
+                             where player.Nickname == name
                              group res by player.Nickname into gres
                              select new
                              {
@@ -204,23 +204,23 @@ namespace DutchServisMCV.Controllers
             }
 
             // Win ration
-            var gamesTot = SelectWhere(nickname, false);
-            var gamesWin = SelectWhere(nickname, true);
+            var gamesTot = SelectWhere(name, false);
+            var gamesWin = SelectWhere(name, true);
 
             // Opening win ration
-            var openTot = SelectWhereOpen(nickname, false);
-            var openWin = SelectWhereOpen(nickname, true);
+            var openTot = SelectWhereOpen(name, false);
+            var openWin = SelectWhereOpen(name, true);
 
             // Dutch win ratio
-            var dutchTot = SelectWhereDutch(nickname, false);
-            var dutchWin = SelectWhereDutch(nickname, true);
+            var dutchTot = SelectWhereDutch(name, false);
+            var dutchWin = SelectWhereDutch(name, true);
 
             // Final query
             var query = from player in database.Players
                         join clan in database.Clans
                         on player.ClanId equals clan.ClanId
                         into grupedclans
-                        where player.Nickname == nickname
+                        where player.Nickname == name
                         select new PlayerData
                         {
                             Nickname = player.Nickname,
@@ -343,14 +343,14 @@ namespace DutchServisMCV.Controllers
             return View();
         }
 
-        public ActionResult Edit(string nickname)
+        public ActionResult Edit(string name)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
             // Validate adress
-            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Players p = database.Players.Where(item => item.Nickname == nickname).FirstOrDefault();
+            Players p = database.Players.Where(item => item.Nickname == name).FirstOrDefault();
             if (p == null) return HttpNotFound();
 
             // Prepare

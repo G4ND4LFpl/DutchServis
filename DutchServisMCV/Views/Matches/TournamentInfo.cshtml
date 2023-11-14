@@ -28,7 +28,7 @@
             @if (Session["Username"] != null)
             {
                 <aside>
-                    <a href="@Url.Action("TournamentEdit", new { nickname = Model.Name })">
+                    <a href="@Url.Action("TournamentEdit", new { name = Model.Name })">
                         <div class="admincontroll">Edytuj informacje o turnieju</div>
                     </a>
                 </aside>
@@ -45,7 +45,7 @@
     @if (Session["Username"] != null)
     {
         <aside>
-            <a href="@Url.Action("AddToPlayerSet", new { nickname = Model.Name })">
+            <a href="@Url.Action("AddToPlayerSet", new { name = Model.Name })">
                 <div class="admincontroll">Dodaj gracza</div>
             </a>
         </aside>
@@ -68,7 +68,7 @@
                 <tr class="table-style">
                     <td class="cell-1">@(i+1).</td>
                     <td class="cell-3">
-                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { name = Model.Players[i].Nickname }, new { @class = "textlink" })
                     </td>
                     <td class="cell-2">@Model.Players[i].RankingBefore</td>
                 </tr>
@@ -91,7 +91,7 @@
         @if (Session["Username"] != null)
         {
             <aside>
-                <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
+                <a href="@Url.Action("MatchAdd", new { name = Model.Name })">
                     <div class="admincontroll">Dodaj mecz</div>
                 </a>
             </aside>
@@ -133,7 +133,7 @@
     @if (Session["Username"] != null)
     {
         <aside>
-            <a href="@Url.Action("AddResult", new { nickname = Model.Name })">
+            <a href="@Url.Action("AddResult", new { name = Model.Name })">
                 <div class="admincontroll">Dodaj wynik</div>
             </a>
         </aside>
@@ -156,7 +156,7 @@
                 <tr class="table-style">
                     <td class="cell-1">@(Model.Players[i].Place).</td>
                     <td class="cell-2">
-                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { name = Model.Players[i].Nickname }, new { @class = "textlink" })
                     </td>
                     <td class="cell-2">@Model.Players[i].RankingGet</td>
                     <td class="cell-1">@Model.Players[i].Price</td>

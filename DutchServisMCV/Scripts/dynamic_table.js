@@ -170,7 +170,7 @@ function updateData() {
         innerHtmlCode += "</td>";
 
         innerHtmlCode += "<td class=\"cell-2\">";
-        innerHtmlCode += "<a class=\"boldlink\" href=\"Players/Info?nickname=" + dataset[i].Nickname + "\">";
+        innerHtmlCode += "<a class=\"boldlink\" href=\"Players/Info/" + dataset[i].Nickname + "\">";
         innerHtmlCode += dataset[i].Nickname;
         innerHtmlCode += "</a>";
         innerHtmlCode += "</td>";
