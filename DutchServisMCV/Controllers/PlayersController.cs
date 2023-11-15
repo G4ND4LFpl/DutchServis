@@ -178,18 +178,18 @@ namespace DutchServisMCV.Controllers
             }
         }
 
-        public ActionResult Info(string name)
+        public ActionResult Info(string nickname)
         {
             // Validate adress
-            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if( database.Players.Where(item => item.Nickname == name).FirstOrDefault() == null) return HttpNotFound();
+            if( database.Players.Where(item => item.Nickname == nickname).FirstOrDefault() == null) return HttpNotFound();
 
             // Ranking
             var rank_query = from res in database.TournamentResults
                              join player in database.Players
                              on res.PlayerId equals player.PlayerId
-                             where player.Nickname == name
+                             where player.Nickname == nickname
                              group res by player.Nickname into gres
                              select new
                              {
@@ -204,23 +204,23 @@ namespace DutchServisMCV.Controllers
             }
 
             // Win ration
-            var gamesTot = SelectWhere(name, false);
-            var gamesWin = SelectWhere(name, true);
+            var gamesTot = SelectWhere(nickname, false);
+            var gamesWin = SelectWhere(nickname, true);
 
             // Opening win ration
-            var openTot = SelectWhereOpen(name, false);
-            var openWin = SelectWhereOpen(name, true);
+            var openTot = SelectWhereOpen(nickname, false);
+            var openWin = SelectWhereOpen(nickname, true);
 
             // Dutch win ratio
-            var dutchTot = SelectWhereDutch(name, false);
-            var dutchWin = SelectWhereDutch(name, true);
+            var dutchTot = SelectWhereDutch(nickname, false);
+            var dutchWin = SelectWhereDutch(nickname, true);
 
             // Final query
             var query = from player in database.Players
                         join clan in database.Clans
                         on player.ClanId equals clan.ClanId
                         into grupedclans
-                        where player.Nickname == name
+                        where player.Nickname == nickname
                         select new PlayerData
                         {
                             Nickname = player.Nickname,
@@ -249,24 +249,15 @@ namespace DutchServisMCV.Controllers
             return View(query.FirstOrDefault());
         }
 
-        public ActionResult Add()
-        {
-            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
-
-            ViewBag.Clans = database.Clans;
-
-            return View();
-        }
-
         private SResponse NicknameIsValid(string nickname, int id = -1)
         {
             if (nickname == null || nickname.Replace(" ", "") == "")
             {
                 return new SResponse(false, "Pole Nick nie może być puste");
             }
-            
+
             var repetitions = from players in database.Players
-                              where players.Nickname == nickname.Replace(" ", "") && players.PlayerId != id
+                              where players.Nickname == nickname.Trim() && players.PlayerId != id
                               select players;
             if (repetitions.Count() != 0)
             {
@@ -286,6 +277,15 @@ namespace DutchServisMCV.Controllers
                 }
             }
             return new SResponse(true, "");
+        }
+
+        public ActionResult Add()
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            ViewBag.Clans = database.Clans;
+
+            return View();
         }
 
         [HttpPost]
@@ -343,14 +343,14 @@ namespace DutchServisMCV.Controllers
             return View();
         }
 
-        public ActionResult Edit(string name)
+        public ActionResult Edit(string nickname)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
             // Validate adress
-            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (nickname == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Players p = database.Players.Where(item => item.Nickname == name).FirstOrDefault();
+            Players p = database.Players.Where(item => item.Nickname == nickname).FirstOrDefault();
             if (p == null) return HttpNotFound();
 
             // Prepare
@@ -388,7 +388,7 @@ namespace DutchServisMCV.Controllers
             // Data Validation
             if (!player.JoinDate.HasValue)
             {
-                ViewBag.DateValidationMsg = "Niepoprawny format daty. Oczekiwanym formatem daty jest DD.MM.YYYY";
+                ViewBag.DateValidationMsg = "Pole Data dołączenia nie może być puste";
                 return View(player);
             }
 

@@ -25,6 +25,14 @@ body {
 input, select, textarea {
     max-width: 280px;
 }
+.wide input, .wide textarea {
+    max-width: 340px;
+}
+.wide textarea {
+    min-width: 340px;
+    min-height: 80px;
+    max-height: 140px;
+}
 .navbar-item {
     position: relative;
     display: block;
@@ -357,9 +365,9 @@ a.boldlink:hover, a.textlink:hover {
         max-width: 75%;
     }
 }
-@media(min-width: 993px) and (orientation: landscape) {
+@media(min-width: 1200px) and (orientation: landscape) {
     .list-stat > li {
-        max-width: 50%;
+        max-width: 60%;
     }
 }
 ul > li > b {
@@ -420,8 +428,10 @@ footer {
     display: inline-block;
 }
 .buttonlike {
+    min-width: 100px;
     margin-left: 10px;
-    padding: 0px 5px 0px 5px;
+    padding: 1px 5px 0px 5px;
+    text-align: center;
     border-style: ridge;
     border-color: grey;
     border-width: 2px 3px 3px 2px;

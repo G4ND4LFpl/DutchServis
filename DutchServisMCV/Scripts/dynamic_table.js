@@ -22,8 +22,10 @@ function refresh() {
 
     if (sordOrder === "Desc") dataset.reverse();
 
-    updateData();
+    updateHtml();
 }
+
+// Sort and filter functions
 function sortPlayer() {
     dataset = applyFilters(model);
     dataset.sort(comparePlayer);
@@ -51,7 +53,7 @@ function sortPlayer() {
         document.getElementById("elo_sort2").setAttribute("value", "Elo \u296E");
     }
 
-    updateData();
+    updateHtml();
 }
 function sortRanking() {
     dataset = applyFilters(model);
@@ -83,7 +85,7 @@ function sortRanking() {
         document.getElementById("elo_sort2").setAttribute("value", "Elo \u296E");
     }
 
-    updateData();
+    updateHtml();
 }
 function sortRating() {
     dataset = applyFilters(model);
@@ -115,7 +117,7 @@ function sortRating() {
         document.getElementById("rank_sort2").setAttribute("value", "Rank. \u296E");
     }
 
-    updateData();
+    updateHtml();
 }
 function applyFilters(data) {
     var array = [];
@@ -140,6 +142,8 @@ function applyFilters(data) {
 
     return array;
 }
+
+// Comapre functions
 function comparePlayer(a, b) {
     if (a.Nickname > b.Nickname) return 1;
     else if (a.Nickname === b.Nickname) return 0;
@@ -155,42 +159,64 @@ function compareRating(a, b) {
     else if (a.Rating === b.Rating) return 0;
     else return -1;
 }
-function updateData() {
+
+// Updateing Html
+function addPlayerTr(nr, player) {
+    var addedHtmlCode = "";
+
+    addedHtmlCode += "<tr class=\"table-style\">";
+
+    addedHtmlCode += "<td>" + nr + ".</td>";
+
+    addedHtmlCode += "<td class=\"disp-md\">";
+        addedHtmlCode += "<img class=\"img-responsive img-rounded\" src=\"" + player.Img + "\"/>";
+    addedHtmlCode += "</td>";
+
+    addedHtmlCode += "<td>";
+    addedHtmlCode += "<a class=\"boldlink\" href=\"Players/Info/" + player.Nickname + "\">" + player.Nickname + "</a>";
+    addedHtmlCode += "</td>";
+
+    addedHtmlCode += "<td class=\"disp-lg\">" + player.Clan + "</td>";
+
+    addedHtmlCode += "<td>" + player.Ranking.toFixed(1) + "</td>";
+
+    addedHtmlCode += "<td>" + player.Rating.toFixed(1) + "</td>";
+
+    addedHtmlCode += "</tr>";
+
+    return addedHtmlCode;
+}
+function addErrorTr(nr) {
+    var addedHtmlCode = "";
+
+    addedHtmlCode += "<tr class=\"table-style\">";
+
+    addedHtmlCode += "<td class=\"cell-1\">";
+    addedHtmlCode += nr + ".";
+    addedHtmlCode += "</td>";
+
+    addedHtmlCode += "<td colspan=\"5\" class=\"text-danger\">";
+    addedHtmlCode += "Nie powiodło się załadowanie gracza";
+    addedHtmlCode += "</td>";
+
+    addedHtmlCode += "</tr>";
+
+    return addedHtmlCode;
+}
+function updateHtml() {
     var innerHtmlCode = "";
     for (var i = 0; i < dataset.length; i++) {
-        innerHtmlCode += "<tr class=\"table-style\">";
-
-        innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += (i + 1) + ".";
-        innerHtmlCode += "</td>";
- 
-        innerHtmlCode += "<td class=\"cell-1 disp-md\">";
-        
-        innerHtmlCode += "<img class=\"img-responsive img-rounded\" src=\"" + dataset[i].Img + "\"/>";
-        innerHtmlCode += "</td>";
-
-        innerHtmlCode += "<td class=\"cell-2\">";
-        innerHtmlCode += "<a class=\"boldlink\" href=\"Players/Info/" + dataset[i].Nickname + "\">";
-        innerHtmlCode += dataset[i].Nickname;
-        innerHtmlCode += "</a>";
-        innerHtmlCode += "</td>";
-
-        innerHtmlCode += "<td class=\"cell-2 disp-lg\">";
-        innerHtmlCode += dataset[i].Clan;
-        innerHtmlCode += "</td>";
-
-        innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += dataset[i].Ranking.toFixed(1);
-        innerHtmlCode += "</td>";
-
-        innerHtmlCode += "<td class=\"cell-1\">";
-        innerHtmlCode += dataset[i].Rating.toFixed(1);
-        innerHtmlCode += "</td>";
-
-        innerHtmlCode += "</tr>";
+        try {
+            innerHtmlCode += addPlayerTr(i+1, dataset[i]);
+        }
+        catch {
+            innerHtmlCode += addErrorTr(i+1);
+        }
     }
     document.getElementById("table_body").innerHTML = innerHtmlCode;
 }
+
+// Filter menu
 function openFilterMenu() {
     var menu = document.getElementById("filter_menu");
 

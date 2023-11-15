@@ -10,7 +10,7 @@
         public string Nickname { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
-        public DateTime JoinDate { get; set; } 
+        public DateTime? JoinDate { get; set; } 
         public string Img { get; set; }
         public string Clan { get; set; }
         public double? Ranking { get; set; }

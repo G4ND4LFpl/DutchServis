@@ -9,8 +9,8 @@ namespace DutchServisMCV.Models
     public class LeaugeInfo
     {
         public string Name { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
         public List<MatchData> Matches { get; set; }

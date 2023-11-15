@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Gra treningowa";
+}
+
+<script type="text/jscript" src="@Url.Content("~/Scripts/game.js")"></script>
+
+<div class="board">
+    <div class="row" id="bot_cards">
+        <div class="col-xs-6 col-sm-3" id="bot_card_0">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="bot_card_1">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="bot_card_2">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="bot_card_3">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="display-sm col-sm-3"></div>
+        <div class="col-xs-6 col-sm-3" id="stack">
+
+        </div>
+        <div class="col-xs-6 col-sm-3">
+            <button class="center-block card backgroud-img active" id="deck" onclick="start()"></button>
+        </div>
+        <div class="display-sm col-sm-3"></div>
+    </div>
+
+    <div class="row mt-2" id="player_cards">
+        <div class="col-xs-6 col-sm-3" id="player_card_0">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="player_card_1">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="player_card_2">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+        <div class="col-xs-6 col-sm-3" id="player_card_3">
+            <button class="center-block card">
+                <div class="row"><div class="card-empty">brak</div></div>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/jscript">
+    var path = @Url.Content("~/Content/");
+</script>
+

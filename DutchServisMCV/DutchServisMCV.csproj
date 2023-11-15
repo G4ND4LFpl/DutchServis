@@ -129,8 +129,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
+    <Compile Include="Controllers\test.cs" />
     <Compile Include="Logic\FileManager.cs" />
     <Compile Include="Logic\PasswordHasher.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
@@ -253,15 +255,19 @@
     <Content Include="Views\Players\Info.cshtml" />
     <Content Include="Views\Matches\AddGame.cshtml" />
     <Content Include="Views\Matches\Delete.cshtml" />
-    <Content Include="Views\Matches\DetailsAuto.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
     <Content Include="Views\Matches\Tournaments.cshtml" />
-    <Content Include="Views\Matches\Create.cshtml" />
     <Content Include="Views\Matches\TournamentInfo.cshtml" />
     <Content Include="Views\Matches\Leagues.cshtml" />
     <Content Include="Views\Matches\LeagueInfo.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Matches\Details.cshtml" />
+    <Content Include="Views\Matches\TournamentEdit.cshtml" />
+    <Content Include="Views\Matches\partial\MatchList.cshtml" />
+    <Content Include="Views\Matches\TournamentCreate.cshtml" />
+    <Content Include="Views\Game\Index.cshtml" />
+    <Content Include="Views\Matches\LeagueCreate.cshtml" />
+    <Content Include="Views\Matches\LeagueEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

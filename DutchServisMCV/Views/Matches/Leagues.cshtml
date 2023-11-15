@@ -17,7 +17,7 @@
         @if (Session["Username"] != null)
         {
             <aside class="mx-left">
-                <a href="@Url.Action("Create")">
+                <a href="@Url.Action("LeagueCreate")">
                     <div class="admincontroll">Utwórz nową Ligę</div>
                 </a>
             </aside>
@@ -35,9 +35,12 @@
                         @Html.ActionLink(item.Name, "LeagueInfo", "Matches", new { name = item.Name }, new { @class = "unstyled bluehover" })
                     </h4>
                 </li>
-                <li><b>Rozpoczęcie:</b> @item.StartDate.ToShortDateString()</li>
-                <li><b>Koniec:</b> @item.EndDate.ToShortDateString()</li>
-                <li class="cell-md"><b>Informacje:</b> @item.Info</li>
+                <li><b>Rozpoczęcie:</b> @(((DateTime)item.StartDate).ToShortDateString())</li>
+                <li><b>Koniec:</b> @(((DateTime)item.EndDate).ToShortDateString())</li>
+                @if (@item.Info != null)
+                {
+                    <li class="cell-md"><b>Informacje:</b> @item.Info</li>
+                }
             </ul>
         </div>
         <div class="col-sm-5 col-md-4 cell-sm col-height">

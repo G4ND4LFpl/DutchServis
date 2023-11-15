@@ -10,6 +10,8 @@ namespace DutchServisMCV.Models
     {
         public string Name { get; set; }
         public DateTime DateTime { get; set; }
+        public DateTime? Date { get; set; }
+        public DateTime? Time { get; set; }
         public string Location { get; set; }
         public string Theme { get; set; }
         public string Info { get; set; }

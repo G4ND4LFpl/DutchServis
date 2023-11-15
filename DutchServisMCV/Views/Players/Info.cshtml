@@ -1,7 +1,7 @@
 ﻿@model DutchServisMCV.Models.PlayerData
 
 @{
-    ViewBag.Title = @Model.Nickname;
+    ViewBag.Title = "Profil " + Model.Nickname;
 }
 
 <article>
@@ -16,14 +16,14 @@
             <ul class="list-stat mt-2 list-unstyled">
                 <li><h4>Ogólne informacje</h4></li>
                 <li><b>Status:</b> @Model.Status</li>
-                <li><b>Data dołączenia:</b> @Model.JoinDate.ToShortDateString()</li>
+                <li><b>Data dołączenia:</b> @Model.JoinDate.Value.ToShortDateString()</li>
                 <li><b>Klan:</b> @Model.Clan</li>
             </ul>
 
             @if (Session["Username"] != null)
             {
                 <aside>
-                    <a href="@Url.Action("Edit", new { name = Model.Nickname })">
+                    <a href="@Url.Action("Edit", new { nickname = Model.Nickname })">
                         <div class="admincontroll">Edytuj</div>
                     </a>
                 </aside>

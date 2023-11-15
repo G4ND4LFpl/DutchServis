@@ -1,0 +1,83 @@
+﻿@model DutchServisMCV.Models.TournamentInfo
+@{
+    ViewBag.Title = "Stwórz nowy turniej";
+}
+
+<header>
+    <h2>Stwórz turniej</h2>
+</header>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal wide">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Name">Nazwa</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                <div class="text-danger">@ViewBag.NameValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Date">Data</label>
+            <div class="col-md-10">
+                @{
+                    string date = (Model != null && Model.Date.HasValue) ? Model.Date.Value.ToString("yyyy-MM-dd") : "";
+                }
+                <input type="date" class="list-box form-control" id="Date" name="Date" value="@date" autocomplete="off">
+                <div class="text-danger">@ViewBag.DateValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Time">Godzina</label>
+            <div class="col-md-10">
+                @{
+                    string time = (Model != null && Model.Time.HasValue) ? Model.Time.Value.ToString("hh:mm") : "";
+                }
+                <input type="time" class="list-box form-control" id="Time" name="Time" value="@time" autocomplete="off">
+                <div class="text-danger">@ViewBag.TimeValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Location">Lokalizacja</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Theme">Motyw</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Theme, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Info">Informacje</label>
+            <div class="col-md-10">
+                <div class="textbox">
+                    <textarea class="list-box form-control" id="Info" name="Info" autocomplete="off"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Stwórz turniej" class="btn-warning" />
+                <a href="@Url.Action("Tournaments", "Matches")">
+                    <div class="disp-inline-block buttonlike">
+                        Wróć
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+}
+

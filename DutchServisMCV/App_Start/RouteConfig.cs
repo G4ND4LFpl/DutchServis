@@ -18,13 +18,19 @@ namespace DutchServisMCV
             routes.MapRoute(
                 name: "Tournaments",
                 url: "Tournaments",
-                defaults: new { controller = "Matches", action = "Tournaments", name = UrlParameter.Optional }
+                defaults: new { controller = "Matches", action = "Tournaments"}
             );
 
             routes.MapRoute(
                 name: "TournamentInfo",
                 url: "Tournaments/Info/{name}",
                 defaults: new { controller = "Matches", action = "TournamentInfo", name = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "TournamentCreate",
+                url: "Tournaments/Create",
+                defaults: new { controller = "Matches", action = "TournamentCreate"}
             );
 
             routes.MapRoute(
@@ -38,13 +44,19 @@ namespace DutchServisMCV
             routes.MapRoute(
                 name: "Leagues",
                 url: "Leagues",
-                defaults: new { controller = "Matches", action = "Leagues", name = UrlParameter.Optional }
+                defaults: new { controller = "Matches", action = "Leagues" }
             );
 
             routes.MapRoute(
                 name: "LeagueInfo",
                 url: "Leagues/Info/{name}",
                 defaults: new { controller = "Matches", action = "LeagueInfo", name = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "LeagueCreate",
+                url: "Leagues/Create",
+                defaults: new { controller = "Matches", action = "LeagueCreate" }
             );
 
             routes.MapRoute(
@@ -57,7 +69,14 @@ namespace DutchServisMCV
 
             routes.MapRoute(
                 name: "Info",
-                url: "{controller}/{action}/{name}"
+                url: "Players/Info/{nickname}",
+                defaults: new { controller = "Players", action = "Info", nickname = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "Edit",
+                url: "Players/Edit/{nickname}",
+                defaults: new { controller = "Players", action = "Edit", nickname = UrlParameter.Optional }
             );
 
             // Default

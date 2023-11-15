@@ -17,7 +17,7 @@
         @if (Session["Username"] != null)
         {
             <aside class="mx-left">
-                <a href="@Url.Action("Create")">
+                <a href="@Url.Action("TournamentCreate")">
                     <div class="admincontroll">Utwórz nowy turniej</div>
                 </a>
             </aside>
@@ -32,13 +32,19 @@
             <ul class="list-unstyled list-stat">
                 <li>
                     <h4>
-                        @Html.ActionLink(item.Name, "TournamentInfo", "Matches", new { name = item.Name }, new { @class="unstyled bluehover"})
+                        @Html.ActionLink(item.Name, "TournamentInfo", "Matches", new { name = item.Name }, new { @class = "unstyled bluehover" })
                     </h4>
                 </li>
-                <li><b>Data:</b> @item.DateTime.ToShortDateString()</li>
+                <li><b>Data:</b> @(((DateTime)item.DateTime).ToShortDateString())</li>
                 <li><b>Miejsce:</b> @item.Location</li>
-                <li class="cell-md"><b>Motyw:</b> @item.Theme</li>
-                <li class="cell-md"><b>Informacje:</b> @item.Info</li>
+                @if (@item.Theme != null)
+                {
+                    <li class="cell-md"><b>Motyw:</b> @item.Theme</li>
+                }
+                @if (@item.Info != null)
+                {
+                    <li class="cell-md"><b>Informacje:</b> @item.Info</li>
+                }
             </ul>
         </div>
         <div class="col-sm-5 col-md-4 cell-sm col-height">

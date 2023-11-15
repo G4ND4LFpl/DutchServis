@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using DutchServisMCV.Logic;
 using DutchServisMCV.Models;
 using DutchServisMCV.Models.GameNamespace;
 
@@ -14,11 +14,6 @@ namespace DutchServisMCV.Controllers
     public class MatchesController : Controller
     {
         private DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
-
-        public ActionResult Index()
-        {
-            return RedirectToAction("Tournaments");
-        }
 
         public ActionResult Tournaments()
         {
@@ -312,109 +307,129 @@ namespace DutchServisMCV.Controllers
             return View(match.FirstOrDefault());
         }
 
-        /* WYGENEROWANE AUTOMATYCZNIE FUKCJE */
-
-        // GET: Matches/Details/5
-        public ActionResult DetailsAuto(int? id)
+        private SResponse NameIsValid(string name, int id = -1)
         {
-            if (id == null)
+            if (name == null || name.Replace(" ", "") == "")
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return new SResponse(false, "Pole Nazwa nie może być puste");
             }
-            Games games = database.Games.Find(id);
-            if (games == null)
+
+            var repetitions = from tourn in database.Tournaments
+                              where tourn.Name == name.Trim() && tourn.TournamentId != id
+                              select tourn;
+            if (repetitions.Count() != 0)
             {
-                return HttpNotFound();
+                return new SResponse(false, "Pole Nazwa musi być unikalne");
             }
-            return View(games);
+
+            return new SResponse(true, "");
         }
 
-        // GET: Matches/Create
-        public ActionResult Create()
+        public ActionResult TournamentCreate()
         {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
             return View();
         }
 
-        // POST: Matches/Create
-        // Aby zapewnić ochronę przed atakami polegającymi na przesyłaniu dodatkowych danych, włącz określone właściwości, z którymi chcesz utworzyć powiązania.
-        // Aby uzyskać więcej szczegółów, zobacz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GameId,MatchId,PointsPlayer1,PointsPlayer2,MistakesPlayer1,MistakesPlayer2,Win,Opening,Dutch")] Games games)
+        public ActionResult TournamentCreate(TournamentInfo tournament)
         {
-            if (ModelState.IsValid)
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Name Validation
+            SResponse response = NameIsValid(tournament.Name);
+            if (!response.Good)
             {
-                database.Games.Add(games);
-                database.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.NameValidationMsg = response.Message;
+                return View();
+            }
+            tournament.Name = tournament.Name.Trim();
+
+            // Data Validation
+            if (!tournament.Date.HasValue)
+            {
+                ViewBag.DateValidationMsg = "Pole Data nie może być puste";
+                return View(tournament);
             }
 
-            return View(games);
-        }
+            // Time Validation
+            if (!tournament.Time.HasValue)
+            {
+                ViewBag.TimeValidationMsg = "Pole Godzina nie może być puste";
+                return View(tournament);
+            }
 
-        // GET: Matches/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Games games = database.Games.Find(id);
-            if (games == null)
-            {
-                return HttpNotFound();
-            }
-            return View(games);
-        }
+            // Add To Database
+            DateTime dt = tournament.Date.Value.AddMinutes(tournament.Time.Value.Hour * 60 + tournament.Time.Value.Minute);
 
-        // POST: Matches/Edit/5
-        
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "GameId,MatchId,PointsPlayer1,PointsPlayer2,MistakesPlayer1,MistakesPlayer2,Win,Opening,Dutch")] Games games)
-        {
-            if (ModelState.IsValid)
+            Tournaments item = new Tournaments
             {
-                database.Entry(games).State = EntityState.Modified;
-                database.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(games);
-        }
-
-        // GET: Matches/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Games games = database.Games.Find(id);
-            if (games == null)
-            {
-                return HttpNotFound();
-            }
-            return View(games);
-        }
-
-        // POST: Matches/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            Games games = database.Games.Find(id);
-            database.Games.Remove(games);
+                Name = tournament.Name,
+                Type = "tournament",
+                StartDate = dt,
+                Location = tournament.Location,
+                Theme = tournament.Theme,
+                Info = tournament.Info
+            };
+            database.Tournaments.Add(item);
             database.SaveChanges();
-            return RedirectToAction("Index");
+
+            // Redirect
+            return RedirectToAction("TournamentEdit", new { name = tournament.Name });
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult LeagueCreate()
         {
-            if (disposing)
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LeagueCreate(LeaugeInfo league)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Name Validation
+            SResponse response = NameIsValid(league.Name);
+            if (!response.Good)
             {
-                database.Dispose();
+                ViewBag.NameValidationMsg = response.Message;
+                return View();
             }
-            base.Dispose(disposing);
+            league.Name = league.Name.Trim();
+
+            // Start Data Validation
+            if (!league.StartDate.HasValue)
+            {
+                ViewBag.StartDateValidationMsg = "Pole Data rozpoczęcia nie może być puste";
+                return View(league);
+            }
+
+            // Time Validation
+            if (!league.EndDate.HasValue)
+            {
+                ViewBag.EndDateValidationMsg = "Pole Data zakończenia nie może być puste";
+                return View(league);
+            }
+
+            // Add To Database
+            Tournaments item = new Tournaments
+            {
+                Name = league.Name,
+                Type = "league",
+                StartDate = league.StartDate.Value,
+                EndDate = league.EndDate.Value,
+                Info = league.Info
+            };
+            database.Tournaments.Add(item);
+            database.SaveChanges();
+
+            // Redirect
+            return RedirectToAction("LeagueEdit", new { name = league.Name });
         }
     }
 }
