@@ -16,65 +16,41 @@ namespace DutchServisMCV
             // Tournaments
 
             routes.MapRoute(
-                name: "Tournaments",
-                url: "Tournaments",
-                defaults: new { controller = "Matches", action = "Tournaments"}
-            );
-
-            routes.MapRoute(
-                name: "TournamentInfo",
+                name: "TournInfo",
                 url: "Tournaments/Info/{name}",
-                defaults: new { controller = "Matches", action = "TournamentInfo", name = UrlParameter.Optional }
+                defaults: new { controller = "Tournaments", action = "Info", name = UrlParameter.Optional }
             );
 
             routes.MapRoute(
-                name: "TournamentCreate",
-                url: "Tournaments/Create",
-                defaults: new { controller = "Matches", action = "TournamentCreate"}
-            );
-
-            routes.MapRoute(
-                name: "TournamentEdit",
+                name: "TournEdit",
                 url: "Tournaments/Edit/{name}",
-                defaults: new { controller = "Matches", action = "TournamentEdit", name = UrlParameter.Optional }
+                defaults: new { controller = "Tournaments", action = "Edit", name = UrlParameter.Optional }
             );
 
             // Leagues
 
             routes.MapRoute(
-                name: "Leagues",
-                url: "Leagues",
-                defaults: new { controller = "Matches", action = "Leagues" }
-            );
-
-            routes.MapRoute(
                 name: "LeagueInfo",
                 url: "Leagues/Info/{name}",
-                defaults: new { controller = "Matches", action = "LeagueInfo", name = UrlParameter.Optional }
-            );
-
-            routes.MapRoute(
-                name: "LeagueCreate",
-                url: "Leagues/Create",
-                defaults: new { controller = "Matches", action = "LeagueCreate" }
+                defaults: new { controller = "Leagues", action = "Info", name = UrlParameter.Optional }
             );
 
             routes.MapRoute(
                 name: "LeagueEdit",
                 url: "Leagues/Edit/{name}",
-                defaults: new { controller = "Matches", action = "LeagueEdit", name = UrlParameter.Optional }
-            );
+                defaults: new { controller = "Leagues", action = "Edit", name = UrlParameter.Optional }
+            );     
 
-            // Info
+            // Players
 
             routes.MapRoute(
-                name: "Info",
+                name: "PlayerInfo",
                 url: "Players/Info/{nickname}",
                 defaults: new { controller = "Players", action = "Info", nickname = UrlParameter.Optional }
             );
 
             routes.MapRoute(
-                name: "Edit",
+                name: "PlayerEdit",
                 url: "Players/Edit/{nickname}",
                 defaults: new { controller = "Players", action = "Edit", nickname = UrlParameter.Optional }
             );

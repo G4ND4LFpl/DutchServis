@@ -131,8 +131,10 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\test.cs" />
+    <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Logic\FileManager.cs" />
     <Compile Include="Logic\PasswordHasher.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="Models\PlayerSet.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LeaugeInfo.cs" />
+    <Compile Include="Models\LeagueInfo.cs" />
     <Compile Include="Models\TournamentInfo.cs" />
     <Compile Include="Models\TournamentResults.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
@@ -256,18 +258,18 @@
     <Content Include="Views\Matches\AddGame.cshtml" />
     <Content Include="Views\Matches\Delete.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
-    <Content Include="Views\Matches\Tournaments.cshtml" />
-    <Content Include="Views\Matches\TournamentInfo.cshtml" />
-    <Content Include="Views\Matches\Leagues.cshtml" />
-    <Content Include="Views\Matches\LeagueInfo.cshtml" />
+    <Content Include="Views\Tournaments\Index.cshtml" />
+    <Content Include="Views\Tournaments\Info.cshtml" />
+    <Content Include="Views\Leagues\Index.cshtml" />
+    <Content Include="Views\Leagues\Info.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Matches\Details.cshtml" />
-    <Content Include="Views\Matches\TournamentEdit.cshtml" />
-    <Content Include="Views\Matches\partial\MatchList.cshtml" />
-    <Content Include="Views\Matches\TournamentCreate.cshtml" />
+    <Content Include="Views\Tournaments\Edit.cshtml" />
+    <Content Include="Views\Matches\Partial\MatchList.cshtml" />
+    <Content Include="Views\Tournaments\Create.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
-    <Content Include="Views\Matches\LeagueCreate.cshtml" />
-    <Content Include="Views\Matches\LeagueEdit.cshtml" />
+    <Content Include="Views\Leagues\Create.cshtml" />
+    <Content Include="Views\Leagues\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

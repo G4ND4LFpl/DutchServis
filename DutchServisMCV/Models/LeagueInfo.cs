@@ -6,7 +6,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace DutchServisMCV.Models
 {
-    public class LeaugeInfo
+    public class LeagueInfo
     {
         public string Name { get; set; }
         public DateTime? StartDate { get; set; }

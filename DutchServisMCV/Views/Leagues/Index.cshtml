@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DutchServisMCV.Models.LeaugeInfo>
+﻿@model IEnumerable<DutchServisMCV.Models.LeagueInfo>
 
 @{
     ViewBag.Title = "Ligi";
@@ -17,7 +17,7 @@
         @if (Session["Username"] != null)
         {
             <aside class="mx-left">
-                <a href="@Url.Action("LeagueCreate")">
+                <a href="@Url.Action("Create", "Leagues")">
                     <div class="admincontroll">Utwórz nową Ligę</div>
                 </a>
             </aside>
@@ -25,14 +25,14 @@
     </div>
 </div>
 
-@foreach (DutchServisMCV.Models.LeaugeInfo item in Model)
+@foreach (DutchServisMCV.Models.LeagueInfo item in Model)
 {
     <article class="row border-block">
         <div class="col-xs-12 col-sm-7 col-md-8">
             <ul class="list-unstyled list-stat">
                 <li>
                     <h4>
-                        @Html.ActionLink(item.Name, "LeagueInfo", "Matches", new { name = item.Name }, new { @class = "unstyled bluehover" })
+                        @Html.ActionLink(item.Name, "Info", "Leagues", new { name = item.Name }, new { @class = "unstyled bluehover" })
                     </h4>
                 </li>
                 <li><b>Rozpoczęcie:</b> @(((DateTime)item.StartDate).ToShortDateString())</li>

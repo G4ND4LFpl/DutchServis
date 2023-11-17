@@ -13,50 +13,25 @@ namespace DutchServisMCV.Controllers
 {
     public class MatchesController : Controller
     {
-        private DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        protected DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
 
-        public ActionResult Tournaments()
+        // Redirect function
+        public ActionResult Link(string name)
         {
-            // Make query
-            var query = from tourn in database.Tournaments
-                        where tourn.Type == "tournament"
-                        select new TournamentInfo
-                        {
-                            Name = tourn.Name,
-                            DateTime = tourn.StartDate,
-                            Location = tourn.Location,
-                            Theme = tourn.Theme,
-                            Info = tourn.Info,
-                            Img = tourn.ImgPath
-                        };
+            if (name == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            query = query.OrderByDescending(item => item.DateTime);
+            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
 
-            // Return View
-            return View(query);
+            string target = database.Tournaments.Where(item => item.Name == name).FirstOrDefault().Type;
+
+            if (target == "tournament") return RedirectToAction("Info", "Tournaments", new { name });
+            if (target == "leauge") return RedirectToAction("Info", "Leagues", new { name });
+
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        public ActionResult Leagues()
-        {
-            // Make query
-            var query = from tourn in database.Tournaments
-                        where tourn.Type == "league"
-                        select new LeaugeInfo
-                        {
-                            Name = tourn.Name,
-                            StartDate = tourn.StartDate,
-                            EndDate = (DateTime)tourn.EndDate,
-                            Info = tourn.Info,
-                            Img = tourn.ImgPath
-                        };
-
-            query = query.OrderByDescending(item => item.StartDate);
-
-            // Return View
-            return View(query);
-        }
-
-        private IQueryable<PlayerTournItem> GetPlayerSet(string tournament)
+        // Sql query functions
+        protected IQueryable<PlayerTournItem> GetPlayerSet(string tournament)
         {
             return (from set in database.PlayerSet
                     join tourn in database.Tournaments
@@ -80,7 +55,7 @@ namespace DutchServisMCV.Controllers
                         Price = res.Prize,
                     });
         }
-        private IQueryable<PlayerLeagueItem> GetPlayerSet(string tournament, IQueryable<MatchData> matchlist)
+        protected IQueryable<PlayerLeagueItem> GetPlayerSet(string tournament, IQueryable<MatchData> matchlist)
         {
             var stat_table = from matches in (
                 from matches in matchlist
@@ -136,7 +111,7 @@ namespace DutchServisMCV.Controllers
                         Draw = stats.Draw
                     });
         }
-        private IQueryable<GamesSum> GamesSumByMatch(int player, int? matchId = null)
+        protected IQueryable<GamesSum> GamesSumByMatch(int player, int? matchId = null)
         {
             return (from games in database.Games
                     join matches in database.Matches
@@ -156,7 +131,7 @@ namespace DutchServisMCV.Controllers
                         Points = gruped.Count(x => x.Win == player)
                     });
         }
-        private IQueryable<MatchData> GetMatchList(string tournament, IQueryable<GamesSum> games1, IQueryable<GamesSum> games2, int matchId = -1)
+        protected IQueryable<MatchData> GetMatchList(string tournament, IQueryable<GamesSum> games1, IQueryable<GamesSum> games2, int matchId = -1)
         {
             return (from matches in database.Matches
                     join tourn in database.Tournaments
@@ -178,93 +153,26 @@ namespace DutchServisMCV.Controllers
                     });
         }
 
-        public ActionResult Link(string name)
+        // Validation functions
+        protected SResponse NameIsValid(string name, int id = -1)
         {
-            if (name == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            if (name == null || name.Replace(" ", "") == "")
+            {
+                return new SResponse(false, "Pole Nazwa nie może być puste");
+            }
 
-            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
+            var repetitions = from tourn in database.Tournaments
+                              where tourn.Name == name.Trim() && tourn.TournamentId != id
+                              select tourn;
+            if (repetitions.Count() != 0)
+            {
+                return new SResponse(false, "Pole Nazwa musi być unikalne");
+            }
 
-            string target = database.Tournaments.Where(item => item.Name == name).FirstOrDefault().Type;
-
-            if (target == "tournament") return RedirectToAction("TournamentInfo", new { name });
-            if (target == "leauge") return RedirectToAction("LeagueInfo", new { name });
-
-            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            return new SResponse(true, "");
         }
-
-        public ActionResult TournamentInfo(string name)
-        {
-            if (name == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
-
-            // Games won player 1
-            var player1_games = GamesSumByMatch(1);
-
-            // Games won player 2
-            var player2_games = GamesSumByMatch(2);
-
-            // Get matches
-            var matchlist = GetMatchList(name, player1_games, player2_games);
-
-            // Get players
-            var playerslist = GetPlayerSet(name);
-
-            // Make query
-            var query = from tourn in database.Tournaments
-                        where tourn.Name == name
-                        select new TournamentInfo
-                        {
-                            Name = tourn.Name,
-                            DateTime = tourn.StartDate,
-                            Location = tourn.Location,
-                            Theme = tourn.Theme,
-                            Info = tourn.Info,
-                            Img = tourn.ImgPath,
-                            Matches = matchlist.ToList(),
-                            Players = playerslist.ToList()
-                        };
-
-            // Return View
-            return View(query.FirstOrDefault());
-        }
-
-        public ActionResult LeagueInfo(string name)
-        {
-            if (name == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
-            if (database.Tournaments.Where(item => item.Name == name).FirstOrDefault() == null) return HttpNotFound();
-
-            // Games won player 1
-            var player1_games = GamesSumByMatch(1);
-
-            // Games won player 2
-            var player2_games = GamesSumByMatch(2);
-
-            // Get matches
-            var matchlist = GetMatchList(name, player1_games, player2_games);
-
-            // Get players
-            var playerslist = GetPlayerSet(name, matchlist);
-
-            // Make query
-            var query = from tourn in database.Tournaments
-                        where tourn.Name == name
-                        select new LeaugeInfo
-                        {
-                            Name = tourn.Name,
-                            StartDate = tourn.StartDate,
-                            EndDate = tourn.EndDate.Equals(null) ? DateTime.MinValue : (DateTime)tourn.EndDate,
-                            Info = tourn.Info,
-                            Img = tourn.ImgPath,
-                            Matches = matchlist.ToList(),
-                            Players = playerslist.ToList()
-                        };
-
-            // Return View
-            return View(query.FirstOrDefault());
-        }
-
+        
+        // Match
         public ActionResult Details(int? id)
         {
             if (id == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -305,131 +213,6 @@ namespace DutchServisMCV.Controllers
 
             // Return View
             return View(match.FirstOrDefault());
-        }
-
-        private SResponse NameIsValid(string name, int id = -1)
-        {
-            if (name == null || name.Replace(" ", "") == "")
-            {
-                return new SResponse(false, "Pole Nazwa nie może być puste");
-            }
-
-            var repetitions = from tourn in database.Tournaments
-                              where tourn.Name == name.Trim() && tourn.TournamentId != id
-                              select tourn;
-            if (repetitions.Count() != 0)
-            {
-                return new SResponse(false, "Pole Nazwa musi być unikalne");
-            }
-
-            return new SResponse(true, "");
-        }
-
-        public ActionResult TournamentCreate()
-        {
-            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult TournamentCreate(TournamentInfo tournament)
-        {
-            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
-
-            // Name Validation
-            SResponse response = NameIsValid(tournament.Name);
-            if (!response.Good)
-            {
-                ViewBag.NameValidationMsg = response.Message;
-                return View();
-            }
-            tournament.Name = tournament.Name.Trim();
-
-            // Data Validation
-            if (!tournament.Date.HasValue)
-            {
-                ViewBag.DateValidationMsg = "Pole Data nie może być puste";
-                return View(tournament);
-            }
-
-            // Time Validation
-            if (!tournament.Time.HasValue)
-            {
-                ViewBag.TimeValidationMsg = "Pole Godzina nie może być puste";
-                return View(tournament);
-            }
-
-            // Add To Database
-            DateTime dt = tournament.Date.Value.AddMinutes(tournament.Time.Value.Hour * 60 + tournament.Time.Value.Minute);
-
-            Tournaments item = new Tournaments
-            {
-                Name = tournament.Name,
-                Type = "tournament",
-                StartDate = dt,
-                Location = tournament.Location,
-                Theme = tournament.Theme,
-                Info = tournament.Info
-            };
-            database.Tournaments.Add(item);
-            database.SaveChanges();
-
-            // Redirect
-            return RedirectToAction("TournamentEdit", new { name = tournament.Name });
-        }
-
-        public ActionResult LeagueCreate()
-        {
-            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
-
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LeagueCreate(LeaugeInfo league)
-        {
-            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
-
-            // Name Validation
-            SResponse response = NameIsValid(league.Name);
-            if (!response.Good)
-            {
-                ViewBag.NameValidationMsg = response.Message;
-                return View();
-            }
-            league.Name = league.Name.Trim();
-
-            // Start Data Validation
-            if (!league.StartDate.HasValue)
-            {
-                ViewBag.StartDateValidationMsg = "Pole Data rozpoczęcia nie może być puste";
-                return View(league);
-            }
-
-            // Time Validation
-            if (!league.EndDate.HasValue)
-            {
-                ViewBag.EndDateValidationMsg = "Pole Data zakończenia nie może być puste";
-                return View(league);
-            }
-
-            // Add To Database
-            Tournaments item = new Tournaments
-            {
-                Name = league.Name,
-                Type = "league",
-                StartDate = league.StartDate.Value,
-                EndDate = league.EndDate.Value,
-                Info = league.Info
-            };
-            database.Tournaments.Add(item);
-            database.SaveChanges();
-
-            // Redirect
-            return RedirectToAction("LeagueEdit", new { name = league.Name });
         }
     }
 }

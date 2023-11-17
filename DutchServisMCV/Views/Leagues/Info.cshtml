@@ -1,6 +1,6 @@
-﻿@model DutchServisMCV.Models.TournamentInfo
+﻿@model DutchServisMCV.Models.LeagueInfo
 @{
-    ViewBag.Title = @Model.Name;
+    ViewBag.Title = Model.Name;
 }
 
 <article>
@@ -10,13 +10,8 @@
 
             <ul class="list-stat mt-2 mb-1 list-unstyled">
                 <li><h4>Ogólne informacje</h4></li>
-                <li><b>Data:</b> @(((DateTime)Model.DateTime).ToLongDateString())</li>
-                <li><b>Godzina:</b> @(((DateTime)Model.DateTime).ToShortTimeString())</li>
-                <li><b>Lokalizacja:</b> @Model.Location</li>
-                @if (Model.Theme!=null)
-                {
-                    <li><b>Motyw:</b> @Model.Theme</li>
-                }
+                <li><b>Data rozpoczęcia:</b> @(((DateTime)Model.StartDate).ToLongDateString())</li>
+                <li><b>Data zakończenia:</b> @(((DateTime)Model.EndDate).ToLongDateString())</li>
             </ul>
 
             @if (@Model.Info != null)
@@ -32,14 +27,14 @@
             @if (Session["Username"] != null)
             {
                 <aside>
-                    <a href="@Url.Action("TournamentEdit", new { nickname = Model.Name })">
-                        <div class="admincontroll">Edytuj informacje o turnieju</div>
+                    <a href="@Url.Action("Edit", new { name = Model.Name })">
+                        <div class="admincontroll">Edytuj informacje o lidze</div>
                     </a>
                 </aside>
             }
         </section>
         <div class="col-xs-12 col-md-5">
-            <img class="img-responsive img-rounded border-1" id="tournament_picture" />
+            <img class="img-responsive img-rounded border-1" id="league_picture" />
         </div>
     </div>
 </article>
@@ -58,15 +53,11 @@
     <table class="table table-striped width-small">
         <thead>
             <tr class="table-style">
-                <th class="cell-1 disp-sm">Rozstawienie</th>
-                <th class="cell-1 disp-only-xs">Roz.</th>
-                <th class="cell-4">Gracz</th>
-                <th class="cell-2 disp-sm">Ranking</th>
-                <th class="cell-2 disp-only-xs">Rank.</th>
+                <th class="cell-1">Numer</th>
+                <th class="cell-2">Gracz</th>
             </tr>
         </thead>
         <tbody>
-            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingBefore); }
             @for (int i = 0; i < Model.Players.Count(); i++)
             {
                 <tr class="table-style">
@@ -74,7 +65,6 @@
                     <td class="cell-3">
                         @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
                     </td>
-                    <td class="cell-2">@Model.Players[i].RankingBefore</td>
                 </tr>
             }
             @if (Model.Players.Count() == 0)
@@ -102,7 +92,7 @@
         }
     </div>
 
-    @Html.Partial("partial/MatchList")
+    @Html.Partial("../Matches/Partial/MatchList")
 </section>
 
 <section>
@@ -116,33 +106,38 @@
         </aside>
     }
 
-    <table class="table table-striped width-medium">
+    <table class="table table-striped">
         <thead>
             <tr class="table-style">
                 <th class="cell-1">Miejsce</th>
                 <th class="cell-2">Gracz</th>
-                <th class="cell-2 disp-sm">Zdobyte punkty</th>
-                <th class="cell-2 disp-only-xs">Punkty</th>
+                <th class="cell-1">Punkty</th>
+                <th class="cell-1">Wygrane</th>
+                <th class="cell-1">Przegrane</th>
+                <th class="cell-1">Remisy</th>
                 <th class="cell-1">Nagroda</th>
             </tr>
         </thead>
         <tbody>
-            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingGet);}
+            @{ Model.Players.Sort(DutchServisMCV.Models.LeagueInfo.CompareByRankingGet);}
             @for (int i = Model.Players.Count() - 1; i >= 0; i--)
             {
-                <tr class="table-style">
-                    <td class="cell-1">@(Model.Players[i].Place).</td>
-                    <td class="cell-2">
-                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
-                    </td>
-                    <td class="cell-2">@Model.Players[i].RankingGet</td>
-                    <td class="cell-1">@Model.Players[i].Price</td>
-                </tr>
+            <tr class="table-style">
+                <td class="cell-1">@(Model.Players.Count() - i).</td>
+                <td class="cell-2">
+                    @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                </td>
+                <td class="cell-1">@Model.Players[i].Points</td>
+                <td class="cell-1">@Model.Players[i].Won</td>
+                <td class="cell-1">@Model.Players[i].Loose</td>
+                <td class="cell-1">@Model.Players[i].Draw</td>
+                <td class="cell-1">@Model.Players[i].Price</td>
+            </tr>
             }
             @if (Model.Players.Count() == 0)
             {
                 <tr>
-                    <td colspan="4" class="text-center">
+                    <td colspan="7" class="text-center">
                         Wyniki nie zostały jeszcze ogłoszone.
                     </td>
                 </tr>
@@ -154,6 +149,8 @@
 <script type="text/jscript">
     var path = @Url.Content("~/Content/");
 
-    setPath('tournament_picture', 'tournamentdata/', '@Model.Img', 'empty.png');
+    setPath('league_picture', 'tournamentdata/', '@Model.Img', 'empty.png');
 </script>
+
+
 

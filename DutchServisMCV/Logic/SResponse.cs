@@ -3,7 +3,7 @@
 
 namespace DutchServisMCV.Logic
 {
-    struct SResponse
+    public struct SResponse
     {
         public SResponse(bool good, string message)
         {

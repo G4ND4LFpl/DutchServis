@@ -10,7 +10,7 @@
                 <div class="col-xs-2 text-center">
                     @if (Session["Username"] != null)
                     {
-                        <aside class="admincontroll-text">@Html.ActionLink("Edytuj", "Edit", new { id = match.Id })</aside>
+                        <aside class="admincontroll-text">@Html.ActionLink("Edytuj", "Edit", "Matches", new { id = match.Id }, null)</aside>
                     }
                 </div>
             </div>
@@ -20,7 +20,7 @@
                 <div class="col-xs-2"></div>
                 <div class="col-xs-2"><b>Format:</b> Bo@(match.FormatBo)</div>
                 <div class="col-xs-2 text-center">
-                    @Html.ActionLink("Szczegóły", "Details", new { id = match.Id })
+                    @Html.ActionLink("Szczegóły", "Details", "Matches", new { id = match.Id }, null)
                 </div>
             </div>
         </div>
