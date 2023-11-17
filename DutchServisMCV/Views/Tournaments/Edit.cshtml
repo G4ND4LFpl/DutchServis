@@ -1,7 +1,165 @@
 ﻿@model DutchServisMCV.Models.TournamentInfo
 @{
-    ViewBag.Title = Model.Name + " - Edytuj";
+    ViewBag.Title = "Edytuj" + Model.Name;
 }
 
-<h2>TournamentEdit</h2>
+<header>
+    <h2>@Model.Name</h2>
+</header>
 
+@using (Html.BeginForm("Edit", "Tournaments", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal wide">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <section>
+        <!-- Edycja informacji o turnieju -->
+        <h4 class="mb-1">Edycja informacji o turnieju</h4>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Name">Nazwa</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                <div class="text-danger">@ViewBag.NameValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Date">Data</label>
+            <div class="col-md-9">
+                @{
+                    string date = (Model != null && Model.Date.HasValue) ? Model.Date.Value.ToString("yyyy-MM-dd") : "";
+                }
+                <input type="date" class="list-box form-control" id="Date" name="Date" value="@date" autocomplete="off">
+                <div class="text-danger">@ViewBag.DateValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Time">Godzina</label>
+            <div class="col-md-9">
+                @{
+                    string time = (Model != null && Model.Time.HasValue) ? Model.Time.Value.ToString("hh:mm") : "";
+                }
+                <input type="time" class="list-box form-control" id="Time" name="Time" value="@time" autocomplete="off">
+                <div class="text-danger">@ViewBag.TimeValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Location">Lokalizacja</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Theme">Motyw</label>
+            <div class="col-md-9">
+                @Html.EditorFor(model => model.Theme, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="File">Zdjęcie</label>
+            <div class="col-md-3">
+                <img class="img-responsive img-rounded border-1" id="img" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
+            <div class="col-md-9">
+                <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;" data-buttonText="Your label here." />
+                <div class="text-danger">@ViewBag.FileValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-3" for="Info">Informacje</label>
+            <div class="col-md-9">
+                <div class="textbox">
+                    <textarea class="list-box form-control" id="Info" name="Info" autocomplete="off"></textarea>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h4>Lista graczy</h4>
+
+        <div class="form-group">
+            <div class="col-md-12">
+                <div class="checkbox">
+                    <select class="list-box form-control disp-inline-block" id="select">
+                        <option selected="selected" value="null">Brak</option>
+                        @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                        {
+                            <option value="@item.Id">@item.Nickname</option>
+                        }
+                    </select>
+                    <button type="button" class="mx-1 disp-inline-block px-10" onclick="AddItem('select', 'set_table', 'result_table')">
+                        Dodaj gracza
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <table class="table width-small">
+            <thead class="table-style">
+                <tr>
+                    <th>Nr.</th>
+                    <th>Id</th>
+                    <th>Nick</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody class="table-style" id="set_table">
+                <!-- Javascript generated content -->
+            </tbody>
+        </table>
+
+        <h4>Wyniki</h4>
+
+        <table class="table width-small">
+            <thead class="table-style">
+                <tr>
+                    <th>Gracz</th>
+                    <th>Miejsce</th>
+                    <th>Otrzymany ranking</th>
+                    <th>Nagroda</th>
+                </tr>
+            </thead>
+            <tbody class="table-style" id="result_table">
+                <!-- Javascript generated content -->
+            </tbody>
+        </table>
+    </section>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-9">
+            <input type="submit" value="Zapisz zmiany" class="btn-warning" />
+            <a href="@Url.Action("Index", new { name=Model.Name })">
+                <div class="disp-inline-block buttonlike">
+                    Odrzuć zmiany
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+}
+
+<script type="text/jscript">
+    var list = (@Html.Raw(Json.Encode(Model))).Players;
+    var path = @Url.Content("~/Content/");
+
+    setPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');
+    UpdateTables('set_table', 'result_table');
+</script>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

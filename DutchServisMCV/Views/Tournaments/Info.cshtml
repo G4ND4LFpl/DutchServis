@@ -55,9 +55,10 @@
         </aside>
     }
 
+    @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingBefore); }
     <table class="table table-striped width-small">
-        <thead>
-            <tr class="table-style">
+        <thead class="table-style">
+            <tr>
                 <th class="cell-1 disp-sm">Rozstawienie</th>
                 <th class="cell-1 disp-only-xs">Roz.</th>
                 <th class="cell-4">Gracz</th>
@@ -65,19 +66,18 @@
                 <th class="cell-2 disp-only-xs">Rank.</th>
             </tr>
         </thead>
-        <tbody>
-            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingBefore); }
-            @for (int i = 0; i < Model.Players.Count(); i++)
+        <tbody class="table-style">
+            @for (int i = 0; i < Model.Players.Count; i++)
             {
-                <tr class="table-style">
-                    <td class="cell-1">@(i+1).</td>
+                <tr>
+                    <td class="cell-1"></td>
                     <td class="cell-3">
                         @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
                     </td>
                     <td class="cell-2">@Model.Players[i].RankingBefore</td>
                 </tr>
             }
-            @if (Model.Players.Count() == 0)
+            @if (Model.Players.Count == 0)
             {
                 <tr>
                     <td colspan="3" class="text-center">
@@ -102,7 +102,7 @@
         }
     </div>
 
-    @Html.Partial("../Matches/Partial/MatchList")
+    @Html.Partial("../Partial/_MatchList")
 </section>
 
 <section>
@@ -117,8 +117,8 @@
     }
 
     <table class="table table-striped width-medium">
-        <thead>
-            <tr class="table-style">
+        <thead class="table-style">
+            <tr>
                 <th class="cell-1">Miejsce</th>
                 <th class="cell-2">Gracz</th>
                 <th class="cell-2 disp-sm">Zdobyte punkty</th>
@@ -126,11 +126,11 @@
                 <th class="cell-1">Nagroda</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style">
             @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingGet);}
             @for (int i = Model.Players.Count() - 1; i >= 0; i--)
             {
-                <tr class="table-style">
+                <tr>
                     <td class="cell-1">@(Model.Players[i].Place).</td>
                     <td class="cell-2">
                         @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })

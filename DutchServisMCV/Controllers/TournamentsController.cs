@@ -9,7 +9,7 @@ using DutchServisMCV.Models;
 
 namespace DutchServisMCV.Controllers
 {
-    public class TournamentsController : MatchesController
+    public class TournamentsController : BaseMatchesController
     {
         public ActionResult Index()
         {
@@ -23,7 +23,7 @@ namespace DutchServisMCV.Controllers
                             Location = tourn.Location,
                             Theme = tourn.Theme,
                             Info = tourn.Info,
-                            Img = tourn.ImgPath
+                            Img = tourn.Img
                         };
 
             query = query.OrderByDescending(item => item.DateTime);
@@ -60,7 +60,7 @@ namespace DutchServisMCV.Controllers
                             Location = tourn.Location,
                             Theme = tourn.Theme,
                             Info = tourn.Info,
-                            Img = tourn.ImgPath,
+                            Img = tourn.Img,
                             Matches = matchlist.ToList(),
                             Players = playerslist.ToList()
                         };
@@ -69,7 +69,7 @@ namespace DutchServisMCV.Controllers
             return View(query.FirstOrDefault());
         }
 
-        public new ActionResult Create()
+        public ActionResult Create()
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
@@ -78,7 +78,7 @@ namespace DutchServisMCV.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public new ActionResult Create(TournamentInfo tournament)
+        public ActionResult Create(TournamentInfo tournament)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
@@ -105,6 +105,31 @@ namespace DutchServisMCV.Controllers
                 return View(tournament);
             }
 
+            // File Validation
+            response = FileManager.FileExtIsValid(tournament.File);
+            if (!response.Good)
+            {
+                ViewBag.FileValidationMsg = response.Message;
+                return View(tournament);
+            }
+
+            // Save File
+            if (tournament.File != null)
+            {
+                string path = Server.MapPath("~/Content/images/playerdata/") + tournament.File.FileName;
+
+                try
+                {
+                    FileManager.Save(tournament.File, path);
+                    tournament.Img = tournament.File?.FileName;
+                }
+                catch (OverrideException ex)
+                {
+                    ViewBag.FileValidationMsg = ex.Message;
+                    return View();
+                }
+            }
+
             // Add To Database
             DateTime dt = tournament.Date.Value.AddMinutes(tournament.Time.Value.Hour * 60 + tournament.Time.Value.Minute);
 
@@ -115,6 +140,7 @@ namespace DutchServisMCV.Controllers
                 StartDate = dt,
                 Location = tournament.Location,
                 Theme = tournament.Theme,
+                Img = tournament.Img,
                 Info = tournament.Info
             };
             database.Tournaments.Add(item);
@@ -124,11 +150,64 @@ namespace DutchServisMCV.Controllers
             return RedirectToAction("TournamentEdit", new { name = tournament.Name });
         }
 
-        public new ActionResult Edit()
+        public ActionResult Edit(string name)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
-            return View();
+            // Validate adress
+            if (name == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Tournaments t = database.Tournaments.Where(item => item.Name == name).FirstOrDefault();
+            if (t == null) return HttpNotFound();
+
+            // Prapare
+            var player1_games = GamesSumByMatch(1);
+            var player2_games = GamesSumByMatch(2);
+            var matchlist = GetMatchList(name, player1_games, player2_games);
+            var playerset = GetPlayerSet(name);
+
+            var playerlist = from players in database.Players
+                             select new Models.GameNamespace.PlayerItem
+                             {
+                                 Id = players.PlayerId,
+                                 Nickname = players.Nickname
+                             };
+            ViewBag.Players = playerlist.OrderBy(item => item.Nickname).ToList();
+
+            TournamentInfo tourn = new TournamentInfo
+            {
+                Name = t.Name,
+                Date = t.StartDate.Date,
+                Time = t.StartDate,
+                Location = t.Location,
+                Theme = t.Theme,
+                Info = t.Info,
+                Img = t.Img,
+                Matches = matchlist.ToList(),
+                Players = playerset.ToList(),
+            };
+
+            // Return View
+            return View(tourn);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(TournamentInfo tournament)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Prepare
+            var playerlist = from players in database.Players
+                             select new Models.GameNamespace.PlayerItem
+                             {
+                                 Id = players.PlayerId,
+                                 Nickname = players.Nickname
+                             };
+            ViewBag.Players = playerlist.OrderBy(item => item.Nickname).ToList();
+
+            // Return View
+            return View(tournament);
         }
     }
 }

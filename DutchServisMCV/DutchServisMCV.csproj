@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\BaseMatchesController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
@@ -265,7 +266,7 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Matches\Details.cshtml" />
     <Content Include="Views\Tournaments\Edit.cshtml" />
-    <Content Include="Views\Matches\Partial\MatchList.cshtml" />
+    <Content Include="Views\Partial\_MatchList.cshtml" />
     <Content Include="Views\Tournaments\Create.cshtml" />
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Leagues\Create.cshtml" />

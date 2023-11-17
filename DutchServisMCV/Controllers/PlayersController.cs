@@ -226,6 +226,7 @@ namespace DutchServisMCV.Controllers
                             Nickname = player.Nickname,
                             Name = player.Name,
                             Surname = player.Surname,
+                            Id = player.PlayerId,
                             JoinDate = (
                                 player.JoinDate != null ? (DateTime)player.JoinDate : DateTime.Now
                             ),
@@ -266,18 +267,6 @@ namespace DutchServisMCV.Controllers
 
             return new SResponse(true, "");
         }
-        private SResponse FileExtIsValid(HttpPostedFileBase file)
-        {
-            if (file != null)
-            {
-                string ext = Path.GetExtension(file.FileName);
-                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
-                {
-                    return new SResponse(false, "Przesłany plik nie posiada akceptowanego rozszerzenia");
-                }
-            }
-            return new SResponse(true, "");
-        }
 
         public ActionResult Add()
         {
@@ -306,7 +295,7 @@ namespace DutchServisMCV.Controllers
             player.Nickname = player.Nickname.Trim();
 
             // File Validation
-            response = FileExtIsValid(player.File);
+            response = FileManager.FileExtIsValid(player.File);
             if(!response.Good)
             {
                 ViewBag.FileValidationMsg = response.Message;
@@ -378,7 +367,7 @@ namespace DutchServisMCV.Controllers
             player.Nickname = player.Nickname.Trim();
 
             // File Validation
-            response = FileExtIsValid(player.File);
+            response = FileManager.FileExtIsValid(player.File);
             if (!response.Good)
             {      
                 ViewBag.FileValidationMsg = response.Message;

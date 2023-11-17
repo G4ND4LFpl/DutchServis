@@ -9,6 +9,7 @@ namespace DutchServisMCV.Models
     {
         public class PlayerItem
         {
+            public int Id { get; set; }
             public string Nickname { get; set; }
             public Nullable<double> Price { get; set; }
         }

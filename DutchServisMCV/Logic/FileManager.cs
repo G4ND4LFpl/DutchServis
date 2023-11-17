@@ -32,5 +32,18 @@ namespace DutchServisMCV.Logic
             }
             else throw new FileNotFoundException("Plik o nazwie " + Path.GetFileName(path) + " nie istnieje");
         }
+
+        public static SResponse FileExtIsValid(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                string ext = Path.GetExtension(file.FileName);
+                if (ext != ".png" && ext != ".jpg" && ext != ".jpeg")
+                {
+                    return new SResponse(false, "Przesłany plik nie posiada akceptowanego rozszerzenia");
+                }
+            }
+            return new SResponse(true, "");
+        }
     }
 }

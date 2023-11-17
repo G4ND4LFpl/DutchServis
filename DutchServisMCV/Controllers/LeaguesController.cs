@@ -9,7 +9,7 @@ using DutchServisMCV.Models;
 
 namespace DutchServisMCV.Controllers
 {
-    public class LeaguesController : MatchesController
+    public class LeaguesController : BaseMatchesController
     {
         public ActionResult Index()
         {
@@ -22,7 +22,7 @@ namespace DutchServisMCV.Controllers
                             StartDate = tourn.StartDate,
                             EndDate = (DateTime)tourn.EndDate,
                             Info = tourn.Info,
-                            Img = tourn.ImgPath
+                            Img = tourn.Img
                         };
 
             query = query.OrderByDescending(item => item.StartDate);
@@ -58,7 +58,7 @@ namespace DutchServisMCV.Controllers
                             StartDate = tourn.StartDate,
                             EndDate = tourn.EndDate.Equals(null) ? DateTime.MinValue : (DateTime)tourn.EndDate,
                             Info = tourn.Info,
-                            Img = tourn.ImgPath,
+                            Img = tourn.Img,
                             Matches = matchlist.ToList(),
                             Players = playerslist.ToList()
                         };
@@ -67,7 +67,7 @@ namespace DutchServisMCV.Controllers
             return View(query.FirstOrDefault());
         }
 
-        public new ActionResult Create()
+        public ActionResult Create()
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
@@ -76,7 +76,7 @@ namespace DutchServisMCV.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public new ActionResult Create(LeagueInfo league)
+        public ActionResult Create(LeagueInfo league)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
@@ -119,7 +119,7 @@ namespace DutchServisMCV.Controllers
             return RedirectToAction("LeagueEdit", new { name = league.Name });
         }
 
-        public new ActionResult Edit()
+        public ActionResult Edit()
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 

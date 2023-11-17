@@ -164,8 +164,6 @@ function compareRating(a, b) {
 function addPlayerTr(nr, player) {
     var addedHtmlCode = "";
 
-    addedHtmlCode += "<tr class=\"table-style\">";
-
     addedHtmlCode += "<td>" + nr + ".</td>";
 
     addedHtmlCode += "<td class=\"disp-md\">";
@@ -182,14 +180,10 @@ function addPlayerTr(nr, player) {
 
     addedHtmlCode += "<td>" + player.Rating.toFixed(1) + "</td>";
 
-    addedHtmlCode += "</tr>";
-
     return addedHtmlCode;
 }
 function addErrorTr(nr) {
     var addedHtmlCode = "";
-
-    addedHtmlCode += "<tr class=\"table-style\">";
 
     addedHtmlCode += "<td class=\"cell-1\">";
     addedHtmlCode += nr + ".";
@@ -199,18 +193,16 @@ function addErrorTr(nr) {
     addedHtmlCode += "Nie powiodło się załadowanie gracza";
     addedHtmlCode += "</td>";
 
-    addedHtmlCode += "</tr>";
-
     return addedHtmlCode;
 }
 function updateHtml() {
     var innerHtmlCode = "";
     for (var i = 0; i < dataset.length; i++) {
         try {
-            innerHtmlCode += addPlayerTr(i+1, dataset[i]);
+            innerHtmlCode += "<tr>" + addPlayerTr(i + 1, dataset[i]) + "</tr>";
         }
         catch {
-            innerHtmlCode += addErrorTr(i+1);
+            innerHtmlCode += "<tr>" + addErrorTr(i + 1) + "</tr>";
         }
     }
     document.getElementById("table_body").innerHTML = innerHtmlCode;

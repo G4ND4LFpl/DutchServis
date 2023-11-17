@@ -16,11 +16,15 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <h4>Edycja informacji</h4>
+        <h4 class="mb-1">Edycja informacji</h4>
 
-        <div class="form-group disp-none">
-            @Html.TextBoxFor(model => model.PlayerId, new { @readonly = "readonly", htmlAttributes = new { @autocomplete = "off" } })
+        <div class="form-group">
+            <label class="control-label col-md-2" for="PlayerId">Id</label>
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.PlayerId, new { @readonly = "readonly", @class = "form-control text-box single-line", @autocomplete = "off" })
+            </div>
         </div>
+
         <div class="form-group disp-none">
             @Html.TextBoxFor(model => model.Img, new { @readonly = "readonly", htmlAttributes = new { @autocomplete = "off" } })
         </div>
@@ -103,7 +107,7 @@
         <div class="form-group">
             <label class="control-label col-md-2" for="File">Awatar</label>
             <div class="col-md-3">
-                <img class="img-responsive img-rounded border-1" id="profile_img" />
+                <img class="img-responsive img-rounded border-1" id="img" />
             </div>
         </div>
 
@@ -132,7 +136,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Zatwierdź zmiany" class="btn-warning" />
-                <a href="@Url.Action("Index")">
+                <a href="@Url.Action("Info", new { nickname=Model.Nickname })">
                     <div class="disp-inline-block buttonlike">
                         Odrzuć zmiany
                     </div>
@@ -145,7 +149,7 @@
 <script type="text/jscript">
     var path = @Url.Content("~/Content/");
 
-    setPath('profile_img', 'playerdata/', '@Model.Img', 'avatar.png');
+    setPath('img', 'playerdata/', '@Model.Img', 'avatar.png');
 </script>
 
 @section Scripts {

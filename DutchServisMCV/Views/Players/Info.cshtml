@@ -15,6 +15,10 @@
 
             <ul class="list-stat mt-2 list-unstyled">
                 <li><h4>Ogólne informacje</h4></li>
+                @if (Session["Username"] != null)
+                {
+                    <li><b>Id:</b> @Model.Id</li>
+                }
                 <li><b>Status:</b> @Model.Status</li>
                 <li><b>Data dołączenia:</b> @Model.JoinDate.Value.ToShortDateString()</li>
                 <li><b>Klan:</b> @Model.Clan</li>

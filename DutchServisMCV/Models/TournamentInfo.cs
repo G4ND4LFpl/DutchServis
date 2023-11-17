@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DutchServisMCV.Models.GameNamespace;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
+using System.Web;
 
 namespace DutchServisMCV.Models
 {
@@ -16,6 +17,7 @@ namespace DutchServisMCV.Models
         public string Theme { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
+        public HttpPostedFileBase File { get; set; }
         public List<MatchData> Matches { get; set; }
         public List<PlayerTournItem> Players { get; set; }
 
