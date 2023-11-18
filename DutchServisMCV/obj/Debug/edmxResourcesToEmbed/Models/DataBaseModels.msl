@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="DutchDatabaseModelStoreContainer" CdmEntityContainer="DutchDatabaseEntities1">
+  <EntityContainerMapping StorageEntityContainer="DutchDatabaseModelStoreContainer" CdmEntityContainer="DutchDatabaseEntities">
     <EntitySetMapping Name="Clans">
       <EntityTypeMapping TypeName="DutchDatabaseModel.Clans">
         <MappingFragment StoreEntitySet="Clans">
@@ -79,20 +79,13 @@
     <EntitySetMapping Name="PlayerSet">
       <EntityTypeMapping TypeName="DutchDatabaseModel.PlayerSet">
         <MappingFragment StoreEntitySet="PlayerSet">
+          <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+          <ScalarProperty Name="Prize" ColumnName="Prize" />
+          <ScalarProperty Name="RankingGet" ColumnName="RankingGet" />
+          <ScalarProperty Name="Place" ColumnName="Place" />
           <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
           <ScalarProperty Name="Ranking" ColumnName="Ranking" />
           <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="TournamentResults">
-      <EntityTypeMapping TypeName="DutchDatabaseModel.TournamentResults">
-        <MappingFragment StoreEntitySet="TournamentResults">
-          <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
-          <ScalarProperty Name="Place" ColumnName="Place" />
-          <ScalarProperty Name="RankingGet" ColumnName="RankingGet" />
-          <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-          <ScalarProperty Name="Prize" ColumnName="Prize" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

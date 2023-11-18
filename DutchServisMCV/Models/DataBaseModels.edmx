@@ -53,31 +53,16 @@
           <Property Name="Img" Type="varchar" MaxLength="50" />
           <Property Name="Active" Type="bit" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DutchDatabase.dbo.PlayerSet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="PlayerSet">
           <Key>
-            <PropertyRef Name="TournamentId" />
-            <PropertyRef Name="Ranking" />
-            <PropertyRef Name="PlayerId" />
+            <PropertyRef Name="EntryId" />
           </Key>
+          <Property Name="EntryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="TournamentId" Type="int" Nullable="false" />
-          <Property Name="Ranking" Type="float" Nullable="false" />
           <Property Name="PlayerId" Type="int" Nullable="false" />
-        </EntityType>
-        <!--Errors Found During Generation:
-warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="TournamentResults">
-          <Key>
-            <PropertyRef Name="TournamentId" />
-            <PropertyRef Name="Place" />
-            <PropertyRef Name="RankingGet" />
-            <PropertyRef Name="PlayerId" />
-          </Key>
-          <Property Name="TournamentId" Type="int" Nullable="false" />
-          <Property Name="Place" Type="varchar" MaxLength="10" Nullable="false" />
-          <Property Name="RankingGet" Type="float" Nullable="false" />
-          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="Ranking" Type="float" />
+          <Property Name="Place" Type="varchar" MaxLength="10" />
+          <Property Name="RankingGet" Type="float" />
           <Property Name="Prize" Type="float" />
         </EntityType>
         <EntityType Name="Tournaments">
@@ -106,24 +91,9 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tournaments" EntityType="Self.Tournaments" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [PlayerSet].[TournamentId] AS [TournamentId], 
-    [PlayerSet].[Ranking] AS [Ranking], 
-    [PlayerSet].[PlayerId] AS [PlayerId]
-    FROM [dbo].[PlayerSet] AS [PlayerSet]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [TournamentResults].[TournamentId] AS [TournamentId], 
-    [TournamentResults].[Place] AS [Place], 
-    [TournamentResults].[RankingGet] AS [RankingGet], 
-    [TournamentResults].[PlayerId] AS [PlayerId], 
-    [TournamentResults].[Prize] AS [Prize]
-    FROM [dbo].[TournamentResults] AS [TournamentResults]</DefiningQuery>
-          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -144,8 +114,8 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="MatchId" Type="Int32" Nullable="false" />
           <Property Name="PointsPlayer1" Type="Int32" />
           <Property Name="PointsPlayer2" Type="Int32" />
-          <Property Name="MistakesPlayer1" Type="Int32" />
-          <Property Name="MistakesPlayer2" Type="Int32" />
+          <Property Name="MistakesPlayer1" Type="Int32" DefaultValue="0" />
+          <Property Name="MistakesPlayer2" Type="Int32" DefaultValue="0" />
           <Property Name="Win" Type="Int32" Nullable="false" />
           <Property Name="Opening" Type="Int32" Nullable="false" />
           <Property Name="Dutch" Type="Int32" Nullable="false" />
@@ -159,21 +129,21 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <Property Name="Player2_Id" Type="Int32" Nullable="false" />
           <Property Name="TournamentId" Type="Int32" Nullable="false" />
           <Property Name="PlayDate" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="BonusGamePlayer1" Type="Boolean" />
-          <Property Name="BonusGamePlayer2" Type="Boolean" />
+          <Property Name="BonusGamePlayer1" Type="Boolean" DefaultValue="false" />
+          <Property Name="BonusGamePlayer2" Type="Boolean" DefaultValue="false" />
           <Property Name="FormatBo" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Players">
           <Key>
             <PropertyRef Name="PlayerId" />
           </Key>
-          <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="None" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Nickname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="ClanId" Type="Int32" />
-          <Property Name="Rating" Type="Double" />
-          <Property Name="Active" Type="Boolean" />
+          <Property Name="Rating" Type="Double" DefaultValue="1000" />
+          <Property Name="Active" Type="Boolean" DefaultValue="true" />
           <Property Name="JoinDate" Type="DateTime" Precision="0" />
           <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -200,28 +170,17 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
         </EntityType>
         <EntityType Name="PlayerSet">
           <Key>
-            <PropertyRef Name="TournamentId" />
-            <PropertyRef Name="Ranking" />
-            <PropertyRef Name="PlayerId" />
+            <PropertyRef Name="EntryId" />
           </Key>
           <Property Name="TournamentId" Type="Int32" Nullable="false" />
-          <Property Name="Ranking" Type="Double" Nullable="false" />
+          <Property Name="Ranking" Type="Double" Nullable="true" />
           <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="Place" Type="String" Nullable="true" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RankingGet" Type="Double" Nullable="true" />
+          <Property Name="Prize" Type="Double" DefaultValue="0" Nullable="true" />
+          <Property Name="EntryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
-        <EntityType Name="TournamentResults">
-          <Key>
-            <PropertyRef Name="TournamentId" />
-            <PropertyRef Name="Place" />
-            <PropertyRef Name="RankingGet" />
-            <PropertyRef Name="PlayerId" />
-          </Key>
-          <Property Name="TournamentId" Type="Int32" Nullable="false" />
-          <Property Name="Place" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="RankingGet" Type="Double" Nullable="false" />
-          <Property Name="PlayerId" Type="Int32" Nullable="false" />
-          <Property Name="Prize" Type="Double" />
-        </EntityType>
-        <EntityContainer Name="DutchDatabaseEntities1" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="DutchDatabaseEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
           <EntitySet Name="Clans" EntityType="Self.Clans" />
           <EntitySet Name="Games" EntityType="Self.Games" />
           <EntitySet Name="Matches" EntityType="Self.Matches" />
@@ -229,14 +188,13 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <EntitySet Name="Tournaments" EntityType="Self.Tournaments" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" />
-          <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" />
         </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="DutchDatabaseModelStoreContainer" CdmEntityContainer="DutchDatabaseEntities1">
+        <EntityContainerMapping StorageEntityContainer="DutchDatabaseModelStoreContainer" CdmEntityContainer="DutchDatabaseEntities">
           <EntitySetMapping Name="Clans">
             <EntityTypeMapping TypeName="DutchDatabaseModel.Clans">
               <MappingFragment StoreEntitySet="Clans">
@@ -315,20 +273,13 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
           <EntitySetMapping Name="PlayerSet">
             <EntityTypeMapping TypeName="DutchDatabaseModel.PlayerSet">
               <MappingFragment StoreEntitySet="PlayerSet">
+                <ScalarProperty Name="EntryId" ColumnName="EntryId" />
+                <ScalarProperty Name="Prize" ColumnName="Prize" />
+                <ScalarProperty Name="RankingGet" ColumnName="RankingGet" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
                 <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
                 <ScalarProperty Name="Ranking" ColumnName="Ranking" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="TournamentResults">
-            <EntityTypeMapping TypeName="DutchDatabaseModel.TournamentResults">
-              <MappingFragment StoreEntitySet="TournamentResults">
-                <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
-                <ScalarProperty Name="Place" ColumnName="Place" />
-                <ScalarProperty Name="RankingGet" ColumnName="RankingGet" />
-                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
-                <ScalarProperty Name="Prize" ColumnName="Prize" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -346,7 +297,7 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />

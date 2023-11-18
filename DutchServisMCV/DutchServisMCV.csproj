@@ -172,17 +172,14 @@
     <Compile Include="Models\PassChange.cs" />
     <Compile Include="Models\PlayerData.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
+    <Compile Include="Models\LeagueInfo.cs" />
     <Compile Include="Models\Players.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerSet.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\LeagueInfo.cs" />
     <Compile Include="Models\TournamentInfo.cs" />
-    <Compile Include="Models\TournamentResults.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Tournaments.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>

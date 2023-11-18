@@ -9,6 +9,7 @@ namespace DutchServisMCV.Models
 {
     public class TournamentInfo
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public DateTime DateTime { get; set; }
         public DateTime? Date { get; set; }

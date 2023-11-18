@@ -12,7 +12,7 @@ namespace DutchServisMCV.Controllers
 {
     public class Test : Controller
     {
-        private DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        private DutchDatabaseEntities database = new DutchDatabaseEntities();
 
         /* WYGENEROWANE AUTOMATYCZNIE FUKCJE */
 

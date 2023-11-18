@@ -14,6 +14,13 @@ namespace DutchServisMCV.Models
     
     public partial class Matches
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Matches()
+        {
+            this.BonusGamePlayer1 = false;
+            this.BonusGamePlayer2 = false;
+        }
+    
         public int MatchId { get; set; }
         public int Player1_Id { get; set; }
         public int Player2_Id { get; set; }

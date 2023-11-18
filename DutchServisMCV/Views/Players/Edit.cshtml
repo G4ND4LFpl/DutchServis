@@ -104,10 +104,19 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group disp-md">
             <label class="control-label col-md-2" for="File">Awatar</label>
             <div class="col-md-3">
                 <img class="img-responsive img-rounded border-1" id="img" />
+            </div>
+        </div>
+
+        <div class="form-group disp-only-sm">
+            <label class="control-label col-md-2" for="File">Awatar</label>
+            <div class="col-md-3">
+                @{ string imgStr = "brak"; }
+                @if (Model.Img != null) { imgStr = "\"" + Model.Img + "\""; }
+                @imgStr
             </div>
         </div>
 
@@ -137,7 +146,7 @@
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Zatwierdź zmiany" class="btn-warning" />
                 <a href="@Url.Action("Info", new { nickname=Model.Nickname })">
-                    <div class="disp-inline-block buttonlike">
+                    <div class="disp-inline-block buttonlike-heavy">
                         Odrzuć zmiany
                     </div>
                 </a>

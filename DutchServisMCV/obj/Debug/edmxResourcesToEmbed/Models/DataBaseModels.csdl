@@ -15,8 +15,8 @@
     <Property Name="MatchId" Type="Int32" Nullable="false" />
     <Property Name="PointsPlayer1" Type="Int32" />
     <Property Name="PointsPlayer2" Type="Int32" />
-    <Property Name="MistakesPlayer1" Type="Int32" />
-    <Property Name="MistakesPlayer2" Type="Int32" />
+    <Property Name="MistakesPlayer1" Type="Int32" DefaultValue="0" />
+    <Property Name="MistakesPlayer2" Type="Int32" DefaultValue="0" />
     <Property Name="Win" Type="Int32" Nullable="false" />
     <Property Name="Opening" Type="Int32" Nullable="false" />
     <Property Name="Dutch" Type="Int32" Nullable="false" />
@@ -30,21 +30,21 @@
     <Property Name="Player2_Id" Type="Int32" Nullable="false" />
     <Property Name="TournamentId" Type="Int32" Nullable="false" />
     <Property Name="PlayDate" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="BonusGamePlayer1" Type="Boolean" />
-    <Property Name="BonusGamePlayer2" Type="Boolean" />
+    <Property Name="BonusGamePlayer1" Type="Boolean" DefaultValue="false" />
+    <Property Name="BonusGamePlayer2" Type="Boolean" DefaultValue="false" />
     <Property Name="FormatBo" Type="Int32" Nullable="false" />
   </EntityType>
   <EntityType Name="Players">
     <Key>
       <PropertyRef Name="PlayerId" />
     </Key>
-    <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PlayerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" ConcurrencyMode="None" a:SetterAccess="Internal" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
     <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="Nickname" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="ClanId" Type="Int32" />
-    <Property Name="Rating" Type="Double" />
-    <Property Name="Active" Type="Boolean" />
+    <Property Name="Rating" Type="Double" DefaultValue="1000" />
+    <Property Name="Active" Type="Boolean" DefaultValue="true" />
     <Property Name="JoinDate" Type="DateTime" Precision="0" />
     <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
   </EntityType>
@@ -71,28 +71,17 @@
   </EntityType>
   <EntityType Name="PlayerSet">
     <Key>
-      <PropertyRef Name="TournamentId" />
-      <PropertyRef Name="Ranking" />
-      <PropertyRef Name="PlayerId" />
+      <PropertyRef Name="EntryId" />
     </Key>
     <Property Name="TournamentId" Type="Int32" Nullable="false" />
-    <Property Name="Ranking" Type="Double" Nullable="false" />
+    <Property Name="Ranking" Type="Double" Nullable="true" />
     <Property Name="PlayerId" Type="Int32" Nullable="false" />
+    <Property Name="Place" Type="String" Nullable="true" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="RankingGet" Type="Double" Nullable="true" />
+    <Property Name="Prize" Type="Double" DefaultValue="0" Nullable="true" />
+    <Property Name="EntryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
   </EntityType>
-  <EntityType Name="TournamentResults">
-    <Key>
-      <PropertyRef Name="TournamentId" />
-      <PropertyRef Name="Place" />
-      <PropertyRef Name="RankingGet" />
-      <PropertyRef Name="PlayerId" />
-    </Key>
-    <Property Name="TournamentId" Type="Int32" Nullable="false" />
-    <Property Name="Place" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="RankingGet" Type="Double" Nullable="false" />
-    <Property Name="PlayerId" Type="Int32" Nullable="false" />
-    <Property Name="Prize" Type="Double" />
-  </EntityType>
-  <EntityContainer Name="DutchDatabaseEntities1" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="DutchDatabaseEntities" annotation:LazyLoadingEnabled="true" a:TypeAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration">
     <EntitySet Name="Clans" EntityType="Self.Clans" />
     <EntitySet Name="Games" EntityType="Self.Games" />
     <EntitySet Name="Matches" EntityType="Self.Matches" />
@@ -100,6 +89,5 @@
     <EntitySet Name="Tournaments" EntityType="Self.Tournaments" />
     <EntitySet Name="Users" EntityType="Self.Users" />
     <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" />
-    <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" />
   </EntityContainer>
 </Schema>

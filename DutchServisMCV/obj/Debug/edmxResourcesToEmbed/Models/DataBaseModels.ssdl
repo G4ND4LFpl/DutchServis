@@ -48,31 +48,16 @@
     <Property Name="Img" Type="varchar" MaxLength="50" />
     <Property Name="Active" Type="bit" />
   </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'DutchDatabase.dbo.PlayerSet' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
   <EntityType Name="PlayerSet">
     <Key>
-      <PropertyRef Name="TournamentId" />
-      <PropertyRef Name="Ranking" />
-      <PropertyRef Name="PlayerId" />
+      <PropertyRef Name="EntryId" />
     </Key>
+    <Property Name="EntryId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="TournamentId" Type="int" Nullable="false" />
-    <Property Name="Ranking" Type="float" Nullable="false" />
     <Property Name="PlayerId" Type="int" Nullable="false" />
-  </EntityType>
-  <!--Errors Found During Generation:
-warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="TournamentResults">
-    <Key>
-      <PropertyRef Name="TournamentId" />
-      <PropertyRef Name="Place" />
-      <PropertyRef Name="RankingGet" />
-      <PropertyRef Name="PlayerId" />
-    </Key>
-    <Property Name="TournamentId" Type="int" Nullable="false" />
-    <Property Name="Place" Type="varchar" MaxLength="10" Nullable="false" />
-    <Property Name="RankingGet" Type="float" Nullable="false" />
-    <Property Name="PlayerId" Type="int" Nullable="false" />
+    <Property Name="Ranking" Type="float" />
+    <Property Name="Place" Type="varchar" MaxLength="10" />
+    <Property Name="RankingGet" Type="float" />
     <Property Name="Prize" Type="float" />
   </EntityType>
   <EntityType Name="Tournaments">
@@ -101,23 +86,8 @@ warning 6002: The table/view 'DutchDatabase.dbo.TournamentResults' does not have
     <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Players" EntityType="Self.Players" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Tournaments" EntityType="Self.Tournaments" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [PlayerSet].[TournamentId] AS [TournamentId], 
-    [PlayerSet].[Ranking] AS [Ranking], 
-    [PlayerSet].[PlayerId] AS [PlayerId]
-    FROM [dbo].[PlayerSet] AS [PlayerSet]</DefiningQuery>
-    </EntitySet>
-    <EntitySet Name="TournamentResults" EntityType="Self.TournamentResults" store:Type="Tables" store:Schema="dbo">
-      <DefiningQuery>SELECT 
-    [TournamentResults].[TournamentId] AS [TournamentId], 
-    [TournamentResults].[Place] AS [Place], 
-    [TournamentResults].[RankingGet] AS [RankingGet], 
-    [TournamentResults].[PlayerId] AS [PlayerId], 
-    [TournamentResults].[Prize] AS [Prize]
-    FROM [dbo].[TournamentResults] AS [TournamentResults]</DefiningQuery>
-    </EntitySet>
   </EntityContainer>
 </Schema>

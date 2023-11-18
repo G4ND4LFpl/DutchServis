@@ -14,7 +14,7 @@ namespace DutchServisMCV.Controllers
 {
     public class PlayersController : Controller
     {
-        DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        DutchDatabaseEntities database = new DutchDatabaseEntities();
         const double baseRating = 1000;
 
         public ActionResult Index()
@@ -34,9 +34,9 @@ namespace DutchServisMCV.Controllers
                             Nickname = player.Nickname,
                             Img = player.Img,
                             Clan = groupedclans.FirstOrDefault().Name,
-                            Ranking = (from res in database.TournamentResults
-                                       where res.PlayerId == player.PlayerId
-                                       group res by res.PlayerId into gres
+                            Ranking = (from set in database.PlayerSet
+                                       where set.PlayerId == player.PlayerId
+                                       group set by set.PlayerId into gres
                                        select new
                                        {
                                            Id = gres.Key,
@@ -186,18 +186,18 @@ namespace DutchServisMCV.Controllers
             if( database.Players.Where(item => item.Nickname == nickname).FirstOrDefault() == null) return HttpNotFound();
 
             // Ranking
-            var rank_query = from res in database.TournamentResults
+            var rank_query = from set in database.PlayerSet
                              join player in database.Players
-                             on res.PlayerId equals player.PlayerId
+                             on set.PlayerId equals player.PlayerId
                              where player.Nickname == nickname
-                             group res by player.Nickname into gres
+                             group set by player.Nickname into gres
                              select new
                              {
                                  Id = gres.Key,
                                  Sum = gres.Sum(item => item.RankingGet),
                              };
 
-            double rank = 0;
+            double? rank = 0;
             if (rank_query.Count() != 0)
             {
                 rank = rank_query.FirstOrDefault().Sum;
@@ -320,9 +320,6 @@ namespace DutchServisMCV.Controllers
             }
 
             // Add To Database
-            player.JoinDate = DateTime.Now;
-            player.Rating = baseRating;
-
             database.Players.Add(player);
             database.SaveChanges();
 

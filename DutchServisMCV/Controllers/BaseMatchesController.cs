@@ -13,7 +13,7 @@ namespace DutchServisMCV.Controllers
 {
     public class BaseMatchesController : Controller
     {
-        protected DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        protected DutchDatabaseEntities database = new DutchDatabaseEntities();
 
         // Redirect function
         public ActionResult Link(string name)
@@ -38,22 +38,15 @@ namespace DutchServisMCV.Controllers
                     on set.TournamentId equals tourn.TournamentId
                     join players in database.Players
                     on set.PlayerId equals players.PlayerId
-                    join res in (from res in database.TournamentResults
-                                 join tourn in database.Tournaments
-                                 on res.TournamentId equals tourn.TournamentId
-                                 where tourn.Name == tournament
-                                 select res
-                                 )
-                    on set.PlayerId equals res.PlayerId
                     where tourn.Name == tournament
                     select new PlayerTournItem
                     {
                         Id = players.PlayerId, 
                         Nickname = players.Nickname,
                         RankingBefore = set.Ranking,
-                        Place = res.Place,
-                        RankingGet = res.RankingGet,
-                        Price = res.Prize,
+                        Place = set.Place,
+                        RankingGet = set.RankingGet,
+                        Price = set.Prize
                     });
         }
         protected IQueryable<PlayerLeagueItem> GetPlayerSet(string tournament, IQueryable<MatchData> matchlist)
@@ -92,13 +85,6 @@ namespace DutchServisMCV.Controllers
                     on set.TournamentId equals tourn.TournamentId
                     join players in database.Players
                     on set.PlayerId equals players.PlayerId
-                    join res in (from res in database.TournamentResults
-                                 join tourn in database.Tournaments
-                                 on res.TournamentId equals tourn.TournamentId
-                                 where tourn.Name == tournament
-                                 select res
-                                 )
-                    on set.PlayerId equals res.PlayerId
                     join stats in stat_table
                     on players.Nickname equals stats.Player
                     where tourn.Name == tournament
@@ -106,7 +92,7 @@ namespace DutchServisMCV.Controllers
                     {
                         Id = players.PlayerId,
                         Nickname = players.Nickname,
-                        Price = res.Prize,
+                        Price = set.Prize,
                         Points = stats.Points,
                         Won = stats.Won,
                         Loose = stats.Loose,

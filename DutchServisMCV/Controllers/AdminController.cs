@@ -13,7 +13,7 @@ namespace DutchServisMCV.Controllers
 {
     public class AdminController : Controller
     {
-        DutchDatabaseEntities1 database = new DutchDatabaseEntities1();
+        DutchDatabaseEntities database = new DutchDatabaseEntities();
         PasswordHasher hasher = new PasswordHasher();
 
         private bool IsLoginCorrect(Users userInfo)

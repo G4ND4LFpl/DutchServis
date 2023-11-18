@@ -11,14 +11,14 @@ namespace DutchServisMCV.Models
         {
             public int Id { get; set; }
             public string Nickname { get; set; }
-            public Nullable<double> Price { get; set; }
         }
 
         public class PlayerTournItem : PlayerItem
         {
-            public double RankingBefore { get; set; }
+            public Nullable<double> RankingBefore { get; set; }
             public string Place { get; set; }
-            public double RankingGet { get; set; }
+            public Nullable<double> RankingGet { get; set; }
+            public Nullable<double> Price { get; set; }
         }
 
         public class PlayerLeagueItem : PlayerItem
@@ -27,6 +27,7 @@ namespace DutchServisMCV.Models
             public int Won { get; set; }
             public int Loose { get; set; }
             public int Draw { get; set; }
+            public Nullable<double> Price { get; set; }
         }
 
         public class GamesSum

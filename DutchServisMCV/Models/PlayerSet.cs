@@ -14,8 +14,18 @@ namespace DutchServisMCV.Models
     
     public partial class PlayerSet
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public PlayerSet()
+        {
+            this.Prize = 0D;
+        }
+    
         public int TournamentId { get; set; }
-        public double Ranking { get; set; }
+        public Nullable<double> Ranking { get; set; }
         public int PlayerId { get; set; }
+        public string Place { get; set; }
+        public Nullable<double> RankingGet { get; set; }
+        public Nullable<double> Prize { get; set; }
+        public int EntryId { get; internal set; }
     }
 }

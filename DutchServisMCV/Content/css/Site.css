@@ -261,8 +261,12 @@ a.boldlink:hover, a.textlink:hover {
     text-decoration: none;
     color: #6495ed;
 }
+a.text-danger:hover {
+    text-decoration: none;
+    color: black;
+}
 @media (min-width: 768px) {
-    a.boldlink:hover {
+    a .boldlink:hover {
         font-weight: 900;
     }
 }
@@ -437,6 +441,23 @@ footer {
     display: inline-block;
 }
 .buttonlike {
+    color: gray;
+    min-width: 100px;
+    margin-left: 10px;
+    padding: 2px 5px 2px 5px;
+    text-align: center;
+    border-style: solid;
+    border-color: grey;
+    border-radius: 3px;
+    border-width: 1px;
+    background-color: buttonface;
+    color: black;
+}
+.buttonlike:hover {
+    border-style: inset;
+    background-color: #e3e3e3;
+}
+.buttonlike-heavy {
     min-width: 100px;
     margin-left: 10px;
     padding: 1px 5px 0px 5px;
@@ -444,10 +465,10 @@ footer {
     border-style: ridge;
     border-color: grey;
     border-width: 2px 3px 3px 2px;
-    background-color: lightgray;
+    background-color: buttonface;
     color: black;
 }
-.buttonlike:hover {
+.buttonlike-heavy:hover {
     background-color: darkgray;
     color: white;
 }
