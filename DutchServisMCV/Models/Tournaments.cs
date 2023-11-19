@@ -14,6 +14,12 @@ namespace DutchServisMCV.Models
     
     public partial class Tournaments
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Tournaments()
+        {
+            this.ShowResults = false;
+        }
+    
         public int TournamentId { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
@@ -23,5 +29,6 @@ namespace DutchServisMCV.Models
         public string Theme { get; set; }
         public string Info { get; set; }
         public string Img { get; set; }
+        public Nullable<bool> ShowResults { get; set; }
     }
 }

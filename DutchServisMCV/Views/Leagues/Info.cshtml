@@ -10,6 +10,10 @@
 
             <ul class="list-stat mt-2 mb-1 list-unstyled">
                 <li><h4>Ogólne informacje</h4></li>
+                @if (Session["Username"] != null)
+                {
+                    <li><b>Id:</b> @Model.Id</li>
+                }
                 <li><b>Data rozpoczęcia:</b> @(((DateTime)Model.StartDate).ToLongDateString())</li>
                 <li><b>Data zakończenia:</b> @(((DateTime)Model.EndDate).ToLongDateString())</li>
             </ul>
@@ -28,7 +32,7 @@
             {
                 <aside>
                     <a href="@Url.Action("Edit", new { name = Model.Name })">
-                        <div class="admincontroll">Edytuj informacje o lidze</div>
+                        <div class="admincontroll">Edytuj</div>
                     </a>
                 </aside>
             }
@@ -41,26 +45,18 @@
 
 <section>
     <h4>Lista graczy</h4>
-    @if (Session["Username"] != null)
-    {
-        <aside>
-            <a href="@Url.Action("AddToPlayerSet", new { nickname = Model.Name })">
-                <div class="admincontroll">Dodaj gracza</div>
-            </a>
-        </aside>
-    }
 
     <table class="table table-striped width-small">
-        <thead>
-            <tr class="table-style">
+        <thead class="table-style">
+            <tr>
                 <th class="cell-1">Numer</th>
                 <th class="cell-2">Gracz</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-style">
             @for (int i = 0; i < Model.Players.Count(); i++)
             {
-                <tr class="table-style">
+                <tr>
                     <td class="cell-1">@(i+1).</td>
                     <td class="cell-3">
                         @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
@@ -71,7 +67,7 @@
             {
                 <tr>
                     <td colspan="3" class="text-center">
-                        Do turnieju nie są zapisanie jeszcze żadni gracze.
+                        Do ligi nie są zapisanie jeszcze żadni gracze.
                     </td>
                 </tr>
             }
@@ -79,72 +75,67 @@
     </table>
 </section>
 
-<section>
-    <h4>Rozegrane mecze</h4>
-    <div class="block">
-        @if (Session["Username"] != null)
-        {
-            <aside>
-                <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
-                    <div class="admincontroll">Dodaj mecz</div>
-                </a>
-            </aside>
-        }
-    </div>
-
-    @Html.Partial("../Partial/_MatchList")
-</section>
-
-<section>
-    <h4>Wyniki</h4>
-    @if (Session["Username"] != null)
-    {
-        <aside>
-            <a href="@Url.Action("AddResult", new { nickname = Model.Name })">
-                <div class="admincontroll">Dodaj wynik</div>
-            </a>
-        </aside>
-    }
-
-    <table class="table table-striped">
-        <thead>
-            <tr class="table-style">
-                <th class="cell-1">Miejsce</th>
-                <th class="cell-2">Gracz</th>
-                <th class="cell-1">Punkty</th>
-                <th class="cell-1">Wygrane</th>
-                <th class="cell-1">Przegrane</th>
-                <th class="cell-1">Remisy</th>
-                <th class="cell-1">Nagroda</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{ Model.Players.Sort(DutchServisMCV.Models.LeagueInfo.CompareByRankingGet);}
-            @for (int i = Model.Players.Count() - 1; i >= 0; i--)
+@if (Model.ShowResults)
+{
+    <section>
+        <h4>Rozegrane mecze</h4>
+        <div class="block">
+            @if (Session["Username"] != null)
             {
-            <tr class="table-style">
-                <td class="cell-1">@(Model.Players.Count() - i).</td>
-                <td class="cell-2">
-                    @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
-                </td>
-                <td class="cell-1">@Model.Players[i].Points</td>
-                <td class="cell-1">@Model.Players[i].Won</td>
-                <td class="cell-1">@Model.Players[i].Loose</td>
-                <td class="cell-1">@Model.Players[i].Draw</td>
-                <td class="cell-1">@Model.Players[i].Price</td>
-            </tr>
+                <aside>
+                    <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
+                        <div class="admincontroll">Dodaj mecz</div>
+                    </a>
+                </aside>
             }
-            @if (Model.Players.Count() == 0)
-            {
+        </div>
+
+        @Html.Partial("../Partial/_MatchList")
+    </section>
+
+    <section>
+        <h4>Wyniki</h4>
+
+        <table class="table table-striped">
+            <thead class="table-style">
                 <tr>
-                    <td colspan="7" class="text-center">
-                        Wyniki nie zostały jeszcze ogłoszone.
-                    </td>
+                    <th class="cell-1">Miejsce</th>
+                    <th class="cell-2">Gracz</th>
+                    <th class="cell-1">Punkty</th>
+                    <th class="cell-1">Wygrane</th>
+                    <th class="cell-1">Przegrane</th>
+                    <th class="cell-1">Remisy</th>
+                    <th class="cell-1">Nagroda</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</section>
+            </thead>
+            <tbody class="table-style">
+                @{ Model.Players.Sort(DutchServisMCV.Models.LeagueInfo.CompareByRankingGet);}
+                @for (int i = Model.Players.Count() - 1; i >= 0; i--)
+                {
+                    <tr>
+                        <td class="cell-1">@(Model.Players.Count() - i).</td>
+                        <td class="cell-2">
+                            @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                        </td>
+                        <td class="cell-1">@Model.Players[i].Points</td>
+                        <td class="cell-1">@Model.Players[i].Won</td>
+                        <td class="cell-1">@Model.Players[i].Loose</td>
+                        <td class="cell-1">@Model.Players[i].Draw</td>
+                        <td class="cell-1">@Model.Players[i].Price</td>
+                    </tr>
+                }
+                @if (Model.Players.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            Wyniki nie zostały jeszcze ogłoszone.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}
 
 <script type="text/jscript">
     var path = @Url.Content("~/Content/");

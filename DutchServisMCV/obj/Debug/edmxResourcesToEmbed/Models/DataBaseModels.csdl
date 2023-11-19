@@ -61,6 +61,7 @@
     <Property Name="Theme" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ShowResults" Type="Boolean" DefaultValue="true" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

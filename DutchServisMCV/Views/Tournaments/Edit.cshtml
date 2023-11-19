@@ -11,217 +11,236 @@
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal wide">
-    <hr />
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal wide">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <section>
-        <!-- Edycja informacji o turnieju -->
-        <h4 class="mb-1">Edycja informacji o turnieju</h4>
+        <section>
+            <!-- Edycja informacji o turnieju -->
+            <h4 class="mb-1">Edycja informacji o turnieju</h4>
 
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Id">Id</label>
-            <div class="col-md-9">
-                @Html.TextBoxFor(model => model.Id, new { @readonly = "readonly", @class = "form-control text-box single-line", @autocomplete = "off" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Name">Nazwa</label>
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
-                <div class="text-danger">@ViewBag.NameValidationMsg</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Date">Data</label>
-            <div class="col-md-9">
-                @{
-                    string date = (Model != null && Model.Date.HasValue) ? Model.Date.Value.ToString("yyyy-MM-dd") : "";
-                }
-                <input type="date" class="list-box form-control" id="Date" name="Date" value="@date" autocomplete="off">
-                <div class="text-danger">@ViewBag.DateValidationMsg</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Time">Godzina</label>
-            <div class="col-md-9">
-                @{
-                    string time = (Model != null && Model.Time.HasValue) ? Model.Time.Value.ToString("hh:mm") : "";
-                }
-                <input type="time" class="list-box form-control" id="Time" name="Time" value="@time" autocomplete="off">
-                <div class="text-danger">@ViewBag.TimeValidationMsg</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Location">Lokalizacja</label>
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Theme">Motyw</label>
-            <div class="col-md-9">
-                @Html.EditorFor(model => model.Theme, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
-            </div>
-        </div>
-
-        <div class="form-group disp-only-sm">
-            <label class="control-label col-md-2" for="File">Zdjęcie</label>
-            <div class="col-md-3">
-                @{ string imgStr = "brak"; }
-                @if (Model.Img != null) { imgStr = "\"" + Model.Img + "\""; }
-                @imgStr
-            </div>
-        </div>
-
-        <div class="form-group disp-md">
-            <label class="control-label col-md-3" for="File">Zdjęcie</label>
-            <div class="col-md-3">
-                <img class="img-responsive img-rounded border-1" id="img" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
-            <div class="col-md-9">
-                <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;" data-buttonText="Your label here." />
-                <div class="text-danger">@ViewBag.FileValidationMsg</div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-3" for="Info">Informacje</label>
-            <div class="col-md-9">
-                <div class="textbox">
-                    <textarea class="list-box form-control" id="Info" name="Info" autocomplete="off"></textarea>
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Id">Id</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.Id, new { @readonly = "readonly", @class = "form-control text-box single-line", @autocomplete = "off" })
                 </div>
             </div>
-        </div>
-    </section>
 
-    <section>
-        <h4>Lista graczy</h4>
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Name">Nazwa</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                    <div class="text-danger">@ViewBag.NameValidationMsg</div>
+                </div>
+            </div>
 
-        <div class="form-group">
-            <div class="col-md-12">
-                <div class="checkbox">
-                    <select class="list-box form-control disp-inline-block" id="select">
-                        <option selected="selected" value="null">Brak</option>
-                        @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Date">Data</label>
+                <div class="col-md-9">
+                    @{
+                        string date = (Model != null && Model.Date.HasValue) ? Model.Date.Value.ToString("yyyy-MM-dd") : "";
+                    }
+                    <input type="date" class="list-box form-control" id="Date" name="Date" value="@date" autocomplete="off">
+                    <div class="text-danger">@ViewBag.DateValidationMsg</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Time">Godzina</label>
+                <div class="col-md-9">
+                    @{
+                        string time = (Model != null && Model.Time.HasValue) ? Model.Time.Value.ToString("hh:mm") : "";
+                    }
+                    <input type="time" class="list-box form-control" id="Time" name="Time" value="@time" autocomplete="off">
+                    <div class="text-danger">@ViewBag.TimeValidationMsg</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Location">Lokalizacja</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Location, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Theme">Motyw</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Theme, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="ShowResults">Pokaż wyniki</label>
+                <div class="col-md-9">
+                    <div style="padding-top: 7px;">
+                        @if (Model.ShowResults)
                         {
-                            <option value="@item.Id">@item.Nickname</option>
-                            <!-- Javascript generated content -->
+                            <input id="ShowResults" name="ShowResults" type="checkbox" value="true" checked />
                         }
-                    </select>
-                    <button type="button" class="mx-1 disp-inline-block px-10" onclick="AddItem('select', ['set_table', 'result_table', 'select'])">
-                        Dodaj gracza
-                    </button>
+                        else
+                        {
+                            <input id="ShowResults" name="ShowResults" type="checkbox" value="true" />
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <table class="table width-small">
-            <thead class="table-style">
-                <tr>
-                    <th>Nr.</th>
-                    <th>Id</th>
-                    <th>Nick</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody class="table-style" id="set_table">
-                <!-- Javascript generated content -->
-            </tbody>
-        </table>
-    </section>
-
-    <section>
-        <h4>Rozgrywki</h4>
-
-        <table class="table">
-            <thead class="table-style">
-                <tr>
-                    <th class="cell-1">Id</th>
-                    <th class="cell-2">Gracz 1</th>
-                    <th class="cell-1 disp-md">Punkty</th>
-                    <th class="cell-1 disp-md">Punkty</th>
-                    <th class="cell-2">Gracz 2</th>
-                    <th class="cell-1"></th>
-                    <th class="cell-1"></th>
-                </tr>
-            </thead>
-            <tbody class="table-style">
-                @foreach (DutchServisMCV.Models.MatchData match in Model.Matches)
-                {
-                <tr>
-                    <td>@match.Id</td>
-                    <td class="disp-sm">@match.Player1</td>
-                    <td class="disp-only-xs">
-                        @{ string p1 = match.Player1.Length <= 3 ? match.Player1 : match.Player1.Substring(0, 3); }
-                        @(p1).
-                    </td>
-                    <td class="disp-md">@match.PointsPlayer1</td>
-                    <td class="disp-md">@match.PointsPlayer2</td>
-                    <td class="disp-sm">@match.Player2</td>
-                    <td class="disp-only-xs">
-                        @{ string p2 = match.Player2.Length <= 3 ? match.Player2 : match.Player2.Substring(0, 3); }
-                        @(p2).
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edytuj", "Edit", "Matches", new { id=match.Id }, new { @class = "text-danger" })
-                    </td>
-                    <td>
-                        @Html.ActionLink("Usuń", "Delete", "Matches", new { id = match.Id }, new { @class = "text-danger" })
-                    </td>
-                </tr>
-                }
-            </tbody>
-        </table>
-
-        <a href="@Url.Action("Add", "Matches", new { name=Model.Name })">
-            <div class="disp-inline-block buttonlike mt-1">
-                Dodaj mecz
+            <div class="form-group disp-only-sm">
+                <label class="control-label col-md-2" for="File">Zdjęcie</label>
+                <div class="col-md-3">
+                    @{ string imgStr = "brak"; }
+                    @if (Model.Img != null) { imgStr = "\"" + Model.Img + "\""; }
+                    @imgStr
+                </div>
             </div>
-        </a>
-        <p class="text-danger disp-inline-block mt-1">
-            Uwaga! Dodanie meczu spowoduje przeładowanie strony. Upewnij się, że inne zmiany zostały już zapisane.
-        </p>
-    </section>
 
-    <section>
-        <h4>Wyniki</h4>
+            <div class="form-group disp-md">
+                <label class="control-label col-md-3" for="File">Zdjęcie</label>
+                <div class="col-md-3">
+                    <img class="img-responsive img-rounded border-1" id="img" />
+                </div>
+            </div>
 
-        <table class="table width-small">
-            <thead class="table-style">
-                <tr>
-                    <th>Gracz</th>
-                    <th>Miejsce</th>
-                    <th>Otrzymany ranking</th>
-                    <th>Nagroda</th>
-                </tr>
-            </thead>
-            <tbody class="table-style" id="result_table">
-                <!-- Javascript generated content -->
-            </tbody>
-        </table>
-    </section>
+            <div class="form-group">
+                <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
+                <div class="col-md-9">
+                    <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;" data-buttonText="Your label here." />
+                    <div class="text-danger">@ViewBag.FileValidationMsg</div>
+                </div>
+            </div>
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-9">
-            <input type="submit" value="Zapisz zmiany" class="btn-warning" />
-            <a href="@Url.Action("Index", new { name=Model.Name })">
-                <div class="disp-inline-block buttonlike-heavy">
-                    Odrzuć zmiany
+            <div class="form-group">
+                <label class="control-label col-md-3" for="Info">Informacje</label>
+                <div class="col-md-9">
+                    <div class="textbox">
+                        <textarea class="list-box form-control" id="Info" name="Info" autocomplete="off">@Model.Info</textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <!-- Edycja listy graczy -->
+            <h4>Lista graczy</h4>
+
+            <div class="form-group">
+                <div class="col-md-12">
+                    <div class="checkbox">
+                        <select class="list-box form-control disp-inline-block" id="select">
+                            <option selected="selected" value="null">Brak</option>
+                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                            {
+                                <option value="@item.Id">@item.Nickname</option>
+                                <!-- Javascript generated content -->
+                            }
+                        </select>
+                        <button type="button" class="mx-1 disp-inline-block px-10" onclick="AddItem('select', ['set_table', 'result_table', 'select'], 'tournament')">
+                            Dodaj gracza
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table width-small">
+                <thead class="table-style">
+                    <tr>
+                        <th>Nr.</th>
+                        <th>Id</th>
+                        <th>Nick</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table-style" id="set_table">
+                    <!-- Javascript generated content -->
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <!-- Edycja rozgrywek -->
+            <h4>Rozgrywki</h4>
+
+            <table class="table">
+                <thead class="table-style">
+                    <tr>
+                        <th class="cell-1">Id</th>
+                        <th class="cell-2">Gracz 1</th>
+                        <th class="cell-1 disp-md">Punkty</th>
+                        <th class="cell-1 disp-md">Punkty</th>
+                        <th class="cell-2">Gracz 2</th>
+                        <th class="cell-1"></th>
+                        <th class="cell-1"></th>
+                    </tr>
+                </thead>
+                <tbody class="table-style">
+                    @foreach (DutchServisMCV.Models.MatchData match in Model.Matches)
+                    {
+                        <tr>
+                            <td>@match.Id</td>
+                            <td class="disp-sm">@match.Player1</td>
+                            <td class="disp-only-xs">
+                                @{ string p1 = match.Player1.Length <= 3 ? match.Player1 : match.Player1.Substring(0, 3); }
+                                @(p1).
+                            </td>
+                            <td class="disp-md">@match.PointsPlayer1</td>
+                            <td class="disp-md">@match.PointsPlayer2</td>
+                            <td class="disp-sm">@match.Player2</td>
+                            <td class="disp-only-xs">
+                                @{ string p2 = match.Player2.Length <= 3 ? match.Player2 : match.Player2.Substring(0, 3); }
+                                @(p2).
+                            </td>
+                            <td>
+                                @Html.ActionLink("Edytuj", "Edit", "Matches", new { id = match.Id }, new { @class = "text-danger" })
+                            </td>
+                            <td>
+                                @Html.ActionLink("Usuń", "Delete", "Matches", new { id = match.Id }, new { @class = "text-danger" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <a href="@Url.Action("Add", "Matches", new { name=Model.Name })">
+                <div class="disp-inline-block buttonlike mt-1">
+                    Dodaj mecz
                 </div>
             </a>
+            <p class="text-danger disp-inline-block mt-1">
+                Uwaga! Dodanie meczu spowoduje przeładowanie strony. Upewnij się, że inne zmiany zostały już zapisane.
+            </p>
+        </section>
+
+        <section>
+            <!-- Edycja wyników -->
+            <h4>Wyniki</h4>
+
+            <table class="table width-small">
+                <thead class="table-style">
+                    <tr>
+                        <th>Gracz</th>
+                        <th>Miejsce</th>
+                        <th>Otrzymany ranking</th>
+                        <th>Nagroda</th>
+                    </tr>
+                </thead>
+                <tbody class="table-style" id="result_table">
+                    <!-- Javascript generated content -->
+                </tbody>
+            </table>
+        </section>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-9">
+                <input type="submit" value="Zapisz zmiany" class="btn-warning" />
+                <a href="@Url.Action("Index", new { name=Model.Name })">
+                    <div class="disp-inline-block buttonlike-heavy">
+                        Odrzuć zmiany
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 }
 
 <script type="text/jscript">
@@ -230,7 +249,7 @@
     var path = @Url.Content("~/Content/");
 
     setPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');
-    UpdateTables(['set_table', 'result_table', 'select']);
+    UpdateTournamentTables(['set_table', 'result_table', 'select']);
 </script>
 
 @section Scripts {

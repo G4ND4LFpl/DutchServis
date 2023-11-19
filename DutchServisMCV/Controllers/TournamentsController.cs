@@ -66,7 +66,8 @@ namespace DutchServisMCV.Controllers
                             Info = tourn.Info,
                             Img = tourn.Img,
                             Matches = matchlist.ToList(),
-                            Players = playerslist.ToList()
+                            Players = playerslist.ToList(),
+                            ShowResults = tourn.ShowResults.Value
                         };
 
             // Return View
@@ -150,7 +151,7 @@ namespace DutchServisMCV.Controllers
             database.SaveChanges();
 
             // Redirect
-            return RedirectToAction("TournamentEdit", new { name = tournament.Name });
+            return RedirectToAction("Edit", new { name = tournament.Name });
         }
 
         public ActionResult Edit(string name)
@@ -164,11 +165,6 @@ namespace DutchServisMCV.Controllers
             if (t == null) return HttpNotFound();
 
             // Prapare
-            var player1_games = GamesSumByMatch(1);
-            var player2_games = GamesSumByMatch(2);
-            var matchlist = GetMatchList(name, player1_games, player2_games);
-            var playerset = GetPlayerSet(name);
-
             var playerlist = from players in database.Players
                              where !(from other in database.PlayerSet
                                      join tournament in database.Tournaments
@@ -183,6 +179,11 @@ namespace DutchServisMCV.Controllers
                              };
             ViewBag.Players = playerlist.OrderBy(item => item.Nickname).ToList();
 
+            var player1_games = GamesSumByMatch(1);
+            var player2_games = GamesSumByMatch(2);
+            var matchlist = GetMatchList(name, player1_games, player2_games);
+            var playerset = GetPlayerSet(name);
+
             TournamentInfo tourn = new TournamentInfo
             {
                 Id = t.TournamentId,
@@ -195,6 +196,7 @@ namespace DutchServisMCV.Controllers
                 Img = t.Img,
                 Matches = matchlist.ToList(),
                 Players = playerset.ToList(),
+                ShowResults = t.ShowResults.Value
             };
 
             // Return View
@@ -204,7 +206,7 @@ namespace DutchServisMCV.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(TournamentInfo tournament)
-        {
+        {   
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
             // Prepare for return
@@ -278,7 +280,8 @@ namespace DutchServisMCV.Controllers
                 Location = tournament.Location,
                 Theme = tournament.Theme,
                 Img = tournament.Img,
-                Info = tournament.Info
+                Info = tournament.Info,
+                ShowResults = tournament.ShowResults
             };
             database.Entry(tournamentObject).State = EntityState.Modified;
 
@@ -311,7 +314,7 @@ namespace DutchServisMCV.Controllers
                     Prize = playerItem.Price
                 };
   
-                if (database.PlayerSet.Where(p => p.TournamentId == tournament.Id).Any(item => item.PlayerId != playerItem.Id))
+                if (!database.PlayerSet.AsNoTracking().Where(p => p.TournamentId == tournament.Id).Any(item => item.PlayerId == playerItem.Id))
                 {
                     // Add item
                     database.PlayerSet.Add(player);
@@ -319,13 +322,16 @@ namespace DutchServisMCV.Controllers
                 else
                 {
                     // Update item
+                    player.EntryId = database.PlayerSet.AsNoTracking().Where(
+                        item => item.TournamentId == tournament.Id && item.PlayerId == playerItem.Id
+                        ).FirstOrDefault().EntryId;
                     database.Entry(player).State = EntityState.Modified;
                 }
             }
             // Remove from playerSet
             foreach (PlayerSet playerItem in database.PlayerSet.Where(p => p.TournamentId == tournament.Id))
             {
-                if(tournament.Players.Where(item => item.Id == playerItem.PlayerId).ToList() != null)
+                if(!tournament.Players.Any(item => item.Id == playerItem.PlayerId))
                 {
                     database.PlayerSet.Remove(playerItem);
                 }

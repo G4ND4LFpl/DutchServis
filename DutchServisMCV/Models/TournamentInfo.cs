@@ -21,6 +21,7 @@ namespace DutchServisMCV.Models
         public HttpPostedFileBase File { get; set; }
         public List<MatchData> Matches { get; set; }
         public List<PlayerTournItem> Players { get; set; }
+        public bool ShowResults { get; set; }
 
         public static int CompareByRankingBefore(PlayerTournItem p1, PlayerTournItem p2)
         {

@@ -73,6 +73,7 @@
     <Property Name="Theme" Type="varchar" MaxLength="100" />
     <Property Name="Info" Type="varchar" MaxLength="100" />
     <Property Name="Img" Type="varchar" MaxLength="50" />
+    <Property Name="ShowResults" Type="bit" />
   </EntityType>
   <EntityType Name="Users">
     <Key>

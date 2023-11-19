@@ -85,59 +85,62 @@
     </table>
 </section>
 
-<section>
-    <h4>Rozegrane mecze</h4>
-    <div class="block">
-        @if (Session["Username"] != null)
-        {
-            <aside>
-                <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
-                    <div class="admincontroll">Dodaj mecz</div>
-                </a>
-            </aside>
-        }
-    </div>
-
-    @Html.Partial("../Partial/_MatchList")
-</section>
-
-<section>
-    <h4>Wyniki</h4>
-
-    <table class="table table-striped width-medium">
-        <thead class="table-style">
-            <tr>
-                <th class="cell-1">Miejsce</th>
-                <th class="cell-2">Gracz</th>
-                <th class="cell-2 disp-sm">Zdobyte punkty</th>
-                <th class="cell-2 disp-only-xs">Punkty</th>
-                <th class="cell-1">Nagroda</th>
-            </tr>
-        </thead>
-        <tbody class="table-style">
-            @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingGet);}
-            @for (int i = Model.Players.Count() - 1; i >= 0; i--)
+@if (Model.ShowResults)
+{
+    <section>
+        <h4>Rozegrane mecze</h4>
+        <div class="block">
+            @if (Session["Username"] != null)
             {
-                <tr>
-                    <td class="cell-1">@(Model.Players[i].Place).</td>
-                    <td class="cell-2">
-                        @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
-                    </td>
-                    <td class="cell-2">@Model.Players[i].RankingGet</td>
-                    <td class="cell-1">@Model.Players[i].Price</td>
-                </tr>
+                <aside>
+                    <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
+                        <div class="admincontroll">Dodaj mecz</div>
+                    </a>
+                </aside>
             }
-            @if (Model.Players.Count() == 0)
-            {
+        </div>
+
+        @Html.Partial("../Partial/_MatchList")
+    </section>
+
+    <section>
+        <h4>Wyniki</h4>
+
+        <table class="table table-striped width-medium">
+            <thead class="table-style">
                 <tr>
-                    <td colspan="4" class="text-center">
-                        Wyniki nie zostały jeszcze ogłoszone.
-                    </td>
+                    <th class="cell-1">Miejsce</th>
+                    <th class="cell-2">Gracz</th>
+                    <th class="cell-2 disp-sm">Zdobyte punkty</th>
+                    <th class="cell-2 disp-only-xs">Punkty</th>
+                    <th class="cell-1">Nagroda</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</section>
+            </thead>
+            <tbody class="table-style">
+                @{ Model.Players.Sort(DutchServisMCV.Models.TournamentInfo.CompareByRankingGet);}
+                @for (int i = Model.Players.Count() - 1; i >= 0; i--)
+                {
+                    <tr>
+                        <td class="cell-1">@(Model.Players[i].Place).</td>
+                        <td class="cell-2">
+                            @Html.ActionLink(Model.Players[i].Nickname, "Info", "Players", new { nickname = Model.Players[i].Nickname }, new { @class = "textlink" })
+                        </td>
+                        <td class="cell-2">@Model.Players[i].RankingGet</td>
+                        <td class="cell-1">@Model.Players[i].Price</td>
+                    </tr>
+                }
+                @if (Model.Players.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="4" class="text-center">
+                            Wyniki nie zostały jeszcze ogłoszone.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </section>
+}
 
 <script type="text/jscript">
     var path = @Url.Content("~/Content/");

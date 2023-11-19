@@ -22,8 +22,8 @@ namespace DutchServisMCV.Models
             this.JoinDate = DateTime.Now;
             this.Active = true;
         }
-
-        public int PlayerId { get; set; }
+    
+        public int PlayerId { get; internal set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Nickname { get; set; }

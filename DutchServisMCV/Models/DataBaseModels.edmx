@@ -78,6 +78,7 @@
           <Property Name="Theme" Type="varchar" MaxLength="100" />
           <Property Name="Info" Type="varchar" MaxLength="100" />
           <Property Name="Img" Type="varchar" MaxLength="50" />
+          <Property Name="ShowResults" Type="bit" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -160,6 +161,7 @@
           <Property Name="Theme" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ShowResults" Type="Boolean" DefaultValue="true" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -250,6 +252,7 @@
           <EntitySetMapping Name="Tournaments">
             <EntityTypeMapping TypeName="DutchDatabaseModel.Tournaments">
               <MappingFragment StoreEntitySet="Tournaments">
+                <ScalarProperty Name="ShowResults" ColumnName="ShowResults" />
                 <ScalarProperty Name="Img" ColumnName="Img" />
                 <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
