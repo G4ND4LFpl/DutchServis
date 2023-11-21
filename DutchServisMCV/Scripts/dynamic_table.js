@@ -136,7 +136,7 @@ function applyFilters(data) {
         array.push(data[i]);
 
         if (data[i].Img === null || !data[i].Img.includes(path.toString())) {
-            array[array.length - 1].Img = getPath("playerdata/", data[i].Img, "avatar.png");
+            array[array.length - 1].Img = GetPath("playerdata/", data[i].Img, "avatar.png");
         }
     }
 

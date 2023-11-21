@@ -10,7 +10,6 @@
     --danger-text: #a94442;
     /* Game Colors */
     --yellow-dark: #daa520;
-    --green-light: #adff2f;
     --board-color: #687d60;
     --black: #000000;
     --red: #ff0000;
@@ -310,80 +309,71 @@ a.text-danger:hover {
     color: var(--danger-text);
 }
 .board {
-    margin-top: 3em;
     border-style: outset;
     border-width: 3px;
     border-color: var(--gray-dark);
     border-radius: 10px;
     background-color: var(--board-color);
-    padding: 15px 15px 15px 15px;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 30px 5% 30px 5%;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 .card {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: white;
+    padding: 0;
+    background-color: transparent;
     border: solid;
+    border-color: var(--gray-dark);
     border-width: 2px;
-    border-radius: 6px;
-    border-color: var(--black);
-    padding: 5px 20px 5px 20px;
-    font-family: 'Comic Sans MS';
+    border-radius: 16px;
 }
-.active {
-    border-color: var(--yellow-dark);
-    border-width: 2px;
+.card > div {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.text-avers {
+    font-size: 4em;
+    font-weight: 600;
+    font-family: 'Georgia';
+}
+.text-empty {
+    font-size: 2em;
+    color: var(--white-smoke);
+    font-family: 'Georgia';
+}
+.text-game {
+    font-size: 1.5em;
+    color: var(--white-smoke);
+    text-align: center;
+    font-family: 'Georgia';
 }
 .active:hover {
-    border-color: var(--green-light);
-}
-.card-color {
-    height: 15px;
-}
-.card-awers {
-    border-top: solid;
-    border-bottom: solid;
-    border-width: 1px;
-    border-color: var(--black);
-    margin-top: 5px;
-    margin-bottom: 5px;
-
-    font-size: 3.5em;
-    text-align: center;
-}
-.card-empty {
-    margin-top: calc(0.5em + 5px);
-    margin-bottom: calc(0.5em + 5px);
-    font-size: 3em;
-    text-align: center;
-}
-.backgroud-img {
-    background-image: url('reverse.jpg');
-    height: 9em;
-    background-size: 100% 100%;
-    background-repeat: no-repeat;
-}
-@media(min-width: 540px) {
-    .card-color {
-        height: 20px;
-    }
-    .card-awers {
-        font-size: 5em;
-    }
-    .card-empty {
-        margin-top: calc(1em + 4px);
-        margin-bottom: calc(1em + 4px);
-    }
-    .backgroud-img {
-        height: calc(12em - 2px);
-    }
+    border-color: var(--yellow-dark);
 }
 .c-red {
     color: var(--red);
 }
 .c-black {
     color: var(--black);
+}
+@media(min-width: 1200px) and (orientation: landscape) {
+    .board {
+        padding: 30px 10% 30px 10%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.btn-game {
+    padding: 3px 20px 3px 20px;
+    border-radius: 5px;
+    color: var(--white-smoke);
+    font-size: 1em;
+    font-family: 'Georgia';
+    background-color: var(--gray);
+}
+.btn-game:hover {
+    background-color: var(--yellow-dark);
 }
 .border-1 {
     border: solid;

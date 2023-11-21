@@ -38,7 +38,7 @@
  * @param {string} img Nazwa pliku z rozszerzeniem
  * @param {string} placeholder Domyślny obrazek
  */
-function getPath(catalog, img, placeholder) {
+function GetPath(catalog, img, placeholder) {
     if (img === null || img === "" || path === null) {
         return path + "/images/" + placeholder;
     }
@@ -53,8 +53,8 @@ function getPath(catalog, img, placeholder) {
  * @param {string} img Nazwa pliku z rozszerzeniem
  * @param {string} placeholder Domyślny obrazek
  */
-function setPath(id, catalog, img, placeholder) {
-    document.getElementById(id).setAttribute("src", getPath(catalog, img, placeholder));
+function SetPath(id, catalog, img, placeholder) {
+    document.getElementById(id).setAttribute("src", GetPath(catalog, img, placeholder));
 }
 
 /* Funkcje Tabeli */

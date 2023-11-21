@@ -195,11 +195,14 @@
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\images\.gitignore" />
     <Content Include="Content\images\avatar.png" />
+    <Content Include="Content\images\cards\card_empty.png" />
+    <Content Include="Content\images\cards\card_karo.png" />
+    <Content Include="Content\images\cards\card_kier.png" />
+    <Content Include="Content\images\cards\card_pik.png" />
+    <Content Include="Content\images\cards\card_reverse.png" />
+    <Content Include="Content\images\cards\card_trefl.png" />
     <Content Include="Content\images\empty.png" />
-    <Content Include="Content\images\karo.png" />
-    <Content Include="Content\images\kier.png" />
     <Content Include="Content\images\logo.png" />
-    <Content Include="Content\images\pik.png" />
     <Content Include="Content\images\playerdata\argset.png" />
     <Content Include="Content\images\playerdata\gandalf.png" />
     <Content Include="Content\images\playerdata\mostow.png" />
@@ -207,7 +210,6 @@
     <Content Include="Content\images\playerdata\ruda.png" />
     <Content Include="Content\css\reverse.jpg" />
     <Content Include="Content\images\tournamentdata\winner.jpg" />
-    <Content Include="Content\images\trefl.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
