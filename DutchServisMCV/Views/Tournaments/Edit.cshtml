@@ -73,7 +73,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3" for="ShowResults">Pokaż wyniki</label>
                 <div class="col-md-9">
-                    <div style="padding-top: 7px;">
+                    <div class="form-element">
                         @if (Model.ShowResults)
                         {
                             <input id="ShowResults" name="ShowResults" type="checkbox" value="true" checked />
@@ -105,7 +105,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
                 <div class="col-md-9">
-                    <input id="File" name="File" type="file" accept=".png,.jpg,.jpeg" style="padding-top: 7px;" data-buttonText="Your label here." />
+                    <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" data-buttonText="Your label here." />
                     <div class="text-danger">@ViewBag.FileValidationMsg</div>
                 </div>
             </div>
@@ -174,7 +174,7 @@
                     </tr>
                 </thead>
                 <tbody class="table-style">
-                    @foreach (DutchServisMCV.Models.MatchData match in Model.Matches)
+                    @foreach (DutchServisMCV.Models.MatchInfo match in Model.Matches)
                     {
                         <tr>
                             <td>@match.Id</td>
@@ -201,7 +201,7 @@
                 </tbody>
             </table>
 
-            <a href="@Url.Action("Add", "Matches", new { name=Model.Name })">
+            <a href="@Url.Action("Add", "Matches", new { tournament = Model.Name })" class="unstyled">
                 <div class="disp-inline-block buttonlike mt-1">
                     Dodaj mecz
                 </div>

@@ -7,21 +7,13 @@ using System.Web;
 
 namespace DutchServisMCV.Models
 {
-    public class TournamentInfo
+    public class TournamentInfo : CompetitionInfo<PlayerTournItem>
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public DateTime DateTime { get; set; }
         public DateTime? Date { get; set; }
         public DateTime? Time { get; set; }
         public string Location { get; set; }
         public string Theme { get; set; }
-        public string Info { get; set; }
-        public string Img { get; set; }
-        public HttpPostedFileBase File { get; set; }
-        public List<MatchData> Matches { get; set; }
-        public List<PlayerTournItem> Players { get; set; }
-        public bool ShowResults { get; set; }
 
         public static int CompareByRankingBefore(PlayerTournItem p1, PlayerTournItem p2)
         {

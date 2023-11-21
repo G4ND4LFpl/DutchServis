@@ -93,7 +93,7 @@
             @if (Session["Username"] != null)
             {
                 <aside>
-                    <a href="@Url.Action("MatchAdd", new { nickname = Model.Name })">
+                    <a href="@Url.Action("Add", "Matches", new { tournament = Model.Name })">
                         <div class="admincontroll">Dodaj mecz</div>
                     </a>
                 </aside>

@@ -7,12 +7,12 @@ using System.Web;
 using System.Web.Mvc;
 using DutchServisMCV.Logic;
 using DutchServisMCV.Models;
+using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
-    public class MatchesController : BaseMatchesController
+    public class MatchesController : CompetitionController
     {
-        // Match
         public ActionResult Details(int? id)
         {
             if (id == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -55,10 +55,60 @@ namespace DutchServisMCV.Controllers
             return View(match.FirstOrDefault());
         }
 
-        public ActionResult Create()
+        public ActionResult Add(string tournament)
         {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Validate adress
+            if (tournament == null) new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            Tournaments parent = database.Tournaments.Where(t => t.Name == tournament).FirstOrDefault();
+            if (parent == null) return HttpNotFound();
+
+            // Prepare Viewbag
+            ViewBag.Players = (from players in database.Players
+                              join set in database.PlayerSet
+                              on players.PlayerId equals set.PlayerId
+                              where set.TournamentId == parent.TournamentId
+                              select new PlayerItem
+                              {
+                                  Id = players.PlayerId,
+                                  Nickname = players.Nickname
+                              }).ToList();
+
+            // Preparing Model
+            MatchData data = new MatchData
+            {
+                TournamentId = parent.TournamentId,
+                Tournament = parent.Name,
+            };
+            if (parent.Type == "tournament")
+            {
+                data.PlayDate = parent.StartDate;
+            }
+
             // Return View
-            return View();
+            return View(data);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Add(MatchData match)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Prepare Viewbag
+            ViewBag.Players = (from players in database.Players
+                               join set in database.PlayerSet
+                               on players.PlayerId equals set.PlayerId
+                               where set.TournamentId == match.TournamentId
+                               select new PlayerItem
+                               {
+                                   Id = players.PlayerId,
+                                   Nickname = players.Nickname
+                               }).ToList();
+
+            return View(match);
         }
 
         public ActionResult Edit()

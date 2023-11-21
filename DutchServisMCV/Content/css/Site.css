@@ -1,5 +1,22 @@
 ﻿html {
     overflow-y: scroll;
+    /* Base Colors */
+    --gray: #9d9d9d;
+    --gray-dark: #222222;
+    --gray-light: #f0f0f0;
+    --gray-shadow: #e0dede;
+    --white-smoke: #f5f5f5;
+    --text-color: #333333;
+    --danger-text: #a94442;
+    /* Game Colors */
+    --yellow-dark: #daa520;
+    --green-light: #adff2f;
+    --board-color: #687d60;
+    --black: #000000;
+    --red: #ff0000;
+    /* Theme Colors */
+    --theme-main: #6495ed;
+    --theme-secound: #8db1f0;
 }
 
 body {
@@ -38,6 +55,9 @@ table input.form-control:read-only {
     text-align: center;
     border: none;
 }
+.form-horizontal .form-element {
+    padding-top: 7px;
+}
 .navbar-item {
     position: relative;
     display: block;
@@ -47,7 +67,7 @@ table input.form-control:read-only {
     display: block;
     padding: 15px 15px 10px;
     font-size: 18px;
-    color: #9d9d9d;
+    color: var(--gray);
 }
 .navbar-item a:hover {
     text-decoration: none;
@@ -63,7 +83,7 @@ table input.form-control:read-only {
     margin-top: 6px;
     width: 100%;
     height: 3px;
-    background-color: #6495ed; /*cornflowerblue*/
+    background-color: var(--theme-main);
 }
 .img-icon {
     height: 100%;
@@ -94,7 +114,7 @@ table input.form-control:read-only {
         background-color: transparent;
         border: none;
         padding: 15px 15px 15px 15px;
-        color: #9d9d9d;
+        color: var(--gray);
     }
     .drop-content {
         display: none;
@@ -103,14 +123,14 @@ table input.form-control:read-only {
         z-index: 1;
     }
     .nav-dropdown > .drop-content {
-        background-color: #222;
+        background-color: var(--gray-dark);
         min-width: 160px;
         border: solid;
-        border-color: #222;
+        border-color: var(--gray-dark);
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
         border-top-width: 1px;
-        border-top-color: #9d9d9d;
+        border-top-color: var(--gray);
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     }
     .drop:hover .drop-content {
@@ -120,7 +140,7 @@ table input.form-control:read-only {
         color: white;
     }
     .drop-content a {
-        color: #9d9d9d;
+        color: var(--gray);
         padding: 12px 16px;
         text-decoration: none;
         display: block;
@@ -137,7 +157,7 @@ h4 {
     font-weight: 700;
     padding-bottom: 5px;
     border-bottom-style: solid;
-    border-bottom-color: #6495ed;
+    border-bottom-color: var(--theme-main);
     border-bottom-width: 2px;
     margin-bottom: 10px;
 }
@@ -168,8 +188,8 @@ h4 {
     }
 }
 .blue-header {
-    background-color: #6495ed;
-    color: whitesmoke;
+    background-color: var(--theme-secound);
+    color: var(--white-smoke);
 }
 .cell-1 {
     width: 10%;
@@ -244,26 +264,29 @@ h4 {
     display: none;
     border-style: solid;
     border-width: 1px;
-    background-color: #f0f0f0;
+    background-color: var(--gray-light);
     padding: 10px 10px 10px 10px;
 }
 .w-full {
     width: 100%;
 }
 a.boldlink {
-    color: #333333;
+    color: var(--text-color);
     font-size: 20px;
 }
+a.boldlink:hover {
+    font-weight: 700;
+}
 a.textlink {
-    color: #333333;
+    color: var(--text-color);
 }
 a.boldlink:hover, a.textlink:hover {
     text-decoration: none;
-    color: #6495ed;
+    color: var(--theme-main);
 }
 a.text-danger:hover {
     text-decoration: none;
-    color: black;
+    color: var(--black);
 }
 @media (min-width: 768px) {
     a .boldlink:hover {
@@ -273,10 +296,10 @@ a.text-danger:hover {
 .admincontroll {
     padding: 5px 10px 5px 10px;
     display: inline-block;
-    background-color: #f0f0f0;
+    background-color: var(--gray-light);
     border-style: solid;
     border-width: 2px;
-    border-color: #a94442;
+    border-color: var(--danger-text);
     border-radius: 3px;
 }
 .admincontroll:hover {
@@ -284,15 +307,15 @@ a.text-danger:hover {
     text-decoration: none;
 }
 .admincontroll, .admincontroll-text > a {
-    color: #a94442;
+    color: var(--danger-text);
 }
 .board {
     margin-top: 3em;
     border-style: outset;
     border-width: 3px;
-    border-color: #222;
+    border-color: var(--gray-dark);
     border-radius: 10px;
-    background-color: #687d60;
+    background-color: var(--board-color);
     padding: 15px 15px 15px 15px;
     margin-left: auto;
     margin-right: auto;
@@ -304,16 +327,16 @@ a.text-danger:hover {
     border: solid;
     border-width: 2px;
     border-radius: 6px;
-    border-color: black;
+    border-color: var(--black);
     padding: 5px 20px 5px 20px;
     font-family: 'Comic Sans MS';
 }
 .active {
-    border-color: goldenrod;
+    border-color: var(--yellow-dark);
     border-width: 2px;
 }
 .active:hover {
-    border-color: greenyellow;
+    border-color: var(--green-light);
 }
 .card-color {
     height: 15px;
@@ -322,7 +345,7 @@ a.text-danger:hover {
     border-top: solid;
     border-bottom: solid;
     border-width: 1px;
-    border-color: black;
+    border-color: var(--black);
     margin-top: 5px;
     margin-bottom: 5px;
 
@@ -357,10 +380,10 @@ a.text-danger:hover {
     }
 }
 .c-red {
-    color: red;
+    color: var(--red);
 }
 .c-black {
-    color: black;
+    color: var(--black);
 }
 .border-1 {
     border: solid;
@@ -407,7 +430,7 @@ label {
     color: inherit;
 }
 .bluehover:hover {
-    color: #6495ed;
+    color: var(--theme-main);
 }
 .block {
     display: block;
@@ -420,7 +443,7 @@ label {
     margin: 0px 10px 1em 10px;
     height: 200px;
     border-style: solid;
-    border-color: #6495ed;
+    border-color: var(--theme-main);
     border-radius: 8px;
 }
 .big {
@@ -441,17 +464,16 @@ footer {
     display: inline-block;
 }
 .buttonlike {
-    color: gray;
+    color: var(--gray-dark);
     min-width: 100px;
     margin-left: 10px;
     padding: 2px 5px 2px 5px;
     text-align: center;
     border-style: solid;
-    border-color: grey;
+    border-color: var(--gray);
     border-radius: 3px;
     border-width: 1px;
-    background-color: buttonface;
-    color: black;
+    background-color: var(--gray-light);
 }
 .buttonlike:hover {
     border-style: inset;
@@ -463,14 +485,14 @@ footer {
     padding: 1px 5px 0px 5px;
     text-align: center;
     border-style: ridge;
-    border-color: grey;
+    border-color: var(--gray);
     border-width: 2px 3px 3px 2px;
-    background-color: buttonface;
-    color: black;
+    border-radius: 1px;
+    background-color: var(--gray-light);
+    color: var(--gray-dark);
 }
 .buttonlike-heavy:hover {
-    background-color: darkgray;
-    color: white;
+    background-color: var(--gray-shadow);
 }
 .italic {
    font-style: italic;

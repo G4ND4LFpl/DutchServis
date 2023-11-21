@@ -5,21 +5,17 @@ using System.Web;
 
 namespace DutchServisMCV.Models
 {
-    public class MatchData
+    public class MatchInfo
     {
         public int Id { get; set; }
-        public int TournamentId { get; set; }
         public string Tournament { get; set; }
-        public int PlayerId1 { get; set; }
         public string Player1 { get; set; }
         public Nullable<int> PointsPlayer1 { get; set; }
-        public int PlayerId2 { get; set; }
         public string Player2 { get; set; }
         public Nullable<int> PointsPlayer2 { get; set; }
         public DateTime PlayDate { get; set; }
         public Nullable<bool> BonusGamePlayer1 { get; set; }
         public Nullable<bool> BonusGamePlayer2 { get; set; }
         public int FormatBo { get; set; }
-        public List<Games> Games { get; set; }
     }
 }

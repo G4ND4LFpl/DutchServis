@@ -1,0 +1,122 @@
+﻿@model DutchServisMCV.Models.MatchData
+
+@{
+    ViewBag.Title = "Dodaj mecz";
+}
+
+<header>
+    <h2>Dodaj mecz</h2>
+</header>   
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+
+        <section>
+            <h4>Dane meczu</h4>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="PlayerId1">Pierwszy gracz</label>
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        <select class="list-box form-control" id="PlayerId1" name="PlayerId1">
+                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                            {
+                                <option value="@item.Id">@item.Nickname</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="PlayerId2">Drugi gracz</label>
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        <select class="list-box form-control" id="PlayerId2" name="PlayerId2">
+                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                            {
+                                <option value="@item.Id">@item.Nickname</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="text-danger">@ViewBag.PlayerValidationMsg</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="PlayDate">Data</label>
+                <div class="col-md-9">
+                    <input type="date" class="list-box form-control" id="PlayDate" name="PlayDate" value="@Model.PlayDate" autocomplete="off">
+                    <div class="text-danger">@ViewBag.DateValidationMsg</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="FormatBo">Format</label>
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        <select class="list-box form-control" id="FormatBo" name="FormatBo">
+                            <option value="5">Bo5</option>
+                            <option value="7">Bo7</option>
+                            <option value="9">Bo9</option>
+                            <option value="10">Bo10</option>
+                            <option value="11" selected>Bo11</option>
+                            <option value="13">Bo13</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="First">Rozpoczyna</label>
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        <select class="list-box form-control" id="First" onchange="">
+                            <!-- Javascript generated content -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h4>Rozegrane partie</h4>
+
+            <div class="form-group">
+                <label class="control-label col-md-3">Wynik</label>
+                <div class="col-md-9">
+                    <h3 id="scoreHeader" class="form-element mt-0">
+                        <!-- Javascript generated content -->
+                    </h3>
+                </div>
+            </div>
+
+            <!-- Tabela rozgrywek -->
+            <table class="table width-small table-bordered">
+                <thead class="table-style">
+                    <tr>
+                        <th></th>
+                        <th colspan="2" id="player1"></th>
+                        <th colspan="2" id="player2"></th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>Nr.</th>
+                        <th>Punkty</th>
+                        <th>Błędy</th>
+                        <th>Punkty</th>
+                        <th>Błędy</th>
+                        <th>Dutch</th>
+                    </tr>
+                </thead>
+                <tbody class="table-style" id="games_table">
+                    <!-- Javascript generated content -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+}

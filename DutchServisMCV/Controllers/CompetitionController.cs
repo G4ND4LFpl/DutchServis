@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -11,11 +12,11 @@ using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
-    public class BaseMatchesController : Controller
+    public class CompetitionController : Controller
     {
         protected DutchDatabaseEntities database = new DutchDatabaseEntities();
 
-        // Redirect function
+        // Redirect Function
         public ActionResult Link(string name)
         {
             if (name == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -30,7 +31,7 @@ namespace DutchServisMCV.Controllers
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
-        // Sql query functions
+        // Sql Query Functions
         protected IQueryable<PlayerTournItem> GetPlayerSet(string tournament)
         {
             return (from set in database.PlayerSet
@@ -49,7 +50,7 @@ namespace DutchServisMCV.Controllers
                         Price = set.Prize
                     });
         }
-        protected IQueryable<PlayerLeagueItem> GetPlayerSet(string tournament, IQueryable<MatchData> matchlist)
+        protected IQueryable<PlayerLeagueItem> GetPlayerSet(string tournament, IQueryable<MatchInfo> matchlist)
         {
             var stat_table = from matches in (
                 from matches in matchlist
@@ -119,7 +120,7 @@ namespace DutchServisMCV.Controllers
                         Points = gruped.Count(x => x.Win == player)
                     });
         }
-        protected IQueryable<MatchData> GetMatchList(string tournament, IQueryable<GamesSum> games1, IQueryable<GamesSum> games2, int matchId = -1)
+        protected IQueryable<MatchInfo> GetMatchList(string tournament, IQueryable<GamesSum> games1, IQueryable<GamesSum> games2, int matchId = -1)
         {
             return (from matches in database.Matches
                     join tourn in database.Tournaments
@@ -129,7 +130,7 @@ namespace DutchServisMCV.Controllers
                     join player2 in games2
                     on matches.MatchId equals player2.MatchId
                     where tourn.Name == tournament && (matchId == -1 || matches.MatchId == matchId)
-                    select new MatchData
+                    select new MatchInfo
                     {
                         Id = matches.MatchId,
                         Player1 = player1.Nickname,
@@ -141,7 +142,126 @@ namespace DutchServisMCV.Controllers
                     });
         }
 
-        // Validation functions
+        protected IQueryable<PlayerItem> GetPlayerList()
+        {
+            var playerlist = from players in database.Players
+                             select new PlayerItem
+                             {
+                                 Id = players.PlayerId,
+                                 Nickname = players.Nickname
+                             };
+            return playerlist.OrderBy(item => item.Nickname);
+        }
+        protected IQueryable<PlayerItem> GetPlayerList(string tournamentName)
+        {
+            var playerlist = from players in database.Players
+                             where !(from other in database.PlayerSet
+                                     join tournament in database.Tournaments
+                                     on other.TournamentId equals tournament.TournamentId
+                                     where tournament.Name == tournamentName
+                                     select other
+                                     ).Any(p => p.PlayerId == players.PlayerId)
+                             select new PlayerItem
+                             {
+                                 Id = players.PlayerId,
+                                 Nickname = players.Nickname
+                             };
+            return playerlist.OrderBy(item => item.Nickname);
+        }
+
+        // Database Update Functions
+        private void AddOrUpdate(PlayerSet player, int competitionId)
+        {
+            if (!database.PlayerSet.AsNoTracking().Where(p => p.TournamentId == competitionId).Any(item => item.PlayerId == player.PlayerId))
+            {
+                // Add item
+                database.PlayerSet.Add(player);
+            }
+            else
+            {
+                // Update item
+                player.EntryId = database.PlayerSet.AsNoTracking().Where(
+                    item => item.TournamentId == competitionId && item.PlayerId == player.PlayerId
+                    ).FirstOrDefault().EntryId;
+                database.Entry(player).State = EntityState.Modified;
+            }
+        }
+        protected void UpdatePlayerSet(CompetitionInfo<PlayerTournItem> competition)
+        {
+            foreach (PlayerItem playerItem in competition.Players)
+            {
+                PlayerTournItem tournamentItem = playerItem as PlayerTournItem;
+
+                // Prepare rank value
+                double? rank = tournamentItem.RankingBefore;
+                if (rank == null || rank == 0.0)
+                {
+                    rank = database.Players.Where(p => p.PlayerId == tournamentItem.Id).FirstOrDefault().Rating;
+                    var sum = (from set in database.PlayerSet
+                               where set.PlayerId == tournamentItem.Id
+                               group set by set.PlayerId into gres
+                               select new
+                               {
+                                   Id = gres.Key,
+                                   Sum = gres.Sum(item => item.RankingGet)
+                               }
+                               ).FirstOrDefault();
+                    rank += (sum != null ? sum.Sum : 0.0);
+                }
+
+                // Create PlayerSet item
+                PlayerSet player = new PlayerSet
+                {
+                    TournamentId = competition.Id,
+                    PlayerId = tournamentItem.Id,
+                    Ranking = rank,
+                    Place = tournamentItem.Place,
+                    RankingGet = tournamentItem.RankingGet,
+                    Prize = tournamentItem.Price
+                };
+
+                // Add or Update Database
+                AddOrUpdate(player, competition.Id);
+            }
+
+            // Removing items deleted in edition
+            foreach (PlayerSet playerItem in database.PlayerSet.Where(p => p.TournamentId == competition.Id))
+            {
+                if (!competition.Players.Any(item => item.Id == playerItem.PlayerId))
+                {
+                    database.PlayerSet.Remove(playerItem);
+                }
+            }
+        }
+        protected void UpdatePlayerSet(CompetitionInfo<PlayerLeagueItem> competition)
+        {
+            foreach (PlayerItem playerItem in competition.Players)
+            {
+                PlayerLeagueItem leagueItem = playerItem as PlayerLeagueItem;
+
+                // Create PlayerSet item
+                PlayerSet player = new PlayerSet
+                {
+                    TournamentId = competition.Id,
+                    PlayerId = leagueItem.Id,
+                    Prize = leagueItem.Price
+                };
+
+                // Add or Update Database
+                AddOrUpdate(player, competition.Id);
+            }
+
+            // Removing items deleted in edition
+            foreach (PlayerSet playerItem in database.PlayerSet.Where(p => p.TournamentId == competition.Id))
+            {
+                if (!competition.Players.Any(item => item.Id == playerItem.PlayerId))
+                {
+                    database.PlayerSet.Remove(playerItem);
+                }
+            }
+        }
+
+        // Validation Functions
         protected SResponse NameIsValid(string name, int id = -1)
         {
             if (name == null || name.Replace(" ", "") == "")

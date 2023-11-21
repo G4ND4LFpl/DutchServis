@@ -129,7 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\BaseMatchesController.cs" />
+    <Compile Include="Controllers\CompetitionController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="Models\Clans.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\CompetitionInfo.cs" />
     <Compile Include="Models\DataBaseModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -166,6 +167,7 @@
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MatchData.cs" />
+    <Compile Include="Models\MatchInfo.cs" />
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -253,7 +255,7 @@
     <Content Include="Views\Players\Add.cshtml" />
     <Content Include="Views\Players\Edit.cshtml" />
     <Content Include="Views\Players\Info.cshtml" />
-    <Content Include="Views\Matches\AddGame.cshtml" />
+    <Content Include="Views\Matches\Add.cshtml" />
     <Content Include="Views\Matches\Delete.cshtml" />
     <Content Include="Views\Matches\Edit.cshtml" />
     <Content Include="Views\Tournaments\Index.cshtml" />

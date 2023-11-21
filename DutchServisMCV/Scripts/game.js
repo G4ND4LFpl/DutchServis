@@ -52,6 +52,11 @@ var num;
 /* lookup */
 
 // Visual functions
+
+/**
+ * Returns css class for color
+ * @param {string} color Card color
+ */
 function colorClass(color) {
     if (color === "kier" || color === "karo") return "c-red";
     else return "c-black";

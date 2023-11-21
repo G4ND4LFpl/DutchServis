@@ -11,7 +11,7 @@ using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
-    public class LeaguesController : BaseMatchesController
+    public class LeaguesController : CompetitionController
     {
         public ActionResult Index()
         {
@@ -133,21 +133,10 @@ namespace DutchServisMCV.Controllers
             Tournaments t = database.Tournaments.Where(item => item.Name == name).FirstOrDefault();
             if (t == null) return HttpNotFound();
 
-            // Prapare
-            var playerlist = from players in database.Players
-                             where !(from other in database.PlayerSet
-                                     join tournament in database.Tournaments
-                                     on other.TournamentId equals tournament.TournamentId
-                                     where tournament.Name == name
-                                     select other
-                                     ).Any(p => p.PlayerId == players.PlayerId)
-                             select new PlayerItem
-                             {
-                                 Id = players.PlayerId,
-                                 Nickname = players.Nickname
-                             };
-            ViewBag.Players = playerlist.OrderBy(item => item.Nickname).ToList();
+            // Prepare Viewbag
+            ViewBag.Players = GetPlayerList(name).ToList();
 
+            // Preparing Model
             var player1_games = GamesSumByMatch(1);
             var player2_games = GamesSumByMatch(2);
             var matchlist = GetMatchList(name, player1_games, player2_games);
@@ -185,7 +174,7 @@ namespace DutchServisMCV.Controllers
                              };
             ViewBag.Players = playerlist.OrderBy(item => item.Nickname).ToList();
 
-            if (league.Matches == null) league.Matches = new List<MatchData>();
+            if (league.Matches == null) league.Matches = new List<MatchInfo>();
             if (league.Players == null) league.Players = new List<PlayerLeagueItem>();
 
             // Name Validation
@@ -250,38 +239,8 @@ namespace DutchServisMCV.Controllers
             };
             database.Entry(leagueObject).State = EntityState.Modified;
 
-            // Add PlayerSet to Database
-            foreach (PlayerLeagueItem playerItem in league.Players)
-            {
-                PlayerSet player = new PlayerSet
-                {
-                    TournamentId = league.Id,
-                    PlayerId = playerItem.Id,
-                    Prize = playerItem.Price
-                };
-
-                if (!database.PlayerSet.AsNoTracking().Where(p => p.TournamentId == league.Id).Any(item => item.PlayerId == playerItem.Id))
-                {
-                    // Add item
-                    database.PlayerSet.Add(player);
-                }
-                else
-                {
-                    // Update item
-                    player.EntryId = database.PlayerSet.AsNoTracking().Where(
-                        item => item.TournamentId == league.Id && item.PlayerId == playerItem.Id
-                        ).FirstOrDefault().EntryId;
-                    database.Entry(player).State = EntityState.Modified;
-                }
-            }
-            // Remove from playerSet
-            foreach (PlayerSet playerItem in database.PlayerSet.Where(p => p.TournamentId == league.Id))
-            {
-                if (!league.Players.Any(item => item.Id == playerItem.PlayerId))
-                {
-                    database.PlayerSet.Remove(playerItem);
-                }
-            }
+            // Update PlayerSet for tournament
+            UpdatePlayerSet(league);
 
             // Save chages
             database.SaveChanges();

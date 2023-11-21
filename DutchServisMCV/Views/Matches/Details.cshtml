@@ -48,36 +48,40 @@
 <section>
     <h4 class="border-none text-center">Dane gry</h4>
     <table class="table table-bordered">
-        <tr class="table-style blue-header">
-            <th></th>
-            <th colspan="2">@Model.Player1</th>
-            <th colspan="2">@Model.Player2</th>
-            <th colspan="2" class="disp-sm">Ogólne</th>
-        </tr>
-        <tr class="table-style blue-header">
-            <th class="cell-1 disp-md">Nr. partii</th>
-            <th class="cell-1 disp-only-sm">Nr.</th>
-            <th class="cell-1 cell-2-lg">Punkty</th>
-            <th class="cell-1">Błędy</th>
-            <th class="cell-1 cell-2-lg">Punkty</th>
-            <th class="cell-1">Błędy</th>
-            <th class="cell-1 disp-sm">Otwarcie</th>
-            <th class="cell-1 disp-sm">Dutch</th>
-        </tr>
-        @for (int i = 0; i < Model.Games.Count(); i++)
-        {
-            <tr class="table-style">
-                <td>@(i+1).</td>
-                <td>@(Model.Games[i].PointsPlayer1 != null ? Model.Games[i].PointsPlayer1.ToString() : "C")</td>
-                <td>@Model.Games[i].MistakesPlayer1</td>
-                <td>@(Model.Games[i].PointsPlayer2 != null ? Model.Games[i].PointsPlayer2.ToString() : "C")</td>
-                <td>@Model.Games[i].MistakesPlayer2</td>
-                <td class="disp-md">@(Model.Games[i].Opening == 1 ? Model.Player1 : Model.Player2)</td>
-                <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Opening</td>
-                <td class="disp-md">@(Model.Games[i].Dutch == 1 ? Model.Player1 : Model.Player2)</td>
-                <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Dutch</td>
+        <thead class="table-style">
+            <tr class="blue-header">
+                <th></th>
+                <th colspan="2">@Model.Player1</th>
+                <th colspan="2">@Model.Player2</th>
+                <th colspan="2" class="disp-sm">Ogólne</th>
             </tr>
-        }
+            <tr class="blue-header">
+                <th class="cell-1 disp-md">Nr. partii</th>
+                <th class="cell-1 disp-only-sm">Nr.</th>
+                <th class="cell-1 cell-2-lg">Punkty</th>
+                <th class="cell-1">Błędy</th>
+                <th class="cell-1 cell-2-lg">Punkty</th>
+                <th class="cell-1">Błędy</th>
+                <th class="cell-1 disp-sm">Otwarcie</th>
+                <th class="cell-1 disp-sm">Dutch</th>
+            </tr>
+        </thead>
+        <tbody class="table-style">
+            @for (int i = 0; i < Model.Games.Count(); i++)
+            {
+                <tr class="table-style">
+                    <td>@(i+1).</td>
+                    <td>@(Model.Games[i].PointsPlayer1 != null ? Model.Games[i].PointsPlayer1.ToString() : "C")</td>
+                    <td>@Model.Games[i].MistakesPlayer1</td>
+                    <td>@(Model.Games[i].PointsPlayer2 != null ? Model.Games[i].PointsPlayer2.ToString() : "C")</td>
+                    <td>@Model.Games[i].MistakesPlayer2</td>
+                    <td class="disp-md">@(Model.Games[i].Opening == 1 ? Model.Player1 : Model.Player2)</td>
+                    <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Opening</td>
+                    <td class="disp-md">@(Model.Games[i].Dutch == 1 ? Model.Player1 : Model.Player2)</td>
+                    <td class="disp-sm disp-only-sm">Gracz @Model.Games[i].Dutch</td>
+                </tr>
+            }
+        </tbody>
     </table>
 
     <p class="disp-only-xs italic text-warning">Część danych została ukryta z uwagi na zbyt małą wielkość ekranu.</p>

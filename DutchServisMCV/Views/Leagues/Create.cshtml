@@ -46,6 +46,14 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2" for="File">Zdjęcie</label>
+            <div class="col-md-10">
+                <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" />
+                <div class="text-danger">@ViewBag.FileValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="control-label col-md-2" for="Info">Informacje</label>
             <div class="col-md-10">
                 <div class="textbox">
