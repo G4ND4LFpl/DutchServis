@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title | Dutch Federation</title>
+    <title>@ViewBag.Title | Tournament Dutch Federation</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -19,7 +19,9 @@
                 </button>
                 <a class="navbar-brand" href="@Url.Action("Index", "Home")">
                     <img class="img-icon f-left" src="@Url.Content("~/Content/images/logo.png")" />
-                    <p class="f-left">Dutch<br />Federation</p>
+                    <div class="f-left align-content-center disp-lg">Tournament<br />Dutch Federation</div>
+                    <div class="f-left align-content-center disp-only-md disp-sm">Tournament Dutch Federation</div>
+                    <div class="f-left align-content-center disp-only-xs">Tournament<br />Dutch Federation</div>
                 </a>
             </div>
             <div class="navbar-collapse collapse">
@@ -40,7 +42,7 @@
                         <aside class="f-left">@Html.ActionLink("Wyloguj", "Logout", "Admin")</aside>
                     }
                     else
-                    {   
+                    {
                         <aside>@Html.ActionLink("Zaloguj", "Login", "Admin")</aside>
                     }
                 </div>
@@ -89,11 +91,30 @@
 
     <div class="container body-content">
         @RenderBody()
-        <hr/>
-        <footer>
-            <p>Piotr Majewski @DateTime.Now.Year</p>
-        </footer>
+        <hr />
     </div>
+
+    <footer class="footerbar">
+        <div class="container">
+            <div class="f-left socials">
+                <div>
+                    <a href="https://facebook.com/groups/620162223657147/" target="_blank">
+                        <img class="img-icon f-left disp-inline-block" src="@Url.Content("~/Content/images/fb_icon.png")" />
+                        <p class="disp-inline-block">
+                            Odwiedź oficjalną grupę<br />Tournament Dutch Federation
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="f-right-md">
+                <ul class="list-unstyled">
+                    <li>Serwis Dutch 2023</li>
+                    <li>Ostatnia edycja: 22.11.2023</li>
+                    <li>Piotr Majewski</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

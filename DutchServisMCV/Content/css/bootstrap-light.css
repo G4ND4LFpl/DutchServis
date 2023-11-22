@@ -8,15 +8,14 @@ html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%;
-
     /* Custom */
     --gray: #9d9d9d;
     --gray-dark: #222222;
     --text-color: #333333;
     --danger-text: #a94442;
-
+    --nav-height: 56px;
+    /* Theme */
     --theme-color-main: #6495ed;
-
     /* Default */
     --link-blue: #337ab7;
     --link-dark-blue: #23527c;
@@ -4302,7 +4301,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
     /*height: 50px;
     font-size: 18px;
     padding: 15px 15px;*/
-    height: 56px;
+    height: var(--nav-height);
     padding: 8px 8px;
     font-size: 24px;
     line-height: 20px;

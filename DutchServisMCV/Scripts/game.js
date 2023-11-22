@@ -200,14 +200,20 @@ function RefreshCard(id, card="all") {
             ToggleOffSet("player", player_cards[idx].card == null);
         }
 
-        if (player_cards[idx].card == null && (card == "all" || card == "empty")) {
-            SetEmpty(id, false, idx < 4);
+        if (player_cards[idx].card == null) {
+            if (card == "all" || card == "empty") {
+                SetEmpty(id, false, idx < 4);
+            }
         }
-        else if (player_cards[idx].visible == false && (card == "all" || card == "reverse")) {
-            SetCardReverse(id, mode == Mode.Lookup || mode == Mode.Throw, idx < 4);
+        else if (player_cards[idx].visible == false) {
+            if (card == "all" || card == "reverse") {
+                SetCardReverse(id, mode == Mode.Lookup || mode == Mode.Throw, idx < 4);
+            }
         }
-        else if (player_cards[idx].visible == true && (card == "all" || card == "avers")) {
-            SetCard(id, player_cards[idx].card.color, player_cards[idx].card.value, mode == Mode.Throw, idx < 4);
+        else if (player_cards[idx].visible == true) {
+            if (card == "all" || card == "avers") {
+                SetCard(id, player_cards[idx].card.color, player_cards[idx].card.value, false, idx < 4);
+            }
         }
     }
 }
@@ -379,7 +385,7 @@ function Throw(id) {
     RefreshStack();
     ToggleStack();
     ToggleDeck();
-    RefreshCard("player");
+    RefreshCard(id); //player
 }
 
 /**
