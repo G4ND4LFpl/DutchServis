@@ -109,7 +109,7 @@ namespace DutchServisMCV.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(PassChange form)
+        public ActionResult Index(Pass form)
         {
             string username = Session["username"].ToString();
 

@@ -40,17 +40,26 @@
             <li><b>Ranking:</b> @Model.Ranking</li>
             <li><b>Rating:</b> @Model.Rating</li>
             <li>
-                <b>Win rate:</b> @Model.Winratio%
-                <div class="f-right">@Model.WinGames / @Model.TotalGames</div>
+                <b>Win rate:</b> @Model.Stats.Games.Percentage%
+                <div class="f-right">@Model.Stats.Games.Win / @Model.Stats.Games.Total</div>
             </li>
             <li>
-                <b>Opening win rate:</b> @Model.OpenWinration%
-                <div class="f-right">@Model.WinOpenings / @Model.Openings</div>
+                <b>Opening win rate:</b> @Model.Stats.Openings.Percentage%
+                <div class="f-right">@Model.Stats.Openings.Win / @Model.Stats.Openings.Total</div>
             </li>
             <li>
-                <b>Dutch win rate:</b> @Model.DutchWinration%
-                <div class="f-right">@Model.WinDutchs / @Model.Dutchs</div>
+                <b>Dutch win rate:</b> @Model.Stats.Dutches.Percentage%
+                <div class="f-right">@Model.Stats.Dutches.Win / @Model.Stats.Dutches.Total</div>
             </li>
+            <li>
+                <b>Średnia ilość punktów:</b>
+                <ul>
+                    <li>Na partię: @Model.Stats.AvgPoints</li>
+                    <li>Na wygraną partię: @Model.Stats.AvgPointsWin</li>
+                    <li>Na przegraną partię: @Model.Stats.AvgPointsLoose</li>
+                </ul>
+            </li>
+            <li><b>ClearBoards:</b> @Model.Stats.ClearBoards</li>
         </ul>
     </section>
 </article>

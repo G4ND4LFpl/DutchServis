@@ -171,8 +171,9 @@
     <Compile Include="Models\Matches.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\PassChange.cs" />
+    <Compile Include="Models\Pass.cs" />
     <Compile Include="Models\PlayerData.cs" />
+    <Compile Include="Models\PlayerGame.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\LeagueInfo.cs" />
     <Compile Include="Models\Players.cs">
@@ -202,6 +203,7 @@
     <Content Include="Content\images\cards\card_reverse.png" />
     <Content Include="Content\images\cards\card_trefl.png" />
     <Content Include="Content\images\empty.png" />
+    <Content Include="Content\images\fb_icon.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\playerdata\argset.png" />
     <Content Include="Content\images\playerdata\gandalf.png" />

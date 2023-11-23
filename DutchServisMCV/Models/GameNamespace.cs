@@ -36,5 +36,24 @@ namespace DutchServisMCV.Models
             public string Nickname { get; set; }
             public int Points { get; set; }
         }
+
+        public class Stat
+        {
+            public double? Percentage { get; set; }
+            public int Win { get; set; }
+            public int Total { get; set; }
+        }
+
+        public class Statistics
+        {
+            public Stat Games { get; set; }
+            public Stat Openings { get; set; }
+            public Stat Dutches { get; set; }
+
+            public double? AvgPoints { get; set; }
+            public double? AvgPointsWin { get; set; }
+            public double? AvgPointsLoose { get; set; }
+            public int ClearBoards { get; set; }
+        }
     }
 }

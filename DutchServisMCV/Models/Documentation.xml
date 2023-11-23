@@ -3,70 +3,155 @@
 	<class name="PlayerInfo">
 		<PlayerInfo>
 			<summary>
-				Klasa będąca modelem danych wyświetlanych w tabeli graczy w widoku "/Players" oraz "/Players/Index".
-				<list type="bullet">
-					<item>
-						<term>Nickname</term>
-						<value>Nick gracza</value>
-					</item>
-					<item>
-						<term>Img</term>
-						<value>Nazwa pliku zawierającego awatar gracza</value>
-					</item>
-					<item>
-						<term>Clan</term>
-						<value>Nazwa klanu do którego należy gracza</value>
-					</item>
-					<item>
-						<term>Ranking</term>
-						<value>Ranking gracza</value>
-					</item>
-					<item>
-						<term>Rating</term>
-						<value>Rating gracza</value>
-					</item>
-					<item>
-						<term>Active</term>
-						<value>Informacja czy gracz jest aktywny</value>
-					</item>
-				</list>
+				Model gracza zawierający podstawowe dane na temat gracza.
 			</summary>
 		</PlayerInfo>
 		<Nickname>
 			<summary>
-				<value>Właściwość reprezentucjąca nick gracza.</value>
-				<remarks>Nickname jest typem <see langword="string"/>.</remarks>
+				Nick gracza
 			</summary>
 		</Nickname>
 		<Img>
 			<summary>
-				<value>Właściwość reprezentucjąca nazwę pliku (.jpg/.png) zawierającego awatar gracza.</value>
-				<remarks>Img jest typem <see langword="string"/>.</remarks>
+				Nazwa pliku z awatarem gracza
 			</summary>
+			<remarks>
+				Plik jest typu ".jpg" lub ".png"
+			</remarks>
 		</Img>
 		<Clan>
 			<summary>
-				<value>Właściwość reprezentucjąca nazwę klanu do którego należy gracza</value>
-				<remarks>Clan jest typem <see langword="string"/>.</remarks>
+				Klan do którego nalezy gracz
 			</summary>
 		</Clan>
 		<Ranking>
 			<summary>
-				<value>Właściwość reprezentucjąca ranking gracza.</value>
-				<remarks>Ranking jest typem <see cref="Nullable"/>&lt;<see langword="double"/>&gt;.</remarks>
+				Wartość rankingu
 			</summary>
 		</Ranking>
 		<Rating>
 			<summary>
-				<value>Właściwość reprezentucjąca rating gracza.</value>
-				<remarks>Rating jest typem <see cref="Nullable"/>&lt;<see langword="double"/>&gt;.</remarks>
+				Wartość ratingu
 			</summary>
 		</Rating>
 		<Active>
 			<summary>
-				<value>Właściwość informująca czy gracz jest aktywny.</value>
-				<remarks>Active jest typem <see langword="bool"/>?.</remarks>
+				Informacja czy gracz jest aktywny
 			</summary>
 		</Active>
+	</class>
+	
+	<class name="PlayerData">
+		<PlayerData>
+			<summary>
+				Model gracza dziedziczący z klasy <see cref="PlayerInfo"/> rozszerzający informacje o graczu oraz zawiera jego statystyki.
+			</summary>
+		</PlayerData>
+		<Name>
+			<summary>
+				Imię
+			</summary>
+		</Name>
+		<Surname>
+			<summary>
+				Nazwisko
+			</summary>
+		</Surname>
+		<Id>
+			<summary>
+				Id elementu w bazie danych
+			</summary>
+		</Id>
+		<JoinDate>
+			<summary>
+				Data dołączenia gracza
+			</summary>
+		</JoinDate>
+		<Status>
+			<summary>
+				Informacja czy gracz jest aktywny
+			</summary>
+			<remarks>
+				Przyjmuje wartość "Aktywny" lub "Nieaktywny"
+			</remarks>
+		</Status>
+	</class>
+	
+	<class name="Pass">
+		<Pass>
+			<summary>
+				Model danych do zmiany hasła
+			</summary>
+		</Pass>
+		<CurrentPass>
+			<summary>
+				Aktualne hasło
+			</summary>
+			<remarks>
+				Właściwość posiada atrybut <see cref="DataTypeAttribute"/> o wartości <see cref="DataType.Password"/>
+			</remarks>
+		</CurrentPass>
+		<NewPass>
+			<summary>
+				Nowe hasło
+			</summary>
+		</NewPass>
+		<RepeatPass>
+			<summary>
+				Powtórzenie nowego hasła
+			</summary>
+		</RepeatPass>
+	</class>
+
+	<class name="CompetitionInfo">
+		<CompetitionInfo>
+			<summary>
+				Klasa ogólna będąca rodzicem klas <see cref="TournamentInfo"/> oraz <see cref="LeagueInfo"/>. Zawiera podstawowe, wspólne 
+				informacje dotyczące turniejów i lig.
+			</summary>
+			<remarks>
+				Klasa <b>CompetitionInfo</b> jest klasą generyczną dla parametru <b>T</b> będącego klasą <see cref="PlayerItem"/>.
+			</remarks>
+		</CompetitionInfo>
+		<Id>
+			<summary>
+				Id elementu w bazie danych
+			</summary>
+		</Id>
+		<Name>
+			<summary>
+				Nazwa turnieju lub ligi
+			</summary>
+		</Name>
+		<Info>
+			<summary>
+				Dodatkowe informacje
+			</summary>
+		</Info>
+		<Img>
+			<summary>
+				Nazwa pliku z zdjęciem
+			</summary>
+		</Img>
+		<File>
+			<summary>
+				Plik z zdjęciem w formacie Html Post
+			</summary>
+		</File>
+		<Matches>
+			<summary>
+				Lista meczy
+			</summary>
+		</Matches>
+		<Players>
+			<summary>
+				Lista graczy biorących udział
+			</summary>
+		</Players>
+		<ShowResults>
+			<summary>
+				Informacja czy wyświetlać listę meczy i wyniki
+			</summary>
+		</ShowResults>
 	</class>
 </dock> 

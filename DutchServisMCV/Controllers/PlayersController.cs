@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using DutchServisMCV.Models;
 using DutchServisMCV.Logic;
+using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
@@ -60,122 +61,50 @@ namespace DutchServisMCV.Controllers
             return View(listPI);
         }
 
-        private IQueryable<Games> SelectWhere(string nickname, bool win)
+        private IQueryable<PlayerGame> GetPlayerGames(string player)
         {
-            if (win)
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname && games.Win == 1
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname && games.Win == 1
-                            select games
-                       );
-            }
-            else
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname
-                            select games
-                       );
-            }
+            return (
+                from games in database.Games
+                join matches in database.Matches on games.MatchId equals matches.MatchId
+                join players in database.Players on matches.Player1_Id equals players.PlayerId
+                where players.Nickname == player
+                select new PlayerGame
+                {
+                    Nickname = players.Nickname,
+                    Points = games.PointsPlayer1 ?? 0,
+                    Mistakes = games.MistakesPlayer1 ?? 0,
+                    Win = games.Win == 1,
+                    Open = games.Opening == 1,
+                    Dutch = games.Dutch == 1,
+                    Clean = games.PointsPlayer1 == null
+                }).Union(
+                from games in database.Games
+                join matches in database.Matches on games.MatchId equals matches.MatchId
+                join players in database.Players on matches.Player2_Id equals players.PlayerId
+                where players.Nickname == player
+                select new PlayerGame
+                {
+                    Nickname = players.Nickname,
+                    Points = games.PointsPlayer2 ?? 0,
+                    Mistakes = games.MistakesPlayer2 ?? 0,
+                    Win = games.Win == 2,
+                    Open = games.Opening == 2,
+                    Dutch = games.Dutch ==2,
+                    Clean = games.PointsPlayer2 == null
+                });
         }
-        private IQueryable<Games> SelectWhereOpen(string nickname, bool win)
+        private double? GetPointsAvarage(IQueryable<PlayerGame> query)
         {
-            if (win)
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname && games.Opening == 1 && games.Win == 1
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname && games.Opening == 2 && games.Win == 1
-                            select games
-                       );
-            }
-            else
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname && games.Opening == 1
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname && games.Opening == 2
-                            select games
-                       );
-            }
-        }
-        private IQueryable<Games> SelectWhereDutch(string nickname, bool win)
-        {
-            if (win)
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname && games.Dutch == 1 && games.Win == 1
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname && games.Dutch == 2 && games.Win == 1
-                            select games
-                       );
-            }
-            else
-            {
-                return (from games in database.Games
-                        join matches in database.Matches
-                        on games.MatchId equals matches.MatchId
-                        join players in database.Players
-                        on matches.Player1_Id equals players.PlayerId
-                        where players.Nickname == nickname && games.Dutch == 1
-                        select games).Union(
-                            from games in database.Games
-                            join matches in database.Matches
-                            on games.MatchId equals matches.MatchId
-                            join players in database.Players
-                            on matches.Player2_Id equals players.PlayerId
-                            where players.Nickname == nickname && games.Dutch == 2
-                            select games
-                       );
-            }
+            if (query.Count() == 0) return null;
+
+            double sum = (from table in query
+                          group table by table.Nickname into gruped
+                          select new
+                          {
+                              Sum = gruped.Sum(item => item.Points)
+                          }).FirstOrDefault().Sum;
+
+            return Math.Round(sum / query.Count(), 2);
         }
 
         public ActionResult Info(string nickname)
@@ -203,17 +132,28 @@ namespace DutchServisMCV.Controllers
                 rank = rank_query.FirstOrDefault().Sum;
             }
 
+            // Get games for player
+            IQueryable<PlayerGame> games = GetPlayerGames(nickname);
+
             // Win ration
-            var gamesTot = SelectWhere(nickname, false);
-            var gamesWin = SelectWhere(nickname, true);
+            int totGames = games.Count();
+            int winGames = games.Where(x => x.Win).Count();
 
             // Opening win ration
-            var openTot = SelectWhereOpen(nickname, false);
-            var openWin = SelectWhereOpen(nickname, true);
+            int totOpenings = games.Where(x => x.Open).Count();
+            int winOpenings = games.Where(x => x.Open && x.Win).Count();
 
             // Dutch win ratio
-            var dutchTot = SelectWhereDutch(nickname, false);
-            var dutchWin = SelectWhereDutch(nickname, true);
+            int totDutches = games.Where(x => x.Dutch).Count();
+            int winDutches = games.Where(x => x.Dutch && x.Win).Count();
+
+            // Avarage
+            double? avg = GetPointsAvarage(games);
+            double? avgWin = GetPointsAvarage(games.Where(x => x.Win));
+            double? avgLoose = GetPointsAvarage(games.Where(x => !x.Win));
+
+            // Clear Board
+            int clearboard = games.Where(x => x.Clean).Count();
 
             // Final query
             var query = from player in database.Players
@@ -233,17 +173,33 @@ namespace DutchServisMCV.Controllers
                             Img = player.Img,
                             Clan = grupedclans.FirstOrDefault().Name ?? "Brak",
                             Ranking = rank + player.Rating.Value,
-                            Winratio = gamesTot.Count() != 0 ? (double?)Math.Floor((double)gamesWin.Count() / gamesTot.Count() * 100.0) : null,
-                            WinGames = gamesWin.Count(),
-                            TotalGames = gamesTot.Count(),
-                            OpenWinration = openTot.Count() != 0 ? (double?)Math.Floor((double)openWin.Count() / openTot.Count() * 100.0) : null,
-                            WinOpenings = openWin.Count(),
-                            Openings = openTot.Count(),
-                            DutchWinration = dutchTot.Count() != 0 ? (double?)Math.Floor((double)dutchWin.Count() / dutchTot.Count() * 100.0) : null,
-                            WinDutchs = dutchWin.Count(),
-                            Dutchs = dutchTot.Count(),
                             Rating = player.Rating.Value,
-                            Status = (player.Active == true ? "Aktywny" : "Nieaktywny")
+                            Status = (player.Active == true ? "Aktywny" : "Nieaktywny"),
+                            Stats = new Statistics
+                            {
+                                Games = new Stat
+                                {
+                                    Percentage = totGames != 0 ? (double?)Math.Floor((double)winGames / totGames * 100.0) : null,
+                                    Win = winGames,
+                                    Total = totGames
+                                },
+                                Openings = new Stat
+                                {
+                                    Percentage = totOpenings != 0 ? (double?)Math.Floor((double)winOpenings / totOpenings * 100.0) : null,
+                                    Win = winOpenings,
+                                    Total = totOpenings
+                                },
+                                Dutches = new Stat
+                                {
+                                    Percentage = totDutches != 0 ? (double?)Math.Floor((double)winDutches / totDutches * 100.0) : null,
+                                    Win = winDutches,
+                                    Total = totDutches
+                                },
+                                AvgPoints = avg,
+                                AvgPointsWin = avgWin,
+                                AvgPointsLoose = avgLoose,
+                                ClearBoards = clearboard
+                            }
                         };
 
             // Return View
