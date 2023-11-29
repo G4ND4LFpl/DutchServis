@@ -136,7 +136,11 @@
     <Compile Include="Controllers\MatchesController.cs" />
     <Compile Include="Controllers\test.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
+    <Compile Include="Logic\GameEngine\Card.cs" />
+    <Compile Include="Logic\GameEngine\Deck.cs" />
     <Compile Include="Logic\FileManager.cs" />
+    <Compile Include="Logic\GameEngine\GameEngine.cs" />
+    <Compile Include="Logic\GameEngine\EngineResponse.cs" />
     <Compile Include="Logic\PasswordHasher.cs" />
     <Compile Include="Controllers\PlayersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -197,11 +201,11 @@
     <Content Include="Content\images\.gitignore" />
     <Content Include="Content\images\avatar.png" />
     <Content Include="Content\images\cards\card_empty.png" />
-    <Content Include="Content\images\cards\card_karo.png" />
-    <Content Include="Content\images\cards\card_kier.png" />
-    <Content Include="Content\images\cards\card_pik.png" />
+    <Content Include="Content\images\cards\card_diamonds.png" />
+    <Content Include="Content\images\cards\card_heart.png" />
+    <Content Include="Content\images\cards\card_spades.png" />
     <Content Include="Content\images\cards\card_reverse.png" />
-    <Content Include="Content\images\cards\card_trefl.png" />
+    <Content Include="Content\images\cards\card_clubs.png" />
     <Content Include="Content\images\empty.png" />
     <Content Include="Content\images\fb_icon.png" />
     <Content Include="Content\images\logo.png" />

@@ -1,80 +1,31 @@
-﻿// Deck class
-class Deck {
-    // private variebles
-    #deck;
-    // public variebles
-    size = 52;
-
-    // constructor
-    /**
-     * Tworzy zakryty stos kart
-     */
-    constructor() {
-        this.deck = [];
-        var colors = ["pik", "kier", "karo", "trefl"];
-
-        for (var c = 0; c < 4; c++) {
-            this.deck.push({ card: { color: colors[c], value: "A" }, ondeck: true });
-            for (var i = 2; i < 11; i++) {
-                this.deck.push({card: { color: colors[c], value: String(i) }, ondeck: true });
-            }
-            this.deck.push({ card: { color: colors[c], value: "J" }, ondeck: true });
-            this.deck.push({ card: { color: colors[c], value: "Q" }, ondeck: true });
-            this.deck.push({ card: { color: colors[c], value: "K" }, ondeck: true });
-        }
-    }
-
-    // public functions
-    /**
-     * Przywraca wszystkie karty na stercie
-     */
-    Shuffle() {
-        this.size = 52;
-        for (var i = 0; i < 52; i++) {
-            this.deck[i].ondeck = true;
-        }
-    }
-    /**
-     * Funkcja zwraca kartę i usuwa ją ze sterty
-     */
-    Draw() {
-        do {
-            var idx = Math.floor(Math.random() * 52);
-        }
-        while (this.deck[idx].ondeck === false)
-
-        this.deck[idx].ondeck = false;
-        this.size--;
-        return this.deck[idx].card;
-    }
+﻿class Card {
+    Color;
+    Value;
+    Visible;
 }
 
 // Variebles
-var deck;
-var bot_cards = [];
-var player_cards = [];
-var stack = [];
-var mode;
-var num;
-
-// Mode
-const Mode = {
-    Lookup: "Lookup",
-    Wait: "Wait",
-    Draw: "Draw",
-    Throw: "Throw",
-    Peek: "Peek"
-}
+var state;
 
 // Helper functions
 
 /**
- * Returns css class for color
- * @param {string} color Card color
+ * Returns css class for color id
+ * @param {int} color Card color id
  */
 function ColorClass(color) {
-    if (color === "kier" || color === "karo") return "c-red";
+    if (color == 0 || color == 1) return "c-red";
     else return "c-black";
+}
+/**
+ * Returns color name for color id
+ * @param {int} color Card color id
+ */
+function GetColor(color) {
+    if (color == 0) return "heart";
+    if (color == 1) return "diamonds";
+    if (color == 2) return "spades";
+    if (color == 3) return "clubs";
 }
 /**
  * Zwraca index w tablicy dla podanego id
@@ -83,13 +34,37 @@ function ColorClass(color) {
 function GetIndex(id) {
     return Number(id.split('_')[2]);
 }
+/**
+ * Ustawia offset 2 kolumny w wierszu
+ * Wiersz przyjmuje wartości: 'bot' lub 'player'
+ * @param {string} row Wiersz
+ * @param {boolean} toggle Offset kolumny
+ */
+function ToggleOffSet(row, toggle) {
+    document.getElementById("col_" + row + "_card_0").classList.toggle("col-lg-offset-2", toggle);
+}
 
-// Visual functions
+// Functions
+/**
+ * Ustawia obiektowi klasę "active" oraz zdarzenia onclick
+ * @param {any} button Obiekt Html
+ * @param {boolean} active Aktywność
+ */
+function SetActive(button, active) {
+    if (active) {
+        button.classList.toggle("active", true);
+        button.onclick = () => Action(button.id);
+    }
+    else {
+        button.classList.toggle("active", false);
+        button.onclick = null;
+    }
+}
 
 /**
  * Ustawia wybranemu przyciskowi puste miejsce
  * @param {string} id Html id przycisku
- * @param {boolean} active Indykacja czy aktywny
+ * @param {boolean} active Aktywność
  * @param {boolean} showEmpty Wyświetlanie pola, jeśli puste
  */
 function SetEmpty(id, active, showEmpty) {
@@ -97,24 +72,17 @@ function SetEmpty(id, active, showEmpty) {
         document.getElementById("col_" + id).classList.toggle("disp-none", true);
     }
 
-    var card = document.getElementById(id);
-    if (active) {
-        card.classList.toggle("active", true);
-        card.onclick = Click;
-    }
-    else {
-        card.classList.toggle("active", false);
-        card.onclick = () => Click(card.id);
-    }
+    var button = document.getElementById(id);
+    SetActive(button, active);
 
     var img = "<img src=\"" + path + "images/cards/card_empty.png\")\" class=\"img-responsive\" />";
     var text = "<div class=\"text-empty\">Puste</div>";
-    card.innerHTML = img + text;
+    button.innerHTML = img + text;
 }
 /**
  * Ustawia wybranemu przyciskowi reverse karty
  * @param {string} id Html id przycisku
- * @param {boolean} active Indykacja czy aktywny
+ * @param {boolean} active Aktywność
  * @param {boolean} showEmpty Wyświetlanie pola, jeśli puste
  */
 function SetCardReverse(id, active, showEmpty) {
@@ -122,44 +90,29 @@ function SetCardReverse(id, active, showEmpty) {
         document.getElementById("col_" + id).classList.toggle("disp-none", false);
     }
 
-    var card = document.getElementById(id);
-    if (active) {
-        card.classList.toggle("active", true);
-        card.onclick = () => Click(card.id);
-    }
-    else {
-        card.classList.toggle("active", false);
-        card.onclick = null;
-    }
+    var button = document.getElementById(id);
+    SetActive(button, active);
 
-    card.innerHTML = "<img src=\"" + path + "images/cards/card_reverse.png" + "\")\" class=\"img-responsive\" />";
+    button.innerHTML = "<img src=\"" + path + "images/cards/card_reverse.png" + "\")\" class=\"img-responsive\" />";
 }
 /**
  * Ustawia wybranemu przyciskowi avers karty
  * @param {string} id Html id przycisku
- * @param {string} color Kolor karty
- * @param {string} value Wartość karty
- * @param {boolean} active Indykacja czy aktywny
+ * @param {Card} card Obiekt karty
+ * @param {boolean} active Aktywność
  * @param {boolean} showEmpty Wyświetlanie pola, jeśli puste
  */
-function SetCard(id, color, value, active, showEmpty) {
+function SetCard(id, card, active, showEmpty) {
     if (!showEmpty) {
         document.getElementById("col_" + id).classList.toggle("disp-none", false);
     }
 
-    var card = document.getElementById(id);
-    if (active) {
-        card.classList.toggle("active", true);
-        card.onclick = () => Click(card.id);
-    }
-    else {
-        card.classList.toggle("active", false);
-        card.onclick = null;
-    }
+    var button = document.getElementById(id);
+    SetActive(button, active);
 
-    var img = "<img src=\"" + path + "images/cards/card_" + color + ".png\")\" class=\"img-responsive\" />";
-    var text = "<div class=\"text-avers " + ColorClass(color) + "\">" + value + "</div>";
-    card.innerHTML = img + text;
+    var img = "<img src=\"" + path + "images/cards/card_" + GetColor(card.Color) + ".png\")\" class=\"img-responsive\" />";
+    var text = "<div class=\"text-avers " + ColorClass(card.Color) + "\">" + card.Value + "</div>";
+    button.innerHTML = img + text;
 }
 
 /**
@@ -170,51 +123,26 @@ function SetCard(id, color, value, active, showEmpty) {
  * 'reverse' - odświeża tylko zakryte karty
  * 'avers' - odświeża tylko odkryte karty
  * @param {string} id Html id przycisku
- * @param {string} card Warunek, aby przycisk był odświeżony
+ * @param {string} cards Warunek, aby przycisk był odświeżony
  */
-function RefreshCard(id, card="all") {
+function RefreshCard(id, cards="all") {
     idx = GetIndex(id);
 
-    // debug
-    document.getElementById("debug").innerHTML = mode;
-
-    if (id.includes("bot")) {
-        // Bot card
-        if (idx == 4) {
-            ToggleOffSet("bot", bot_cards[idx].card == null);
+    if (idx == 4) {
+        if (id.includes("bot")) {
+            ToggleOffSet("bot", state[id].Card == null);
         }
-
-        if (bot_cards[idx].card == null && (card == "all" || card == "empty")) {
-            SetEmpty(id, false, idx < 4);
-        }
-        else if (bot_cards[idx].visible == false && (card == "all" || card == "reverse")) {
-            SetCardReverse(id, false, idx < 4);
-        }
-        else if (card == "all" || card == "avers") {
-            SetCard(id, bot_cards[idx].card.color, bot_cards[idx].card.value, false, idx < 4);
-        }
+        else ToggleOffSet("player", state[id].Card == null);
     }
-    else {
-        // Player card
-        if (idx == 4) {
-            ToggleOffSet("player", player_cards[idx].card == null);
-        }
 
-        if (player_cards[idx].card == null) {
-            if (card == "all" || card == "empty") {
-                SetEmpty(id, false, idx < 4);
-            }
-        }
-        else if (player_cards[idx].visible == false) {
-            if (card == "all" || card == "reverse") {
-                SetCardReverse(id, mode == Mode.Lookup || mode == Mode.Throw, idx < 4);
-            }
-        }
-        else if (player_cards[idx].visible == true) {
-            if (card == "all" || card == "avers") {
-                SetCard(id, player_cards[idx].card.color, player_cards[idx].card.value, false, idx < 4);
-            }
-        }
+    if (state[id].Card == null && (cards == "all" || cards == "empty")) {
+        SetEmpty(id, state[id].Active, idx < 4);
+    }
+    else if (state[id].Card.Visible == false && (cards == "all" || cards == "reverse")) {
+        SetCardReverse(id, state[id].Active, idx < 4);
+    }
+    else if (cards == "all" || cards == "avers") {
+        SetCard(id, state[id].Card, state[id].Active, idx < 4);
     }
 }
 /**
@@ -222,31 +150,32 @@ function RefreshCard(id, card="all") {
  * Wierszem może być: 'both', 'bot' lub 'player'
  * Warunkiem może być: 'all', 'empty', 'reverse' lub 'avers'
  * @param {string} row Wiersz kart (Wartość domyślna 'both')
- * @param {string} card Warunek, aby przycisk był odświeżony (Wartość domyślna 'all')
+ * @param {string} cards Warunek, aby przycisk był odświeżony (Wartość domyślna 'all')
  */
-function Refresh(row = "both", card = "all") {
+function Refresh(row = "both", cards = "all") {
     for (var i = 0; i < 8; i++) {
         // Bot cards
         if (row != "player") {
-            RefreshCard("bot_card_" + i, card);
+            RefreshCard("bot_card_" + i, cards);
         }
 
         // Player cards
         if (row != "bot") {
-            RefreshCard("player_card_" + i, card);
+            RefreshCard("player_card_" + i, cards);
         }
     }
 }
 /**
- * Odświeża wierzch odkrytego stosu
+ * Ustawia wierzchnią kartę odkrytemu stosowi kart
+ * @param {Card} card Obiekt karty
+ * @param {boolean} active Aktywność
  */
-function RefreshStack() {
-    if (stack.length != 0) {
-        var card = stack[stack.length - 1];
-        SetCard("stack", card.color, card.value, mode == mode.Draw, true);
+function RefreshStack(card, active) {
+    if (card != null) {
+        SetCard("stack", card, active, true);
     }
     else {
-        SetEmpty("stack", false, true);
+        SetEmpty("stack", active, true);
     }
 }
 
@@ -257,7 +186,7 @@ function RefreshStack() {
 function ToggleDeck(toggle) {
     document.getElementById("deck").classList.toggle("active", toggle);
     if (toggle) {
-        document.getElementById("deck").onclick = () => Draw("deck");
+        document.getElementById("deck").onclick = () => Action("deck");
     }
     else {
         document.getElementById("deck").onclick = null;
@@ -270,137 +199,59 @@ function ToggleDeck(toggle) {
 function ToggleStack(toggle) {
     document.getElementById("stack").classList.toggle("active", toggle);
     if (toggle) {
-        document.getElementById("stack").onclick = () => Draw("stack");
+        document.getElementById("stack").onclick = () => Action("stack");
     }
     else {
         document.getElementById("stack").onclick = null;
     }
 }
-/**
- * Ustawia offset 2 kolumny w wierszu
- * Wiersz przyjmuje wartości: 'bot' lub 'player'
- * @param {string} row Wiersz
- * @param {boolean} toggle Offset kolumny
- */
-function ToggleOffSet(row, toggle) {
-    document.getElementById("col_" + row + "_card_0").classList.toggle("col-lg-offset-2", toggle);
-}
-
-// Startup function
 
 /**
- * Rozkłada karty dla graczy i rozpoczyna fazę podglądania na start
+ * Ustawia przycisk
+ * @param {string} text Tekst
+ * @param {boolean} active Aktywność
  */
-function Deal() {
-    deck = new Deck();
+function RefreshButton(text, active) {
+    var btn = document.getElementById("button");
+    btn.innerHTML = text;
 
-    bot_cards = [];
-    player_cards = [];
-    mode = Mode.Lookup;
-    num = 2;
-
-    for (var i = 0; i < 4; i++) {
-        bot_cards.push({ card: deck.Draw(), visible: false });
-        player_cards.push({ card: deck.Draw(), visible: false });
-    }
-    for (var i = 0; i < 4; i++) {
-        bot_cards.push({ card: null, visible: false });
-        player_cards.push({ card: null, visible: false });
-    }
-
-    ToggleDeck(false);
-    Refresh();
-}
-/**
- * Ukrywa karty i rozpoczyna rozgrywkę
- */
-function Start() {
-    document.getElementById("start_button").classList.add(["disp-none"]);
-    for (var i = 0; i < 4; i++) {
-        player_cards[i].visible = false;
-    }
-    Refresh("player");
-    mode = Mode.Draw;
-    ToggleDeck(true);
-
-    // debug
-    document.getElementById("debug").innerHTML = mode;
-}
-
-// Main Logic Functions
-
-/**
- * Realizuje podejrzenie jednej z swoich kart na początku gry
- * @param {string} id Html id karty
- */
-function Lookup(id) {
-    player_cards[GetIndex(id)].visible = true;
-    num--;
-
-    if (num == 0) {
-        mode = Mode.Wait;
-        document.getElementById("start_button").classList.remove(["disp-none"]);
-        Refresh("player");
-    }
-    else RefreshCard(id);
-}
-/**
- * Realizuje dobranie karty przez gracza
- * @param {string} from Źródło karty 'deck' lub 'stack'
- */
-function Draw(from) {
-    if (from == "deck") {
-        var card = deck.Draw();
+    if (active) {
+        btn.classList.remove(["disp-none"]);
     }
     else {
-        var card = stack.pop();
-        RefreshStack();
+        btn.classList.add(["disp-none"]);
     }
-
-    for (var i = 0; i < 8; i++) {
-        if (player_cards[i].card == null) {
-            player_cards[i] = { card: card, visible: true }
-            ToggleDeck(false);
-            mode = Mode.Throw;
-            Refresh("player");
-            return;
-        }
-    }
-
-    throw new DOMException("Dobieranie karty nie powiodło się! Limit kart w ręce (8) osiągnięty.");
-}
-/**
- * Realizuje wyrzucenie karty z turze
- * @param {string} id Html id karty
- */
-function Throw(id) {
-    var idx = GetIndex(id);
-
-    stack.push(player_cards[idx].card);
-    player_cards[idx].card = null;
-    player_cards[idx].visible = false;
-
-    mode = Mode.Draw;
-
-    RefreshStack();
-    ToggleStack();
-    ToggleDeck();
-    RefreshCard(id); //player
 }
 
-/**
- * Realizuje reakcję na kliknięcie karty
- * @param {string} id Html id przycisku wywołującego
- */
-function Click(id) {
-    switch (mode) {
-        case Mode.Lookup: {
-            Lookup(id);
-            break;
+// Action
+function Action(id) {
+    $.ajax({
+        url: "/Game/Action",
+        data: {"id": id},
+        type: "POST",
+        dataType: "json",
+        success: function (data) {
+            state = data.State;
+
+            if (data.RefreshAll) {
+                Refresh(data.Args[0], data.Args[1])
+            }
+            else if (data.RefreshSingle) {
+                RefreshCard(data.Args[0], data.Args[1])
+            }
+
+            if (data.RefreshDeck) {
+                ToggleDeck(state["deck"].Active);
+            }
+            if (data.RefreshStack) {
+                RefreshStack(state["stack"].Card, state["stack"].Active);
+            }
+            if (data.RefreshButton) {
+                RefreshButton(state["button"].Card.Value, state["button"].Active);
+            }
+        },
+        error: function () {
+            alert("Wystąpił błąd podczas przetwarzania twojego ruchu.");
         }
-        case Mode.Throw: {
-            Throw(id);
-            break;
-        }
-    }
+    });
 }

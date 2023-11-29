@@ -44,7 +44,7 @@
             </button>
         </div>
         <div class="col-xs-4 col-sm-3 col-lg-2">
-            <button class="card active" id="deck" onclick="Deal()">
+            <button class="card active" id="deck" onclick="Action('deck')">
                 <img src="@Url.Content("~/Content/images/cards/card_reverse.png")" class="img-responsive" />
             </button>
         </div>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="row mt-1">
-        <button class="center-block btn-game disp-none" id="start_button" onclick="Start()">
+        <button class="center-block btn-game disp-none" id="button" onclick="Action('button')">
             Rozpocznij
         </button>
     </div>
