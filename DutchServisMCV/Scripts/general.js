@@ -1,7 +1,7 @@
 ﻿/* Wykorzystywane zmienne */
 /*
  * var path :string
- * var list :item[]
+ * var collection :item[]
  * 
  * item = {
  * Id :string
@@ -59,169 +59,250 @@ function SetPath(id, catalog, img, placeholder) {
 
 /* Funkcje Tabeli */
 
-/**
- * Funkcja zwraca element Html <input type="text"> w postaci wartości string
- * @param {string} name Wartość dla atrybutów 'id' oraz 'name' 
- * @param {string} value Wartość dla atrybutu 'value'
- * @param {boolean} readonly Posiada atrybut tylko do odczytu
- */
-function GetInput(name, value, readonly) {
-    if (value == null) value = "";
-    var str = "<input type=\"text\" class=\"form-control text-box\" id=\"" + name + "\" name=\"" + name + "\" value=\"" + value + "\" autocomplete=\"off\"";
+const AttType = {
+    Number: "Number",
+    Text: "Text",
+    Input: "Input",
+    Readonly: "Readonly Input",
+    Delete: "DeleteButton"
+}
 
-    if (readonly == true) {
-        str += "readonly=\"readonly\"";
+class ContentManager {
+    #tableList
+    #select
+    #addBtn
+
+    /**
+     * Tworzy menadżer do obsługi elementów w widoku
+     * @param {TableContentGenerator[]} tables Lista obiektów TableContentGenerator
+     * @param {SelectController} select Obiekt SelectController
+     * @param {AddPlayerController} addBtn Obiekt AddController
+     */
+    constructor(tables, select, addBtn) {
+        this.#tableList = tables;
+        for (var i = 0; i < this.#tableList.length; i++) {
+            this.#tableList[i].Manager = this;
+        }
+
+        this.#select = select;
+
+        this.#addBtn = addBtn;
+        this.#addBtn.BindOnClick(this);
     }
 
-    return str + ">";
+    // Methods
+
+    Update() {
+        for (var i = 0; i < this.#tableList.length; i++) {
+            this.#tableList[i].Update();
+        }
+        this.#select.Update();
+    }
+
+    AddItem() {
+        var selected = this.#select.GetSelected();
+
+        var item = GetItem("tournament", selected[this.#select.Attribute.Id], selected[this.#select.Attribute.Text]);
+        if (collection == null) {
+            collection = [];
+        }
+        collection.push(item);
+
+        this.#select.Remove(selected[this.#select.Attribute.Id]);
+
+        this.Update();
+    }
+
+    DeleteItem(index) {
+        var selectItem = { Id: collection[index].Id, Nickname: collection[index].Nickname };
+        this.#select.Add(selectItem);
+
+        collection.splice(index, 1);
+
+        this.Update();
+    }
 }
-/**
- * Funckja zwraca pojedyńczy wiersz tabeli PlayerSet dla danych z zmiennej list[index]
- * @param {number} index Indeks danych w tabeli 'list'
- * @param {string[]} ids Id powiązanych elementów Html
- * @param {string} type Typ, o przyjowanych wartościach: 'tournament', 'league'
- */
-function TablePlayerSet(index, ids, type) {
-    var html = "";
-    html += "<tr>";
 
-    html += "<td>" + (index + 1).toString() + ".</td>";
+class TableContentGenerator {
+    #tableId
+    #collectionName
 
-    var name = "Players[" + index + "].Id"
+    Attributes
+    Manager
 
-    html += "<td>";
-    html += GetInput(name, list[index].Id, true);
-    html += "</td>";
+    /**
+     * Tworzy obiekt generatora treści dla podanej tabeli
+     * @param {string} name Nazwa kolekcji obiektów
+     * @param {string} tableId Html id tabeli
+     * @param {any[]} attributes Lista atrybutów w obiekcie kolekcji
+     */
+    constructor(name, tableId, attributes) {
+        this.#collectionName = name;
+        this.#tableId = tableId;
+        this.Attributes = attributes;
 
-    name = "Players[" + index + "].Nickname"
+        this.Update();
+    }
 
-    html += "<td>";
-    html += GetInput(name, list[index].Nickname, true);
-    html += "</td>";
+    // Private Methods
 
-    html += "<td class=\"text-danger btn\" onclick=\"DeleteItem('" + index + "', '" + ids[0] + "', '" + ids[1] + "', '" + ids[2] + "', '" + type + "')\">";
-    html += "Usuń"
-    html += "</td>";
+    /**
+     * Funkcja zwraca element Html <td> zawiarający <input> w postaci wartości string
+     * @param {string} name Wartość dla atrybutów 'id' oraz 'name'
+     * @param {string} value Wartość dla atrybutu 'value'
+     * @param {boolean} readonly Posiada atrybut tylko do odczytu
+     */
+    #Input(name, value="", readonly=false) {
+        var str = "<td><input type=\"text\" class=\"form-control text-box\" id=\"" + name + "\" name=\"" + name + "\" value=\"" + value + "\" autocomplete=\"off\"";
 
-    html += "</tr>";
-    return html;
-}
-/**
- * Funckja zwraca pojedyńczy wiersz tabeli Results dla widoku Tournaments dla danych z zmiennej list[index]
- * @param {number} index Indeks danych w zmiennej 'list'
- */
-function TableTournamentResults(index) {
-    var html = "";
-    html += "<tr>";
+        if (readonly == true) {
+            str += "readonly=\"readonly\"";
+        }
 
-    html += "<td>" + list[index].Nickname + "</td>";
+        return str + "></td>";
+    }
+    /**
+     * Funkcja zwraca element Html <td> z wartością onclick="DeleteItem" w postaci wartości string
+     * @param {number} index Indeks elementu w tabeli
+     */
+    #DeleteButton(index) {
+        return "<td class=\"text-danger btn\" id=\"" + "deleteBtn_"+ index + "\">Usuń</td>";
+    }
+    /**
+     * Funkcja zarwaca element <td> dla pola o określonym typie
+     * @param {number} index Index elementu
+     * @param {string} type Typ pola
+     * @param {any} value Wartość lub lista wartości atrybutu
+     */
+    #Attribute(index, attName, type) {
+        var value = collection[index][attName];
 
-    var name = "Players[" + index + "].Place"
-
-    html += "<td>";
-    html += GetInput(name, list[index].Place, false);
-    html += "</td>";
-
-    name = "Players[" + index + "].RankingGet";
-
-    html += "<td>";
-    html += GetInput(name, list[index].RankingGet, false);
-    html += "</td>";
-
-    name = "Players[" + index + "].Price";
-
-    html += "<td>";
-    html += GetInput(name, list[index].Price, false);
-    html += "</td>";
-
-    html += "</tr>";
-    return html;
-}
-/**
- * Funckja zwraca pojedyńczy wiersz tabeli Results dla widoku Leauge dla danych z zmiennej list[index]
- * @param {number} index Indeks danych w zmiennej 'list'
- */
-function TableLeaugeResults(index) {
-    var html = "";
-    html += "<tr>";
-
-    html += "<td>" + list[index].Nickname + "</td>";
-
-    name = "Players[" + index + "].Points";
-
-    html += "<td>";
-    html += GetInput(name, list[index].Points, true);
-    html += "</td>";
-
-    name = "Players[" + index + "].Price";
-
-    html += "<td>";
-    html += GetInput(name, list[index].Price, false);
-    html += "</td>";
-
-    html += "</tr>";
-    return html;
-}
-/**
- * Funkcja uzupełnia tabele PlayerSet i Results dla widoku Tournament danymi z zmiennej 'list'
- * @param {string[]} ids Html id tablic PlayerSet i Results
- */
-function UpdateTournamentTables(ids) {
-    var table1 = "";
-    var table2 = "";
-    if (list != null && list.length != 0) {
-        for (var i = 0; i < list.length; i++) {
-            table1 += TablePlayerSet(i, ids, 'tournament');
-            table2 += TableTournamentResults(i);
+        switch (type) {
+            case AttType.Number: return "<td>" + (index + 1).toString() + ".</td>";
+            case AttType.Text: return "<td>" + value + "</td>";
+            case AttType.Input: return this.#Input(this.#collectionName + "[" + index + "]." + attName, value);
+            case AttType.Readonly: return this.#Input(this.#collectionName + "[" + index + "]." + attName, value, true);
+            case AttType.Delete: return this.#DeleteButton(index);
         }
     }
-    else {
-        table1 += "<tr><td>Pusta lista</td></tr>";
-        table2 += "<tr><td>Pusta lista</td></tr>";
-    }
-    // set
-    document.getElementById(ids[0]).innerHTML = table1;
-    document.getElementById(ids[1]).innerHTML = table2;
-}
-/**
- * Funkcja uzupełnia tabele PlayerSet i Results dla widoku League danymi z zmiennej 'list'
- * @param {string[]} ids Html id tablic PlayerSet i Results
- */
-function UpdateLeagueTables(ids) {
-    var table1 = "";
-    var table2 = "";
-    if (list != null && list.length != 0) {
-        for (var i = 0; i < list.length; i++) {
-            table1 += TablePlayerSet(i, ids, 'league');
-            table2 += TableLeaugeResults(i);
+
+    /**
+     * Ustawia funkcję onclick dla przycisków usunięcia elementu
+     * @param {number[]} btnIndexList Lista indeksów przycisków
+     */
+    #BindOnClick(btnIndexList) {
+        for (let i = 0; i < btnIndexList.length; i++) {
+            let idx = btnIndexList[i];
+            document.getElementById("deleteBtn_" + idx.toString()).onclick = () => this.Manager.DeleteItem(idx);
         }
     }
-    else {
-        table1 += "<tr><td>Pusta lista</td></tr>";
-        table2 += "<tr><td>Pusta lista</td></tr>";
+
+    // Public Methods
+
+    /**
+     * Odświerza zawartość tabeli
+     */
+    Update() {
+        if (collection == null) {
+            document.getElementById(this.#tableId).innerHTML = "<tr><td>Pusta lista</td></tr>";
+            return;
+        }
+
+        var html = "";
+        var deletedIdx = [];
+
+        for (var i = 0; i < collection.length; i++) {
+            // For each element
+            html += "<tr>";
+            this.Attributes.forEach(function (attribute) {
+                // For each attribute
+                html += this.#Attribute(i, attribute.Name, attribute.Type)
+                if (attribute.Type == AttType.Delete) deletedIdx.push(i);
+            }.bind(this));
+            html += "</tr>";
+        }
+
+        document.getElementById(this.#tableId).innerHTML = html;
+
+        this.#BindOnClick(deletedIdx);
     }
-    // set
-    document.getElementById(ids[0]).innerHTML = table1;
-    document.getElementById(ids[1]).innerHTML = table2;
 }
-/**
- * Ustawia opcja elemenowi select
- * @param {string} id Html id
- */
-function UpdateSelect(id) {
-    var html = "<option value=\"null\" selected=\"selected\">Brak</option>";
-    for (var i = 0; i < players.length; i++) {
-        html += "<option value=\"" + players[i].Id + "\">" + players[i].Nickname + "</option>";
+
+class SelectController {
+    #selectId
+    #options
+    #nullValue
+
+    Attribute
+    Manager
+
+    /**
+     * Tworzy obiekt obsługujący Html element select
+     * @param {string} selectId Html id elementy select
+     * @param {any} options Lista opcji
+     * @param {any} pair Lista atrybutów w obiekcie options
+     * @param {string} nullValue Domyśla wartość pusta
+     */
+    constructor(selectId, options, attribute, nullValue) {
+        this.#selectId = selectId;
+        this.#options = options;
+        this.Attribute = attribute;
+        this.#nullValue = nullValue;
     }
 
-    document.getElementById(id).innerHTML = html;
+    Update() {
+        var content = "<option value=\"null\" selected=\"selected\">" + this.#nullValue + "</option>";
+        for (var i = 0; i < this.#options.length; i++) {
+            content += "<option value=\"" + this.#options[i][this.Attribute.Id] + "\">" + this.#options[i][this.Attribute.Text] + "</option>";
+        }
+
+        document.getElementById(this.#selectId).innerHTML = content;
+    }
+    /**
+     * Dodaje obiekt do listy opcji
+     * @param {any} item Obiekt
+     */
+    Add(item) {
+        this.#options.push(item);
+    }
+    /**
+     * Z listy opcji usuwa obiekt
+     * @param {number} Id Id usuwanego elementu
+     */
+    Remove(Id) {
+        var key = this.#options.findIndex(item => item[this.Attribute.Id] == Id);
+        this.#options.splice(key, 1);
+    }
+    /**
+     * Zwraca wybrany element
+     */
+    GetSelected() {
+        var select = document.getElementById(this.#selectId).options;
+
+        return this.#options[select.selectedIndex-1];
+    }
 }
-/**
- * Zwraca obiekt item o żądanym typie
- * @param {string} type Typ, o przyjowanych wartościach: 'tournament', 'league'
- * @param {number} id Id obiektu
- * @param {string} nick Pole Nickname obiektu
- */
+
+class AddPlayerController {
+    #addBtnId
+
+    /**
+     * Tworzy kontroller przycisku dodania
+     * @param {string} buttonId
+     */
+    constructor(buttonId) {
+        this.#addBtnId = buttonId;
+    }
+
+    /**
+     * Ustawia atrybut onclick przyciskowi
+     * @param {any} manager
+     */
+    BindOnClick(manager) {
+        document.getElementById(this.#addBtnId).onclick = manager.AddItem.bind(manager);
+    }
+}
+
 function GetItem(type, id, nick) {
     if (type == 'tournament') {
         return {
@@ -241,62 +322,4 @@ function GetItem(type, id, nick) {
         }
     }
 }
-/**
- * Dodaje wybrany element do zmiennej 'list' i aktualizuje tabele
- * @param {string} select_id Id elementu Html <select>
- * @param {string[]} table_id_1 Html id tabel do aktualizacji
- * @param {string} type Typ, o przyjowanych wartościach: 'tournament', 'league'
- */
-function AddItem(select_id, ids, type) {
-    var options = document.getElementById(select_id).options;
-    var selected = options[options.selectedIndex];
 
-    if (selected.value == "null") {
-        return;
-    }
-
-    // Add item
-    var item = GetItem(type, selected.value, selected.label)
-    if (list == null) {
-        list = [];
-    }
-    list.push(item)
-
-    // Remove player
-    var key = players.findIndex(p => p.Id == selected.value)
-    players.splice(key, 1);
-
-    // Update
-    if (type == 'tournament') {
-        UpdateTournamentTables(ids);
-    }
-    else {
-        UpdateLeagueTables(ids);
-    }
-    UpdateSelect(select_id);
-}
-/**
- * Usuwa element z zmiennej 'list'
- * @param {number} key Index elementu
- * @param {string} id_1 Html id pierwszej tabeli
- * @param {string} id_2 Html id drugiej tabeli
- * @param {string} select_id Html id elementu select
- * @param {string} type Typ, o przyjowanych wartościach: 'tournament', 'league'
- */
-function DeleteItem(key, id_1, id_2, select_id, type) {
-    //Add player
-    var p = GetItem(type, list[key].Id, list[key].Nickname);
-    players.push(p);
-
-    // Remove item
-    list.splice(key, 1);
-
-    // Update
-    UpdateSelect(select_id);
-    if (type == 'tournament') {
-        UpdateTournamentTables([id_1, id_2, select_id]);
-    }
-    else {
-        UpdateLeagueTables([id_1, id_2, select_id]);
-    }
-}

@@ -121,7 +121,7 @@
                                 <!-- Javascript generated content -->
                             }
                         </select>
-                        <button type="button" class="mx-1 disp-inline-block px-10" onclick="AddItem('select', ['set_table', 'result_table', 'select'], 'league')">
+                        <button type="button" class="mx-1 disp-inline-block px-10" id="add_button">
                             Dodaj gracza
                         </button>
                     </div>
@@ -229,12 +229,26 @@
 }
 
 <script type="text/jscript">
-    var list = (@Html.Raw(Json.Encode(Model))).Players;
-    var players = @Html.Raw(Json.Encode(ViewBag.Players));
-    var path = @Url.Content("~/Content/");
+    var collection = (@Html.Raw(Json.Encode(Model))).Players;
 
-    setPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');
-    UpdateLeagueTables(['set_table', 'result_table', 'select']);
+    var path = @Url.Content("~/Content/");
+    SetPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');
+
+    let setTCG = new TableContentGenerator("Players", "set_table", [
+        { Name: "Nr", Type: AttType.Number },
+        { Name: "Id", Type: AttType.Readonly },
+        { Name: "Nickname", Type: AttType.Readonly },
+        { Name: "Delete", Type: AttType.Delete }
+    ]);
+    let resultTCG = new TableContentGenerator("Players", "result_table", [
+        { Name: "Nickname", Type: AttType.Text },
+        { Name: "Points", Type: AttType.Readonly },
+        { Name: "Price", Type: AttType.Input }
+    ]);
+    let playerSC = new SelectController("select", @Html.Raw(Json.Encode(ViewBag.Players)), { Id: "Id", Text: "Nickname" }, "Brak");
+    let addAC = new AddPlayerController("add_button");
+
+    let manager = new ContentManager([setTCG, resultTCG ], playerSC, addAC);
 </script>
 
 @section Scripts {

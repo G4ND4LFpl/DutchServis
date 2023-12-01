@@ -23,6 +23,7 @@
                 <div class="col-md-9">
                     <div class="checkbox">
                         <select class="list-box form-control" id="PlayerId1" name="PlayerId1">
+                            <option value="0" selected>Nie wybrano</option>
                             @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
                             {
                                 <option value="@item.Id">@item.Nickname</option>
@@ -37,6 +38,7 @@
                 <div class="col-md-9">
                     <div class="checkbox">
                         <select class="list-box form-control" id="PlayerId2" name="PlayerId2">
+                            <option value="0" selected>Nie wybrano</option>
                             @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
                             {
                                 <option value="@item.Id">@item.Nickname</option>

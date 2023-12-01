@@ -1,7 +1,7 @@
 ﻿class Card {
-    Color;
-    Value;
-    Visible;
+    Color
+    Value
+    Visible
 }
 
 // Variebles
@@ -224,6 +224,10 @@ function RefreshButton(text, active) {
 }
 
 // Action
+/**
+ * Funkcja wysyła zapytanie do serwera i po uzyskaniu odpowiedzi zmiania stan gry.  
+ * @param {string} id Id przycisku wywołującego
+ */
 function Action(id) {
     $.ajax({
         url: "/Game/Action",
