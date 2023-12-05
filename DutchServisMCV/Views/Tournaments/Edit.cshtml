@@ -264,7 +264,13 @@
     let playerSC = new SelectController("select", @Html.Raw(Json.Encode(ViewBag.Players)), { Id: "Id", Text: "Nickname" }, "Brak");
     let addAC = new AddPlayerController("add_button");
 
-    let manager = new ContentManager([setTCG, resultTCG ], playerSC, addAC);
+    let manager = new ContentManager([setTCG, resultTCG], playerSC, addAC, [
+        { Name: "Id", Type: "Number" },
+        { Name: "Nickname", Type: "String" },
+        { Name: "Place", Type: "String" },
+        { Name: "RankingGet", Type: "Number" },
+        { Name: "Price", Type: "Number" }
+    ]);
 </script>
 
 @section Scripts {

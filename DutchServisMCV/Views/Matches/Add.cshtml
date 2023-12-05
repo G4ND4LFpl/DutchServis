@@ -77,7 +77,7 @@
                 <label class="control-label col-md-3" for="First">Rozpoczyna</label>
                 <div class="col-md-9">
                     <div class="checkbox">
-                        <select class="list-box form-control" id="First" onchange="">
+                        <select class="list-box form-control" id="First">
                             <!-- Javascript generated content -->
                         </select>
                     </div>
@@ -86,39 +86,74 @@
         </section>
 
         <section>
-            <h4>Rozegrane partie</h4>
-
-            <div class="form-group">
-                <label class="control-label col-md-3">Wynik</label>
-                <div class="col-md-9">
-                    <h3 id="scoreHeader" class="form-element mt-0">
-                        <!-- Javascript generated content -->
-                    </h3>
-                </div>
-            </div>
+            <h4 class="mt-1">Rozegrane partie</h4>
 
             <!-- Tabela rozgrywek -->
-            <table class="table width-small table-bordered">
+            <table class="table width-medium table-bordered">
                 <thead class="table-style">
                     <tr>
                         <th></th>
                         <th colspan="2" id="player1"></th>
                         <th colspan="2" id="player2"></th>
                         <th></th>
+                        <th></th>
                     </tr>
                     <tr>
-                        <th>Nr.</th>
-                        <th>Punkty</th>
-                        <th>Błędy</th>
-                        <th>Punkty</th>
-                        <th>Błędy</th>
-                        <th>Dutch</th>
+                        <th class="cell-1">Nr.</th>
+                        <th class="cell-1">Punkty</th>
+                        <th class="cell-1">Błędy</th>
+                        <th class="cell-1">Punkty</th>
+                        <th class="cell-1">Błędy</th>
+                        <th class="cell-2">Dutch</th>
+                        <th class="cell-1"></th>
                     </tr>
                 </thead>
                 <tbody class="table-style" id="games_table">
                     <!-- Javascript generated content -->
                 </tbody>
             </table>
+
+            <button type="button" class="mx-1 disp-inline-block px-10" id="add_button">
+                Dodaj grę
+            </button>
         </section>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Dodaj mecz" class="btn-warning" />
+                <a href="@Url.Action("Index", "Tournaments")">
+                    <div class="disp-inline-block buttonlike-heavy">
+                        Wróć
+                    </div>
+                </a>
+            </div>
+        </div>
     </div>
 }
+
+<script type="text/jscript">
+    var collection = (@Html.Raw(Json.Encode(Model))).Games;
+
+    let gameTCG = new TableContentGenerator("Games", "games_table", [
+        { Name: "Nr", Type: AttType.Number },
+        { Name: "PointsPlayer1", Type: AttType.Input },
+        { Name: "MistakesPlayer1", Type: AttType.Input },
+        { Name: "PointsPlayer2", Type: AttType.Input },
+        { Name: "MistakesPlayer2", Type: AttType.Input },
+        { Name: "Dutch", Type: AttType.Select },
+        { Name: "Delete", Type: AttType.Delete }
+    ], [null, null], { Id: "Value", Text: "Text" });
+    let addAC = new AddPlayerController("add_button");
+
+    let manager = new ContentManager([gameTCG], null, addAC, [
+        { Name: "PointsPlayer1", Type: "Null" },
+        { Name: "MistakesPlayer1", Type: "Number" },
+        { Name: "PointsPlayer2", Type: "Null" },
+        { Name: "MistakesPlayer2", Type: "Number" },
+        { Name: "Dutch", Type: "Select" },
+    ]);
+
+    let playerSC = new SelectController("First", [null, null], { Id: "Value", Text: "Text" }, "Nie wybrano");
+
+    let selectSM = new SelectManager([playerSC, gameTCG], ["PlayerId1", "PlayerId2"], ["player1", "player2"]);
+</script>
