@@ -268,7 +268,7 @@ namespace DutchServisMCV.Controllers
                     FileManager.Save(player.File, path);
                     player.Img = player.File?.FileName;
                 }
-                catch (OverrideException ex)
+                catch (SaveFaildException ex)
                 {
                     ViewBag.FileValidationMsg = ex.Message;
                     return View();
@@ -355,7 +355,7 @@ namespace DutchServisMCV.Controllers
                     }
                     player.Img = player.File.FileName;
                 }
-                catch (OverrideException ex)
+                catch (SaveFaildException ex)
                 {
                     ViewBag.FileValidationMsg = ex.Message;
                     return View(player);

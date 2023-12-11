@@ -121,14 +121,14 @@ namespace DutchServisMCV.Controllers
             // Save File
             if (tournament.File != null)
             {
-                string path = Server.MapPath("~/Content/images/playerdata/") + tournament.File.FileName;
+                string path = Server.MapPath("~/Content/images/tournamentdata/") + tournament.File.FileName;
 
                 try
                 {
                     FileManager.Save(tournament.File, path);
                     tournament.Img = tournament.File?.FileName;
                 }
-                catch (OverrideException ex)
+                catch (SaveFaildException ex)
                 {
                     ViewBag.FileValidationMsg = ex.Message;
                     return View();
@@ -238,17 +238,17 @@ namespace DutchServisMCV.Controllers
             // Save File
             if (tournament.File != null)
             {
-                string path = Server.MapPath("~/Content/images/playerdata/") + tournament.File.FileName;
+                string path = Server.MapPath("~/Content/images/tournamentdata/") + tournament.File.FileName;
 
                 try
                 {
                     FileManager.Save(tournament.File, path);
                     tournament.Img = tournament.File?.FileName;
                 }
-                catch (OverrideException ex)
+                catch (SaveFaildException ex)
                 {
                     ViewBag.FileValidationMsg = ex.Message;
-                    return View();
+                    return View(tournament);
                 }
             }
 

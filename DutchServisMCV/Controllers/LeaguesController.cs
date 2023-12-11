@@ -107,6 +107,23 @@ namespace DutchServisMCV.Controllers
                 return View(league);
             }
 
+            // Save File
+            if (league.File != null)
+            {
+                string path = Server.MapPath("~/Content/images/tournamentdata/") + league.File.FileName;
+
+                try
+                {
+                    FileManager.Save(league.File, path);
+                    league.Img = league.File?.FileName;
+                }
+                catch (SaveFaildException ex)
+                {
+                    ViewBag.FileValidationMsg = ex.Message;
+                    return View(league);
+                }
+            }
+
             // Add To Database
             Tournaments item = new Tournaments
             {
@@ -211,14 +228,14 @@ namespace DutchServisMCV.Controllers
             // Save File
             if (league.File != null)
             {
-                string path = Server.MapPath("~/Content/images/playerdata/") + league.File.FileName;
+                string path = Server.MapPath("~/Content/images/tournamentdata/") + league.File.FileName;
 
                 try
                 {
                     FileManager.Save(league.File, path);
                     league.Img = league.File?.FileName;
                 }
-                catch (OverrideException ex)
+                catch (SaveFaildException ex)
                 {
                     ViewBag.FileValidationMsg = ex.Message;
                     return View();

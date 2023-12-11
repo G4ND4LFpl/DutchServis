@@ -6,9 +6,9 @@ using System.IO;
 
 namespace DutchServisMCV.Logic
 {
-    public class OverrideException : IOException
+    public class SaveFaildException : IOException
     {
-        public OverrideException(string msg) : base(msg) { }
+        public SaveFaildException(string msg) : base(msg) { }
     }
 
     public class FileManager
@@ -17,11 +17,18 @@ namespace DutchServisMCV.Logic
         {
             if (File.Exists(path))
             {
-                throw new OverrideException("Plik o nazwie "+ Path.GetFileName(path) + " już znajduje się na serwerze");
+                throw new SaveFaildException("Plik o nazwie "+ Path.GetFileName(path) + " już znajduje się na serwerze");
             }
             else
             {
-                file.SaveAs(path);
+                try
+                {
+                    file.SaveAs(path);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    throw new SaveFaildException("Wystąpił niespodziewany błąd (Nieprawidłowa ścieżka pliku)");
+                }
             }
         }
         public static void Remove(string path)

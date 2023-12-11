@@ -23,7 +23,7 @@ namespace DutchServisMCV.Models
             this.Active = true;
         }
     
-        public int PlayerId { get; internal set; }
+        public int PlayerId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Nickname { get; set; }

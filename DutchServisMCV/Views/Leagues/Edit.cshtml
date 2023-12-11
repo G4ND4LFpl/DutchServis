@@ -1,6 +1,6 @@
 ﻿@model DutchServisMCV.Models.LeagueInfo
 @{
-    ViewBag.Title = "Edytuj" + Model.Name;
+    ViewBag.Title = "Edytuj " + Model.Name;
 }
 
 <header>
@@ -91,7 +91,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
                 <div class="col-md-9">
-                    <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" data-buttonText="Your label here." />
+                    <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" />
                     <div class="text-danger">@ViewBag.FileValidationMsg</div>
                 </div>
             </div>

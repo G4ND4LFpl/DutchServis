@@ -1,6 +1,6 @@
 ﻿@model DutchServisMCV.Models.TournamentInfo
 @{
-    ViewBag.Title = "Edytuj" + Model.Name;
+    ViewBag.Title = "Edytuj " + Model.Name;
 }
 
 <header>
@@ -105,7 +105,7 @@
             <div class="form-group">
                 <label class="control-label col-md-3" for="File">Nowe zdjęcie</label>
                 <div class="col-md-9">
-                    <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" data-buttonText="Your label here." />
+                    <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" />
                     <div class="text-danger">@ViewBag.FileValidationMsg</div>
                 </div>
             </div>
@@ -244,7 +244,7 @@
 }
 
 <script type="text/jscript">
-    var collection = (@Html.Raw(Json.Encode(Model))).Players;
+    var collection = (@Html.Raw(Json.Encode(Model.Players)));
 
     var path = @Url.Content("~/Content/");
     SetPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');

@@ -55,6 +55,19 @@ namespace DutchServisMCV.Controllers
             return View(match.FirstOrDefault());
         }
 
+        private IQueryable<PlayerItem> GetPlayerList(int tournamentId)
+        {
+            return from players in database.Players
+                   join set in database.PlayerSet
+                   on players.PlayerId equals set.PlayerId
+                   where set.TournamentId == tournamentId
+                   select new PlayerItem
+                   {
+                       Id = players.PlayerId,
+                       Nickname = players.Nickname
+                   };
+        }
+
         public ActionResult Add(string tournament)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
@@ -66,15 +79,7 @@ namespace DutchServisMCV.Controllers
             if (parent == null) return HttpNotFound();
 
             // Prepare Viewbag
-            ViewBag.Players = (from players in database.Players
-                              join set in database.PlayerSet
-                              on players.PlayerId equals set.PlayerId
-                              where set.TournamentId == parent.TournamentId
-                              select new PlayerItem
-                              {
-                                  Id = players.PlayerId,
-                                  Nickname = players.Nickname
-                              }).ToList();
+            ViewBag.Players = GetPlayerList(parent.TournamentId).ToList();
 
             // Preparing Model
             MatchData data = new MatchData
@@ -95,18 +100,14 @@ namespace DutchServisMCV.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(MatchData match)
         {
+            // Brakujące dane
+            // bonus game 1/2
+            // tournamentId ? (mamy tournament Name)
+
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
             // Prepare Viewbag
-            ViewBag.Players = (from players in database.Players
-                               join set in database.PlayerSet
-                               on players.PlayerId equals set.PlayerId
-                               where set.TournamentId == match.TournamentId
-                               select new PlayerItem
-                               {
-                                   Id = players.PlayerId,
-                                   Nickname = players.Nickname
-                               }).ToList();
+            ViewBag.Players = GetPlayerList(match.TournamentId).ToList();
 
             return View(match);
         }
