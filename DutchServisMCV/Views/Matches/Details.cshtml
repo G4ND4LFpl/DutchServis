@@ -22,11 +22,11 @@
         <ul class="mb-1 list-unstyled">
             <li><h4 class="mt-2 disp-md">Inne</h4></li>
             <li><b>Rozpoczynał:</b> @(Model.Games[0].Opening == 1 ? Model.Player1 : Model.Player2)</li>
-            @if (Model.BonusGamePlayer1 == true)
+            @if (Model.BonusGamePlayer == 1)
             {
                 <li><b>Bonusowa runda: </b> @Model.Player1</li>
             }
-            @if (Model.BonusGamePlayer2 == true)
+            @if (Model.BonusGamePlayer == 2)
             {
                 <li><b>Bonusowa runda: </b> @Model.Player2</li>
             }

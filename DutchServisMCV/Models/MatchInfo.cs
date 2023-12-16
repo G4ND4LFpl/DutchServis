@@ -14,8 +14,7 @@ namespace DutchServisMCV.Models
         public string Player2 { get; set; }
         public Nullable<int> PointsPlayer2 { get; set; }
         public DateTime PlayDate { get; set; }
-        public Nullable<bool> BonusGamePlayer1 { get; set; }
-        public Nullable<bool> BonusGamePlayer2 { get; set; }
+        public Nullable<int> BonusGamePlayer { get; set; }
         public int Opens { get; set; }
         public int FormatBo { get; set; }
     }

@@ -86,13 +86,14 @@ class ContentManager {
         for (var i = 0; i < this.#tableList.length; i++) {
             this.#tableList[i].Manager = this;
         }
-
         this.#select = select;
 
         this.#addBtn = addBtn;
         this.#addBtn.BindOnClick(this);
 
         this.#attributes = attributes;
+
+        this.Update();
     }
 
     // Methods
@@ -193,6 +194,7 @@ class SelectManager {
         for (let i = 0; i < this.#selectIds.length; i++) {
             let selectElement = document.getElementById(this.#selectIds[i]);
 
+            // On change bind
             selectElement.onchange = function () {
                 var selected = selectElement.options[selectElement.options.selectedIndex];
                 for (var j = 0; j < this.Children.length; j++) {
@@ -201,6 +203,9 @@ class SelectManager {
 
                 document.getElementById(this.#textIds[i]).innerHTML = selected.label;
             }.bind(this);
+
+            // Set
+            document.getElementById(this.#textIds[i]).innerHTML = selectElement.options[selectElement.options.selectedIndex].label;
         }
     }
 }
@@ -228,8 +233,6 @@ class TableContentGenerator {
         this.Attributes = attributes;
         this.#selectOptions = options;
         this.#selectAttribute = selectAttribute;
-
-        this.Update();
     }
 
     // Private Methods
@@ -370,13 +373,13 @@ class SelectController {
      * @param {any} pair Lista atrybutów w obiekcie options
      * @param {string} nullValue Domyśla wartość pusta
      */
-    constructor(selectId, options, attribute, nullValue) {
+    constructor(selectId, options, attribute, nullValue, selected) {
         this.#selectId = selectId;
         this.#options = options;
         this.Attribute = attribute;
         this.#nullValue = nullValue;
 
-        document.getElementById(this.#selectId).innerHTML = "<option value=\"null\" selected=\"selected\">" + this.#nullValue + "</option>";
+        this.Update(selected);
     }
 
     /**
@@ -394,13 +397,18 @@ class SelectController {
     }
     /**
      * Odświerza listę opcji
+     * @param {number} selected Wybrana opcja
      */
-    Update() {
-        var content = "<option value=\"null\" selected=\"selected\">" + this.#nullValue + "</option>";
+    Update(selected = null) {
+        var content = "<option value=\"null\">" + this.#nullValue + "</option>";
         for (var i = 0; i < this.#options.length; i++) {
             var option = this.#options[i];
             if (option != null) {
-                content += "<option value=\"" + option[this.Attribute.Id] + "\">" + option[this.Attribute.Text] + "</option>";
+                content += "<option value=\"" + option[this.Attribute.Id] + "\"";
+                if (selected == option[this.Attribute.Id]) {
+                    content += " selected";
+                }
+                content += ">" + option[this.Attribute.Text] + "</option>";
             }
         }
 

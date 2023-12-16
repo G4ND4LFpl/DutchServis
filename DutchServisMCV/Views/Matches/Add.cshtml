@@ -23,13 +23,21 @@
                 <div class="col-md-9">
                     <div class="checkbox">
                         <select class="list-box form-control" id="PlayerId1" name="PlayerId1">
-                            <option value="0" selected>Nie wybrano</option>
-                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                            <option value="0">Nie wybrano</option>
+                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.PlayersSet)
                             {
-                                <option value="@item.Id">@item.Nickname</option>
+                                if (Model.PlayerId1 == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Nickname</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Nickname</option>
+                                }
                             }
                         </select>
                     </div>
+                    <div class="text-danger">@ViewBag.Player1ValidationMsg</div>
                 </div>
             </div>
 
@@ -38,21 +46,28 @@
                 <div class="col-md-9">
                     <div class="checkbox">
                         <select class="list-box form-control" id="PlayerId2" name="PlayerId2">
-                            <option value="0" selected>Nie wybrano</option>
-                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.Players)
+                            <option value="0">Nie wybrano</option>
+                            @foreach (DutchServisMCV.Models.GameNamespace.PlayerItem item in ViewBag.PlayersSet)
                             {
-                                <option value="@item.Id">@item.Nickname</option>
+                                if (Model.PlayerId2 == item.Id)
+                                {
+                                    <option value="@item.Id" selected>@item.Nickname</option>
+                                }
+                                else
+                                {
+                                    <option value="@item.Id">@item.Nickname</option>
+                                }
                             }
                         </select>
                     </div>
-                    <div class="text-danger">@ViewBag.PlayerValidationMsg</div>
+                    <div class="text-danger">@ViewBag.Player2ValidationMsg</div>
                 </div>
             </div>
 
             <div class="form-group">
                 <label class="control-label col-md-3" for="PlayDate">Data</label>
                 <div class="col-md-9">
-                    <input type="date" class="list-box form-control" id="PlayDate" name="PlayDate" value="@Model.PlayDate" autocomplete="off">
+                    <input type="date" class="list-box form-control" id="PlayDate" name="PlayDate" value="@Model.PlayDate.ToString("yyyy-MM-dd")" autocomplete="off">
                     <div class="text-danger">@ViewBag.DateValidationMsg</div>
                 </div>
             </div>
@@ -62,22 +77,39 @@
                 <div class="col-md-9">
                     <div class="checkbox">
                         <select class="list-box form-control" id="FormatBo" name="FormatBo">
-                            <option value="5">Bo5</option>
-                            <option value="7">Bo7</option>
-                            <option value="9">Bo9</option>
-                            <option value="10">Bo10</option>
-                            <option value="11" selected>Bo11</option>
-                            <option value="13">Bo13</option>
+                            @foreach (KeyValuePair<int, string> format in ViewBag.Formats)
+                            {
+                                if (format.Key == Model.FormatBo || (format.Key == 11 && Model.FormatBo == 0))
+                                {
+                                    <option value="@format.Key" selected>@format.Value</option>
+                                }
+                                else
+                                {
+                                    <option value="@format.Key">@format.Value</option>
+                                }
+                            }
                         </select>
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-md-3" for="First">Rozpoczyna</label>
+                <label class="control-label col-md-3" for="Opens">Rozpoczyna</label>
                 <div class="col-md-9">
                     <div class="checkbox">
-                        <select class="list-box form-control" id="First" name="Opens">
+                        <select class="list-box form-control" id="Opens" name="Opens">
+                            <!-- Javascript generated content -->
+                        </select>
+                    </div>
+                    <div class="text-danger">@ViewBag.OpensValidationMsg</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-3" for="BonusGamePlayer">Bonusowa gra</label>
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        <select class="list-box form-control" id="BonusGamePlayer" name="BonusGamePlayer">
                             <!-- Javascript generated content -->
                         </select>
                     </div>
@@ -121,11 +153,17 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Dodaj mecz" class="btn-warning" />
-                <a href="@Url.Action("Index", "Tournaments")">
+                <a href="@Url.Action("Info", "Tournaments", new { name = Model.Tournament })">
                     <div class="disp-inline-block buttonlike-heavy">
                         Wróć
                     </div>
                 </a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <label class="text-success">@ViewBag.Notification</label>
             </div>
         </div>
     </div>
@@ -133,6 +171,7 @@
 
 <script type="text/jscript">
     var collection = (@Html.Raw(Json.Encode(Model))).Games;
+    var players = @Html.Raw(Json.Encode(ViewBag.Players));
 
     let gameTCG = new TableContentGenerator("Games", "games_table", [
         { Name: "Nr", Type: AttType.Number },
@@ -142,7 +181,7 @@
         { Name: "MistakesPlayer2", Type: AttType.Input },
         { Name: "Dutch", Type: AttType.Select },
         { Name: "Delete", Type: AttType.Delete }
-    ], [null, null], { Id: "Value", Text: "Text" });
+    ], players, { Id: "Id", Text: "Nickname" });
     let addAC = new AddPlayerController("add_button");
 
     let manager = new ContentManager([gameTCG], null, addAC, [
@@ -153,7 +192,12 @@
         { Name: "Dutch", Type: "Select" },
     ]);
 
-    let playerSC = new SelectController("First", [null, null], { Id: "Value", Text: "Text" }, "Nie wybrano");
+    let opensSC = new SelectController(
+        "Opens", players, { Id: "Id", Text: "Nickname" }, "Nie wybrano", @Html.Raw(Json.Encode(Model.Opens))
+    );
+    let bonusgameSC = new SelectController(
+        "BonusGamePlayer", players, { Id: "Id", Text: "Nickname" }, "Brak", @Html.Raw(Json.Encode(Model.BonusGamePlayer))
+    );
 
-    let selectSM = new SelectManager([playerSC, gameTCG], ["PlayerId1", "PlayerId2"], ["player1", "player2"]);
+    let selectSM = new SelectManager([opensSC, bonusgameSC, gameTCG], ["PlayerId1", "PlayerId2"], ["player1", "player2"]);
 </script>

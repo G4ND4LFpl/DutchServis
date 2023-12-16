@@ -42,12 +42,11 @@ namespace DutchServisMCV.Controllers
                             Tournament = tourn.Name,
                             Player1 = player1.Nickname,
                             PointsPlayer1 = points1.Points + (matches.BonusGamePlayer1 == true ? 1 : 0),
-                            BonusGamePlayer1 = matches.BonusGamePlayer1,
                             Player2 = player2.Nickname,
                             PointsPlayer2 = points2.Points + (matches.BonusGamePlayer1 == true ? 1 : 0),
-                            BonusGamePlayer2 = matches.BonusGamePlayer2,
                             PlayDate = matches.PlayDate,
                             FormatBo = matches.FormatBo,
+                            BonusGamePlayer = matches.BonusGamePlayer1 == true ? 1 : (matches.BonusGamePlayer2 == true ? 2 : 0),
                             Games = gameList.ToList()
                         };
 
@@ -68,6 +67,17 @@ namespace DutchServisMCV.Controllers
                    };
         }
 
+        private IQueryable<PlayerItem> GetPlayers(int id1, int id2)
+        {
+            return from players in database.Players
+                   where players.PlayerId == id1 || players.PlayerId == id2
+                   select new PlayerItem
+                   {
+                       Id = players.PlayerId,
+                       Nickname = players.Nickname
+                   };
+        }
+
         public ActionResult Add(string tournament)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
@@ -79,7 +89,13 @@ namespace DutchServisMCV.Controllers
             if (parent == null) return HttpNotFound();
 
             // Prepare Viewbag
-            ViewBag.Players = GetPlayerList(parent.TournamentId).ToList();
+            ViewBag.PlayersSet = GetPlayerList(parent.TournamentId).ToList();
+            Dictionary<int, string> formats = new Dictionary<int, string>
+            {
+                { 5, "Bo5" }, { 7, "Bo7" }, { 9, "Bo9" }, { 10, "Bo10" }, { 11, "Bo11" }, { 13, "Bo13" }
+            };
+            ViewBag.Formats = formats;
+            ViewBag.Players = new List<PlayerItem> { null, null };
 
             // Preparing Model
             MatchData data = new MatchData
@@ -92,6 +108,12 @@ namespace DutchServisMCV.Controllers
                 data.PlayDate = parent.StartDate;
             }
 
+            // Notification
+            if (TempData.ContainsKey("Notification"))
+            {
+                ViewBag.Notification = TempData["Notification"];
+            }
+
             // Return View
             return View(data);
         }
@@ -100,16 +122,88 @@ namespace DutchServisMCV.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Add(MatchData match)
         {
-            // Brakujące dane
-            // bonus game 1/2
-            // tournamentId ? (mamy tournament Name)
-
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
             // Prepare Viewbag
-            ViewBag.Players = GetPlayerList(match.TournamentId).ToList();
+            Tournaments tournament = database.Tournaments.Where(item => item.Name == match.Tournament).FirstOrDefault();
+            ViewBag.PlayersSet = GetPlayerList(tournament.TournamentId).ToList();
+            Dictionary<int, string> formats = new Dictionary<int, string>
+            {
+                { 5, "Bo5" }, { 7, "Bo7" }, { 9, "Bo9" }, { 10, "Bo10" }, { 11, "Bo11" }, { 13, "Bo13" }
+            };
+            ViewBag.Formats = formats;
+            ViewBag.Players = GetPlayers(match.PlayerId1, match.PlayerId2).ToList();
 
-            return View(match);
+            // Validation
+            if (match.PlayerId1 == 0)
+            {
+                ViewBag.Player1ValidationMsg = "Pole \"Pierwszy gracz\" nie może być puste";
+                return View(match);
+            }
+
+            if (match.PlayerId2 == 0)
+            {
+                ViewBag.Player2ValidationMsg = "Pole \"Drugi gracz\" nie może być puste";
+                return View(match);
+            }
+
+            if (match.PlayerId1 == match.PlayerId2)
+            {
+                ViewBag.Player2ValidationMsg = "Gracz nie może grać sam ze sobą";
+                return View(match);
+            }
+
+            if(match.PlayDate.Year == 1)
+            {
+                ViewBag.DateValidationMsg = "Pole Data nie może być puste";
+                return View(match);
+            }
+
+            if (match.Opens == 0)
+            {
+                ViewBag.OpensValidationMsg = "Musisz ustawić gracza rozpoczynającego grę";
+                return View(match);
+            }
+
+            // Add Match To Database
+            Matches matchObject = new Matches
+            {
+                Player1_Id = match.PlayerId1,
+                Player2_Id = match.PlayerId2,
+                TournamentId = tournament.TournamentId,
+                PlayDate = match.PlayDate,
+                FormatBo = match.FormatBo,
+                BonusGamePlayer1 = match.BonusGamePlayer == match.PlayerId1,
+                BonusGamePlayer2 = match.BonusGamePlayer == match.PlayerId2
+            };
+
+            database.Matches.Add(matchObject);
+            database.SaveChanges();
+
+            // Add Games To Database
+            for (int i = 0; i<match.Games.Count; i++)
+            {
+                Games game = match.Games[i];
+                // Id
+                game.MatchId = matchObject.MatchId;
+
+                // Opening
+                if (i % 2 == 0) game.Opening = (match.Opens == match.PlayerId1) ? 1 : 2;
+                else game.Opening = (match.Opens == match.PlayerId1) ? 2 : 1;
+
+                // Win
+                int p1 = game.PointsPlayer1 ?? -1;
+                int p2 = game.PointsPlayer2 ?? -1;
+                if (p1 > p2 || (p1 == p2 && game.Dutch == 1)) game.Win = 2;
+                else game.Win = 1;
+
+                database.Games.Add(game);
+            }
+            database.SaveChanges();
+
+            // Return
+            TempData.Add("Notification", "Mecz został dodany");
+            return RedirectToAction("Add", "Matches", new { tournament = tournament.Name});
         }
 
         public ActionResult Edit()
