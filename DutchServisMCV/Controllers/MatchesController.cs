@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -97,7 +98,7 @@ namespace DutchServisMCV.Controllers
             ViewBag.Formats = formats;
             ViewBag.Players = new List<PlayerItem> { null, null };
 
-            // Preparing Model
+            // Prepare Model
             MatchData data = new MatchData
             {
                 TournamentId = parent.TournamentId,
@@ -106,12 +107,6 @@ namespace DutchServisMCV.Controllers
             if (parent.Type == "tournament")
             {
                 data.PlayDate = parent.StartDate;
-            }
-
-            // Notification
-            if (TempData.ContainsKey("Notification"))
-            {
-                ViewBag.Notification = TempData["Notification"];
             }
 
             // Return View
@@ -184,6 +179,7 @@ namespace DutchServisMCV.Controllers
             for (int i = 0; i<match.Games.Count; i++)
             {
                 Games game = match.Games[i];
+
                 // Id
                 game.MatchId = matchObject.MatchId;
 
@@ -201,15 +197,159 @@ namespace DutchServisMCV.Controllers
             }
             database.SaveChanges();
 
-            // Return
-            TempData.Add("Notification", "Mecz został dodany");
-            return RedirectToAction("Add", "Matches", new { tournament = tournament.Name});
+            // Restart Model
+            ViewBag.Players = new List<PlayerItem> { null, null };
+            ModelState.Clear();
+
+            MatchData data = new MatchData
+            {
+                TournamentId = tournament.TournamentId,
+                Tournament = tournament.Name,
+            };
+            if (tournament.Type == "tournament")
+            {
+                data.PlayDate = tournament.StartDate;
+            }
+
+            ViewBag.Notification = "Mecz został dodany";
+
+            // Return View
+            return View(data);
         }
 
-        public ActionResult Edit()
+        public ActionResult Edit(int id)
         {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // Prepare Model
+            Matches match = database.Matches.Find(id);
+
+            MatchData model = new MatchData
+            {
+                TournamentId = match.TournamentId,
+                Tournament = database.Tournaments.Find(match.TournamentId).Name,
+                Id = match.MatchId,
+                PlayerId1 = match.Player1_Id,
+                PlayerId2 = match.Player2_Id,
+                PlayDate = match.PlayDate,
+                BonusGamePlayer = (match.BonusGamePlayer1 == true ? 1 : 0) + (match.BonusGamePlayer2 == true ? 2 : 0),
+                FormatBo = match.FormatBo,
+                Games = database.Games.Where(game => game.MatchId == id).ToList()
+            };
+            model.Opens = model.Games[0].Opening == 1 ? model.PlayerId1 : model.PlayerId2;
+
+            // Prepare Viewbag
+            ViewBag.PlayersSet = GetPlayerList(model.TournamentId).ToList();
+            Dictionary<int, string> formats = new Dictionary<int, string>
+            {
+                { 5, "Bo5" }, { 7, "Bo7" }, { 9, "Bo9" }, { 10, "Bo10" }, { 11, "Bo11" }, { 13, "Bo13" }
+            };
+            ViewBag.Formats = formats;
+            ViewBag.Players = GetPlayers(model.PlayerId1, model.PlayerId2).ToList();
+
             // Return View
-            return View();
+            return View(model);
+        }
+
+        private void UpdateGamesForMatch(List<Games> gamesList, MatchData match)
+        {
+            for(int i = 0; i < gamesList.Count; i++)
+            {
+                Games game = gamesList[i];
+                Games gameState = database.Games.AsNoTracking().Where(g => g.GameId == game.GameId).FirstOrDefault();
+
+                if (gameState != null)
+                {
+                    // Update
+                    game.MatchId = gameState.MatchId;
+                    game.Opening = gameState.Opening;
+                    game.Win = gameState.Win;
+
+                    database.Entry(game).State = EntityState.Modified;
+                }
+                else
+                {
+                    // Add
+                    game.MatchId = match.Id;
+
+                    if (i % 2 == 0) game.Opening = (match.Opens == match.PlayerId1) ? 1 : 2;
+                    else game.Opening = (match.Opens == match.PlayerId1) ? 2 : 1;
+
+                    int p1 = game.PointsPlayer1 ?? -1;
+                    int p2 = game.PointsPlayer2 ?? -1;
+                    if (p1 > p2 || (p1 == p2 && game.Dutch == 1)) game.Win = 2;
+                    else game.Win = 1;
+
+                    database.Games.Add(game);
+                }
+            }
+
+            foreach (Games game in database.Games.Where(g => g.MatchId == match.Id))
+            {
+                if (!gamesList.Any(item => item.GameId == game.GameId))
+                {
+                    // Delete
+                    database.Games.Remove(game);
+                }
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(MatchData match)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            match.TournamentId = database.Matches.AsNoTracking().Where(item => item.MatchId == match.Id).FirstOrDefault().TournamentId;
+
+            // Prepare Viewbag
+            ViewBag.PlayersSet = GetPlayerList(match.TournamentId).ToList();
+            Dictionary<int, string> formats = new Dictionary<int, string>
+            {
+                { 5, "Bo5" }, { 7, "Bo7" }, { 9, "Bo9" }, { 10, "Bo10" }, { 11, "Bo11" }, { 13, "Bo13" }
+            };
+            ViewBag.Formats = formats;
+            ViewBag.Players = GetPlayers(match.PlayerId1, match.PlayerId2).ToList();
+
+            // Validation
+            if (match.PlayerId1 == match.PlayerId2)
+            {
+                ViewBag.PlayersValidationMsg = "Gracz nie może grać sam ze sobą";
+                return View(match);
+            }
+
+            if (match.PlayDate.Year == 1)
+            {
+                ViewBag.DateValidationMsg = "Pole Data nie może być puste";
+                return View(match);
+            }
+
+            if (match.Opens == 0)
+            {
+                ViewBag.OpensValidationMsg = "Musisz ustawić gracza rozpoczynającego grę";
+                return View(match);
+            }
+
+            // Edit Match in Database
+            Matches matchObject = new Matches
+            {
+                MatchId = match.Id,
+                Player1_Id = match.PlayerId1,
+                Player2_Id = match.PlayerId2,
+                TournamentId = match.TournamentId,
+                PlayDate = match.PlayDate,
+                FormatBo = match.FormatBo,
+                BonusGamePlayer1 = match.BonusGamePlayer == match.PlayerId1,
+                BonusGamePlayer2 = match.BonusGamePlayer == match.PlayerId2
+            };
+            database.Entry(matchObject).State = EntityState.Modified;
+
+            UpdateGamesForMatch(match.Games, match);
+
+            database.SaveChanges();
+
+            // Return View
+            return RedirectToAction("Details", new { id = match.Id });
         }
     }
 }

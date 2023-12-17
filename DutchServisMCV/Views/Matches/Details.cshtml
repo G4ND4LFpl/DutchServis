@@ -38,7 +38,7 @@
     @if (Session["Username"] != null)
     {
         <aside class="col-xs-12 col-sm-12 col-md-12">
-            <a href="@Url.Action("Edit")">
+            <a href="@Url.Action("Edit", new { id = Model.Id })">
                 <div class="admincontroll">Edytuj mecz</div>
             </a>
         </aside>
@@ -87,7 +87,7 @@
     <p class="disp-only-xs italic text-warning">Część danych została ukryta z uwagi na zbyt małą wielkość ekranu.</p>
 </section>
 
-@Html.ActionLink("Powrót", "Link", "Matches", new { name = @Model.Tournament }, new { @class = "boldlink" })
+@Html.ActionLink("Powrót", "Link", "Matches", new { name = Model.Tournament }, new { @class = "boldlink" })
 
 
 

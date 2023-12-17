@@ -26,7 +26,7 @@ namespace DutchServisMCV.Controllers
             string target = database.Tournaments.Where(item => item.Name == name).FirstOrDefault().Type;
 
             if (target == "tournament") return RedirectToAction("Info", "Tournaments", new { name });
-            if (target == "leauge") return RedirectToAction("Info", "Leagues", new { name });
+            if (target == "league") return RedirectToAction("Info", "Leagues", new { name });
 
             return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }

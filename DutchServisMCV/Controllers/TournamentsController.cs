@@ -252,7 +252,7 @@ namespace DutchServisMCV.Controllers
                 }
             }
 
-            // Add tournament to Database
+            // Edit tournament in Database
             DateTime dt = tournament.Date.Value.AddMinutes(tournament.Time.Value.Hour * 60 + tournament.Time.Value.Minute);
             Tournaments tournamentObject = new Tournaments
             {
