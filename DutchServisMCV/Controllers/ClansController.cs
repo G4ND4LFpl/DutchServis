@@ -1,6 +1,5 @@
 ﻿using DutchServisMCV.Logic;
 using DutchServisMCV.Models;
-using DutchServisMCV.Models.GameNamespace;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,10 +10,8 @@ using System.Web.Mvc;
 
 namespace DutchServisMCV.Controllers
 {
-    public class ClansController : Controller
+    public class ClansController : DataController
     {
-        DutchDatabaseEntities database = new DutchDatabaseEntities();
-
         public ActionResult Index()
         {
             var model = from clans in database.Clans

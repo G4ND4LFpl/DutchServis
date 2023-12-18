@@ -131,11 +131,11 @@
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\ClansController.cs" />
     <Compile Include="Controllers\CompetitionController.cs" />
+    <Compile Include="Controllers\DataController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LeaguesController.cs" />
     <Compile Include="Controllers\MatchesController.cs" />
-    <Compile Include="Controllers\test.cs" />
     <Compile Include="Controllers\TournamentsController.cs" />
     <Compile Include="Logic\GameEngine\Card.cs" />
     <Compile Include="Logic\GameEngine\Deck.cs" />
@@ -208,15 +208,15 @@
     <Content Include="Content\images\cards\card_spades.png" />
     <Content Include="Content\images\cards\card_reverse.png" />
     <Content Include="Content\images\cards\card_clubs.png" />
+    <Content Include="Content\images\discord_icon.png" />
     <Content Include="Content\images\empty.png" />
-    <Content Include="Content\images\fb_icon.png" />
+    <Content Include="Content\images\facebook_icon.png" />
     <Content Include="Content\images\logo.png" />
     <Content Include="Content\images\playerdata\argset.png" />
     <Content Include="Content\images\playerdata\gandalf.png" />
     <Content Include="Content\images\playerdata\mostow.png" />
     <Content Include="Content\images\playerdata\pablo.png" />
     <Content Include="Content\images\playerdata\ruda.png" />
-    <Content Include="Content\css\reverse.jpg" />
     <Content Include="Content\images\tournamentdata\winner.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -283,6 +283,8 @@
     <Content Include="Views\Clans\Add.cshtml" />
     <Content Include="Views\Clans\Edit.cshtml" />
     <Content Include="Views\Clans\Info.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Home\Rules.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

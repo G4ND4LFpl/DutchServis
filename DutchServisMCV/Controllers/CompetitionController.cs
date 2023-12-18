@@ -12,10 +12,8 @@ using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
-    public class CompetitionController : Controller
+    public class CompetitionController : DataController
     {
-        protected DutchDatabaseEntities database = new DutchDatabaseEntities();
-
         // Redirect Function
         public ActionResult Link(string name)
         {

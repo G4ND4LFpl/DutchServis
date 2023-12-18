@@ -13,9 +13,8 @@ using DutchServisMCV.Models.GameNamespace;
 
 namespace DutchServisMCV.Controllers
 {
-    public class PlayersController : Controller
+    public class PlayersController : DataController
     {
-        DutchDatabaseEntities database = new DutchDatabaseEntities();
         const double baseRating = 1000;
 
         public ActionResult Index()

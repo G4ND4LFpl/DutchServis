@@ -35,7 +35,7 @@
         @foreach (DutchServisMCV.Models.ClanInfo clan in Model.ToList())
         {
             <tr>
-                <td>@Html.ActionLink(clan.Name, "Info", new { name = clan.Name }, new { @class = "boldlink" })</td>
+                <td>@Html.ActionLink(clan.Name, "Info", "Clans", new { name = clan.Name }, new { @class = "boldlink" })</td>
                 <td>@clan.Count</td>
                 @if (Session["username"] != null)
                 {

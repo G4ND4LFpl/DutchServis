@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "Zasady gry";
+}
+
+<header>
+    <h2 class="mb-1 text-center">Zasady gry</h2>
+</header>
+
+<article>
+    <section>
+        <h3>1. Przygotowanie Gry</h3>
+        Każdy z graczy dostaje 4 nieodkryte karty, które są układane na stole przed nim. Przed rozpoczęciem gry każdy z graczy może podejrzeć 
+        2 karty przed sobą.
+    </section>
+
+    <section>
+        <h3>2. Rozgrywka</h3>
+        <p>
+            Tura gracza rozpoczyna się od dobrania karty. Kartę gracz może dobrać kartę z talii lub odkrytą kartę z stosu na środku.
+            <ol>
+                <li>Jeżeli gracz dobrał kartę z talii może ją wyrzucić w tej samej turze lub może wyrzucić inną ze swoich kart.</li>
+                <li>Jeżeli gracz wzioł kartę ze stosu musi wyrzucić inną swoją kartę. (Nie może wyrzucić karty dobranej w tej turze)</li>
+            </ol>
+            Wyrzucona karta trafia odkryta na stos na środku.
+        </p>
+        <p>
+            Gracz może również wyrzucić kartę w ramach &bdquo;doskoku&rdquo;. Doskok można wykonać w dowolnym momencie, nawet po zakończeniu
+            gry (przed odkryciem kart). Aby doskok był udany karta na górze stosu musi mieć ten sam symbol (np. 10 lub król). W przypadku
+            nieudanego doskoku, karta którą gracz doskakiwał do niego wraca i gracz dobiera 1 dodatkową kartę z talii.
+        </p>
+    </section>
+
+    <section>
+        <h3>3. Cel gry</h3>
+        <p>
+            Każda karta ma przypisaną wartość i wygrywa ten gracz, którego suma wartości kart jest najniższa. Wartości kart są opisane poniżej.
+            <ul>
+                <li>As jest wart 1</li>
+                <li>Karty od 2 do 10 są warte napisanej liczbie</li>
+                <li>Walet jest warty 11</li>
+                <li>Dama jest warta 12</li>
+                <li>Król pik oraz trefl jest wart 13, a król kier oraz karo jest wart 0</li>
+            </ul>
+        </p>
+    </section>
+
+    <section>
+        <h3>4. Kart specjalne</h3>
+        <p>
+            Niektóre karty posiadają efekty specjalne. Efekt aktywuje się po wyrzuceniu karty, jeśli to nie jest doskok (wyjątkiem jest ósemka).
+            W przypadku wyrzucenia kart z efektem ewentualny doskok następuje przed rozpatrzeniem efektu karty.<br/>
+            Gracz wyrzucający kartę specjalną może wybrać czy chce realizować jej efekt, czy wyrzuca ją jako zwykłą kartę.
+        </p>
+        <p>
+            Efekty kart:
+            <ul>
+                <li>
+                    <b>Dama</b> - pozwala na podejrzenie jednej wybranej kart swojej lub przeciwnika.
+                </li>
+                <li>
+                    <b>Walet</b> - pozwala na zamianę dowolnych 2 kart na stole.
+                </li>
+                <li>
+                    <b>Karta 9</b> - blokuje wybraną przez ciebie kartę na stole. Karta jest zablokowana do początku twojej następnej tury.
+                    Zablokowana karta nie może być podejrzana, wyrzucona ani zamieniona.
+                </li>
+                <li>
+                    <b>Karta 8</b> - można nią doskoczyć na waleta, jeżeli jego efekt jest realizowany. Taki doskok  jest uznawany jako poprawny, a
+                    efekt karty walek nie jest rozpatrywany.
+                </li>
+            </ul>
+        </p>
+    </section>
+
+    <section>
+        <h3>5. Zakończenie gry</h3>
+        <p>
+            Gra może zakończyć się na dwa sposoby
+            <ol>
+                <li>
+                    Jeden z graczy powie &bdquo;dutch&rdquo;. Gracz może to powiedzieć na początek (przed dobraniem karty) lub koniec swojej
+                    tury (po wyrzuceniu karty), jeżeli rozegrał minimum 3 tury w tej grze. To tym haśle każdy z graczy rozgrywa jeszcze jedną
+                    turę i gra się kończy.
+                </li>
+                <li>
+                    Jeden z graczy pozbędzie się wszystkich kart.
+                </li>
+            </ol>
+            Po końcu gry gracze odkrywają swoje karty i jest liczona suma ich wartości dla każdego w graczy. Gracz o mnijeszej sumie wygrywa.
+        </p>
+        <p>
+            Na przykład jeśli ja kończę grę z kartami as, 3 oraz walet, a mój przeciwnik ma karty 6, dama, 3 to <br />
+            Moja suma: 1 (as) + 3 + 11 (walet) = 15<br />
+            Suma przeciwnika: 6 + 12 (dama) + 3 = 21<br />
+            15 < 21 co oznacza, że wygrałem to rozdanie.
+        </p>
+        <p>
+            W przypadku takiej samej ilości punktów (sumy) wygrywa gracz który nie mówił &bdquo;dutch&rdquo;.
+        </p>
+    </section>
+</article>

@@ -529,6 +529,7 @@ td.btn {
 .footerbar > .container > div > div {
     display: inline-block;
     margin-right: 20px;
+    margin-bottom: 10px;
 }
 .footerbar a {
     color: var(--gray);
@@ -546,5 +547,49 @@ td.btn {
     .socials {
         border: none;
         margin-bottom: 0;
+    }
+}
+@media print {
+    .socials {
+        display: none;
+    }
+    .footerbar ul > li {
+        display: inline;
+    }
+    .footerbar ul>li:not(:last-child) {
+        border-right-style: solid;
+        border-right-width: 1px;
+        padding-right: 5px;
+    }
+    .navbar-fixed-top {
+        position: absolute;
+    }
+    .navbar-inverse .navbar-toggle {
+        border: none;
+    }
+    article {
+        break-inside: avoid;
+    }
+    section {
+        break-inside: avoid;
+    }
+    h1 {
+        break-after: avoid;
+    }
+    h2 {
+        break-after: avoid;
+    }
+    header > h2 {
+        break-before: avoid;
+    }
+    h3 {
+        break-after: avoid;
+    }
+    h4 {
+        break-after: avoid;
+    }
+
+    .no-print {
+        display: none !important;
     }
 }

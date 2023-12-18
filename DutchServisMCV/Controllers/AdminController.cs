@@ -11,9 +11,8 @@ using DutchServisMCV.Logic;
 
 namespace DutchServisMCV.Controllers
 {
-    public class AdminController : Controller
+    public class AdminController : DataController
     {
-        DutchDatabaseEntities database = new DutchDatabaseEntities();
         PasswordHasher hasher = new PasswordHasher();
 
         private bool IsLoginCorrect(Users userInfo)
