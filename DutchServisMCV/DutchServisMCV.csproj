@@ -129,6 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ClansController.cs" />
     <Compile Include="Controllers\CompetitionController.cs" />
     <Compile Include="Controllers\GameController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -147,6 +148,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\SResponse.cs" />
+    <Compile Include="Models\ClanInfo.cs" />
     <Compile Include="Models\Clans.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
     </Compile>
@@ -216,7 +218,6 @@
     <Content Include="Content\images\playerdata\ruda.png" />
     <Content Include="Content\css\reverse.jpg" />
     <Content Include="Content\images\tournamentdata\winner.jpg" />
-    <Content Include="default.ico" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -278,6 +279,10 @@
     <Content Include="Views\Game\Index.cshtml" />
     <Content Include="Views\Leagues\Create.cshtml" />
     <Content Include="Views\Leagues\Edit.cshtml" />
+    <Content Include="Views\Clans\Index.cshtml" />
+    <Content Include="Views\Clans\Add.cshtml" />
+    <Content Include="Views\Clans\Edit.cshtml" />
+    <Content Include="Views\Clans\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

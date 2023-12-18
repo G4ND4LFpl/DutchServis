@@ -35,16 +35,16 @@ namespace DutchServisMCV.Controllers
                             Nickname = player.Nickname,
                             Img = player.Img,
                             Clan = groupedclans.FirstOrDefault().Name,
-                            Ranking = (from set in database.PlayerSet
-                                       where set.PlayerId == player.PlayerId
-                                       group set by set.PlayerId into gres
-                                       select new
-                                       {
-                                           Id = gres.Key,
-                                           Sum = gres.Sum(item => item.RankingGet),
-                                       }
-                                        ).FirstOrDefault().Sum + player.Rating.Value,
-
+                            Ranking = player.Rating.Value + (
+                                from set in database.PlayerSet
+                                where set.PlayerId == player.PlayerId
+                                group set by set.PlayerId into gres
+                                select new
+                                {
+                                    Id = gres.Key,
+                                    Sum = gres.Sum(item => item.RankingGet),
+                                }
+                            ).FirstOrDefault().Sum,
                             Rating = player.Rating.Value,
                             Active = player.Active
                         };

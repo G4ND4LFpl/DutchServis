@@ -1,0 +1,35 @@
+﻿@model DutchServisMCV.Models.Clans
+
+@{
+    ViewBag.Title = "Utwórz klan";
+}
+
+<h2>Utwórz klan</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Name">Nazwa</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+                <div class="text-danger">@ViewBag.NameValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Utwórz klan" class="btn-warning" />
+                <a href="@Url.Action("Index")">
+                    <div class="disp-inline-block buttonlike-heavy">
+                        Wróć
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+}

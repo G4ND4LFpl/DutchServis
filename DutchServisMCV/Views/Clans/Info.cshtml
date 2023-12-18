@@ -1,0 +1,62 @@
+﻿@model DutchServisMCV.Models.ClanInfo
+
+@{
+    ViewBag.Title = Model.Name;
+}
+
+<script type="text/jscript">
+    var path = @Url.Content("~/Content/");
+</script>
+
+<header>
+    <h1 class="mb-1">@Model.Name</h1>
+</header>
+
+<h3>Gracze w klanie</h3>
+<table class="table table-striped">
+    <thead class="table-style">
+        <tr>
+            <th class="cell-1 disp-sm">Awatar</th>
+            <th class="cell-2">Gracz</th>
+            <th class="cell-1 disp-sm">Ranking</th>
+            <th class="cell-1 disp-only-xs">Rank.</th>
+            <th class="cell-1 disp-sm">Rating</th>
+            <th class="cell-1 disp-only-xs">Elo</th>
+        </tr>
+    </thead>
+    @if (Model.Players.Count != 0)
+    {
+        <tbody class="table-style h-100">
+            @foreach (DutchServisMCV.Models.PlayerInfo player in Model.Players)
+            {
+                <tr>
+                    <td class="disp-sm">
+                        <img class="img-responsive img-rounded" id="@(player.Nickname)_img" />
+                    </td>
+                    <td>@Html.ActionLink(player.Nickname, "Info", "Players", new { nickname = player.Nickname }, new { @class = "boldlink" })</td>
+                    <td>@(player.Ranking ?? player.Rating)</td>
+                    <td>@player.Rating</td>
+                </tr>
+            }
+        </tbody>
+    }
+    else
+    {
+        <tbody class="table-style">
+            <tr>
+                <td colspan="4">Ten klan nie ma jeszcze żanych graczy</td>
+            </tr>
+        </tbody>
+    }
+</table>
+
+
+@foreach (DutchServisMCV.Models.PlayerInfo player in Model.Players)
+{
+    <script type="text/jscript">
+        SetPath('@(player.Nickname)_img', 'playerdata/', '@player.Img', 'avatar.png');
+    </script>
+}
+    
+@Html.ActionLink("Powrót", "Index", null, new { @class = "boldlink" })
+

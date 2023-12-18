@@ -87,17 +87,18 @@ namespace DutchServisMCV.Controllers
                     join players in database.Players
                     on set.PlayerId equals players.PlayerId
                     join stats in stat_table
-                    on players.Nickname equals stats.Player
+                    on players.Nickname equals stats.Player into grouped
+                    from stats in grouped.DefaultIfEmpty()
                     where tourn.Name == tournament
                     select new PlayerLeagueItem
                     {
                         Id = players.PlayerId,
                         Nickname = players.Nickname,
                         Price = set.Prize,
-                        Points = stats.Points,
-                        Won = stats.Won,
-                        Loose = stats.Loose,
-                        Draw = stats.Draw
+                        Points = stats != null ? stats.Points : 0,
+                        Won = stats != null ? stats.Won : 0,
+                        Loose = stats != null ? stats.Loose : 0,
+                        Draw = stats != null ? stats.Draw : 0
                     });
         }
         protected IQueryable<GamesSum> GamesSumByMatch(int player, int? matchId = null)

@@ -1,0 +1,48 @@
+﻿@model IEnumerable<DutchServisMCV.Models.ClanInfo>
+
+@{
+    ViewBag.Title = "Klany";
+}
+
+<header>
+    <h1 class="mb-1">Klany</h1>
+</header>
+
+<div class="col-xs-12 col-sm-4 col-md-6 col-lg-8">
+    @if (Session["Username"] != null)
+    {
+        <aside>
+            <a href="@Url.Action("Add")">
+                <div class="admincontroll">Dodaj klan</div>
+            </a>
+        </aside>
+    }
+</div>
+
+<table class="table width-small table-striped">
+    <thead class="table-style">
+        <tr>
+            <th class="cell-2">Klan</th>
+            <th class="cell-1">Liczba graczy</th>
+            @if (Session["username"] != null)
+            {
+                <th class="cell-1 btn"></th>
+                <th class="cell-1 btn"></th>
+            }
+        </tr>
+    </thead>
+    <tbody class="table-style">
+        @foreach (DutchServisMCV.Models.ClanInfo clan in Model.ToList())
+        {
+            <tr>
+                <td>@Html.ActionLink(clan.Name, "Info", new { name = clan.Name }, new { @class = "boldlink" })</td>
+                <td>@clan.Count</td>
+                @if (Session["username"] != null)
+                {
+                    <td>@Html.ActionLink("Edytuj", "Edit", new { name = clan.Name }, new { @class = "text-danger" })</td>
+                    <td>@Html.ActionLink("Usuń", "Delete", new { id = clan.Id }, new { @class = "text-danger" })</td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
