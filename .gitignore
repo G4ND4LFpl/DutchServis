@@ -5,3 +5,4 @@ DutchServisMCV/Scripts/modernizr-2.8.3.js
 DutchServisMCV/Content/css/bootstrap.css
 DutchServisMCV/Content/css/bootstrap.css.map
 DutchServisMCV/Logic/PasswordHasher.cs
+DutchServisMCV/obj/
