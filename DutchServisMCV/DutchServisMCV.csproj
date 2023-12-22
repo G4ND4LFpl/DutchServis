@@ -140,6 +140,7 @@
     <Compile Include="Logic\GameEngine\Card.cs" />
     <Compile Include="Logic\GameEngine\Deck.cs" />
     <Compile Include="Logic\FileManager.cs" />
+    <Compile Include="Logic\GameEngine\GameBot.cs" />
     <Compile Include="Logic\GameEngine\GameEngine.cs" />
     <Compile Include="Logic\GameEngine\EngineResponse.cs" />
     <Compile Include="Logic\PasswordHasher.cs" />
@@ -307,6 +308,9 @@
   <PropertyGroup>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
@@ -327,6 +331,9 @@
           <CustomServerUrl>
           </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+          <servers defaultServer="SelfHostServer">
+            <server name="SelfHostServer" exePath="" cmdArgs="" url="http://localhost:58795/" workingDir="" />
+          </servers>
         </WebProjectProperties>
       </FlavorProperties>
     </VisualStudio>

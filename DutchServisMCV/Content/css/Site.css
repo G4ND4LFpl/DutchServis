@@ -344,6 +344,7 @@ a.text-danger:hover {
     padding: 30px 5% 30px 5%;
     margin-left: -15px;
     margin-right: -15px;
+    font-family: 'Crimson Text';
 }
 .card {
     padding: 0;
@@ -362,18 +363,15 @@ a.text-danger:hover {
 .text-avers {
     font-size: 4em;
     font-weight: 600;
-    font-family: 'Georgia';
 }
 .text-empty {
     font-size: 2em;
     color: var(--white-smoke);
-    font-family: 'Georgia';
 }
 .text-game {
     font-size: 1.5em;
     color: var(--white-smoke);
     text-align: center;
-    font-family: 'Georgia';
 }
 .active:hover {
     border-color: var(--yellow-dark);
@@ -383,6 +381,11 @@ a.text-danger:hover {
 }
 .c-black {
     color: var(--black);
+}
+@media (max-width: 540px) {
+    .text-empty {
+        font-size: 1.5em;
+    }
 }
 @media(min-width: 1200px) and (orientation: landscape) {
     .board {
@@ -396,7 +399,6 @@ a.text-danger:hover {
     border-radius: 5px;
     color: var(--white-smoke);
     font-size: 1em;
-    font-family: 'Georgia';
     background-color: var(--gray);
 }
 .btn-game:hover {

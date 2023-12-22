@@ -22,12 +22,13 @@ namespace DutchServisMCV.Controllers
         [HttpPost]
         public ActionResult Action(string id)
         {
+            if (id == "dutch") return Json(engine.Dutch());
+
             switch (engine.Mode)
             {
-                case GameMode.Deal:
+                case GameMode.Ready:
                     {
                         engine.Initialize();
-
                         return Json(engine.Deal());
                     }
                 case GameMode.Lookup:
@@ -41,16 +42,21 @@ namespace DutchServisMCV.Controllers
                 case GameMode.Draw:
                     {
                         if (id == "deck") return Json(engine.DrawDeck());
-                        else return Json(engine.DrawStack());
+                        else if(id == "stack") return Json(engine.DrawStack());
+                        else return Json(engine.Dash(id));
                     }
                 case GameMode.Throw:
                     {
                         return Json(engine.Throw(id));
                     }
-                default:
+                case GameMode.AfterTurn:
                     {
                         if (id == "button") return Json(engine.EndTurn());
                         else return Json(engine.Dash(id));
+                    }
+                default:
+                    {
+                        throw new NotImplementedException();
                     }
             }
         }

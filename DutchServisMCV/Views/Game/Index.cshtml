@@ -27,6 +27,10 @@
         }
     </div>
 
+    <div class="row">
+        <div id="bot_cards_summary" class="text-game"></div>
+    </div>
+
     <div class="row mt-1">
         <div class="col-xs-4 col-sm-3 col-sm-offset-3 col-lg-2 col-lg-offset-4">
             <div class="text-game">Stos</div>
@@ -47,6 +51,11 @@
             <button class="card active" id="deck" onclick="Action('deck')">
                 <img src="@Url.Content("~/Content/images/cards/card_reverse.png")" class="img-responsive" />
             </button>
+        </div>
+        <div class="col-xs-4 col-sm-3 col-lg-2">
+            <div class="text-game disp-none" id="round-text">Runda</div>
+            <div class="text-game disp-none" id="round">null</div>
+            <button class="center-block btn-game disp-none" id="dutch" onclick="Action('dutch')">Dutch</button>
         </div>
     </div>
 
@@ -70,10 +79,12 @@
         }
     </div>
 
+    <div class="row">
+        <div id="player_cards_summary" class="text-game"></div>
+    </div>
+
     <div class="row mt-1">
-        <button class="center-block btn-game disp-none" id="button" onclick="Action('button')">
-            Rozpocznij
-        </button>
+        <button class="center-block btn-game disp-none" id="button" onclick="Action('button')">Rozpocznij</button>
     </div>
 
     <h2 id="debug" style="color: white;"></h2>
@@ -88,8 +99,9 @@
 </header>
 
 <p>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce venenatis tristique rutrum. Quisque et accumsan tortor, ac dictum est. Vivamus sit amet pharetra lorem. 
-    Nulla tempus turpis ligula, ac vehicula arcu egestas quis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in interdum nulla. Aliquam sed semper nisl, 
-    a ullamcorper odio. Phasellus ultricies dictum tincidunt. Suspendisse laoreet eget purus a venenatis. Nam sed laoreet est. Etiam sollicitudin metus vel ante imperdiet 
-    suscipit. Morbi laoreet ullamcorper ante consequat tempus. Suspendisse potenti.
+    Na tej stronie możesz rozegrać grę Dutch z komputerowym przeciwnikiem. Tę grę należy traktować jako trening i jej wyniki nie są
+    zapisywane. Jeżeli przed grą chcesz zapoznać się z zasadami znajdziesz je @Html.ActionLink("tutaj", "Rules", "Home").
+</p>
+<p>
+    Aby rozpocząć grę kliknij na deck. Elementy które możesz klikną są po najechaniu myszką podświetlane na żółto.
 </p>

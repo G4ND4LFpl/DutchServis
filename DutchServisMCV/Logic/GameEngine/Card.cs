@@ -15,9 +15,9 @@ namespace DutchServisMCV.Logic.GameEngine
 
     public class Element
     {
-        public string Value { get; private set; }
+        public object Value { get; private set; }
 
-        public Element(string text)
+        public Element(object text)
         {
             Value = text;
         }
@@ -27,10 +27,29 @@ namespace DutchServisMCV.Logic.GameEngine
         public CardColor Color { get; private set; }
         public bool Visible { get; set; }
 
+        public bool BotKnown { get; set; }
+
         public Card(string value, CardColor color) : base(value)
         {
             Color = color;
             Visible = false;
+            BotKnown = false;
+        }
+
+        public int Cost()
+        {
+            switch (Value)
+            {
+                case "A": return 1;
+                case "J": return 11;
+                case "Q": return 12;
+                case "K":
+                    {
+                        if (Color == CardColor.Heart || Color == CardColor.Diamonds) return 0;
+                        else return 13;
+                    }
+                default: return Convert.ToInt32(Value);
+            }
         }
     }
 

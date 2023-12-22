@@ -207,20 +207,69 @@ function ToggleStack(toggle) {
 }
 
 /**
- * Ustawia przycisk
+ * Ustawia przycisk na dole strony
  * @param {string} text Tekst
  * @param {boolean} active Aktywność
  */
-function RefreshButton(text, active) {
+function RefreshButton(text, visible) {
     var btn = document.getElementById("button");
     btn.innerHTML = text;
 
-    if (active) {
+    if (visible) {
         btn.classList.remove(["disp-none"]);
     }
     else {
         btn.classList.add(["disp-none"]);
     }
+}
+/**
+ * Ustawia informacje o rundzie
+ * @param {string} number Runda
+ * @param {boolean} visible Widoczność
+ */
+function RefreshRound(number, visible) {
+    document.getElementById("round").innerHTML = number;
+
+    if (visible) {
+        document.getElementById("round-text").classList.remove(["disp-none"]);
+        document.getElementById("round").classList.remove(["disp-none"]);
+    }
+    else {
+        document.getElementById("round-text").classList.add(["disp-none"]);
+        document.getElementById("round").classList.add(["disp-none"]);
+    }
+}
+/**
+ * Ustawia przycisk dutch
+ * @param {boolean} active Aktywny
+ */
+function RefreshDutchButton(active) {
+    if (active) {
+        document.getElementById("dutch").classList.remove(["disp-none"]);
+    }
+    else {
+        document.getElementById("dutch").classList.add(["disp-none"]);
+    }
+}
+/**
+ * Zwraca odmieniony wyraz "punkty"
+ * @param {number} number liczba
+ */
+function GetDeclination(number) {
+    if (number == 1) return "punkt";
+    if (number <= 4) return "punkty";
+    if (number < 20) return "punktów";
+    if (number % 10 >= 2 && number % 10 <= 4) return "punkty";
+    return "punktów";
+}
+/**
+ * Ustawia podsumowanie punktacji
+ * @param {number} bot_sum Suma punktów bota
+ * @param {number} player_sum Suma punktów gracza
+ */
+function ShowSummary(bot_sum, player_sum) {
+    document.getElementById("bot_cards_summary").innerHTML = "Komputerowy przeciwnik ma " + String(bot_sum) + " " + GetDeclination(bot_sum) + ".";
+    document.getElementById("player_cards_summary").innerHTML = "Ty masz " + String(player_sum) + " " + GetDeclination(player_sum) + ".";
 }
 
 // Action
@@ -237,21 +286,32 @@ function Action(id) {
         success: function (data) {
             state = data.State;
 
-            if (data.RefreshAll) {
-                Refresh(data.Args[0], data.Args[1])
+            if (data.RefreshAllCards) {
+                Refresh(data.Args[0], data.Args[1]);
             }
-            else if (data.RefreshSingle) {
-                RefreshCard(data.Args[0], data.Args[1])
+            else if (data.RefreshSingleCard) {
+                for (var i = 0; i < data.Args.length; i++) {
+                    RefreshCard(data.Args[i]);
+                }
             }
 
-            if (data.RefreshDeck) {
+            if (data.Refresh["deck"] == true) {
                 ToggleDeck(state["deck"].Active);
             }
-            if (data.RefreshStack) {
+            if (data.Refresh["stack"] == true) {
                 RefreshStack(state["stack"].Card, state["stack"].Active);
             }
-            if (data.RefreshButton) {
+            if (data.Refresh["button"] == true) {
                 RefreshButton(state["button"].Card.Value, state["button"].Active);
+            }
+            if (data.Refresh["round"] == true) {
+                RefreshRound(state["round"].Card.Value, state["round"].Active);
+            }
+            if (data.Refresh["dutch"] == true) {
+                RefreshDutchButton(state["dutch"].Active);
+            }
+            if (data.Refresh["summary"] == true) {
+                ShowSummary(state["bot_summary"].Card.Value, state["player_summary"].Card.Value);
             }
         },
         error: function () {
