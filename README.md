@@ -42,7 +42,7 @@ Lista elementów do implementacji w przyszłości
 
 Ze względów kosztów hosting'u rozważam zmianę używanej technologii na .Net Core.
 
-## Bugs
+## Błędy
 
 Aktualnie znane błędy
 
