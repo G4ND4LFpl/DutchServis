@@ -83,6 +83,18 @@ namespace DutchServisMCV
                 defaults: new { controller = "Home", action = "Rules" }
             );
 
+            routes.MapRoute(
+                name: "PostAdd",
+                url: "Post/Add",
+                defaults: new { controller = "Home", action = "Add" }
+            );
+
+            routes.MapRoute(
+                name: "PostEdit",
+                url: "Post/Edit/{id}",
+                defaults: new { controller = "Home", action = "Add", id = UrlParameter.Optional }
+            );
+
             // Default
 
             routes.MapRoute(

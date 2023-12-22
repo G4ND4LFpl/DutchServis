@@ -149,6 +149,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\SResponse.cs" />
+    <Compile Include="Models\Announcement.cs">
+      <DependentUpon>DataBaseModels.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ClanInfo.cs" />
     <Compile Include="Models\Clans.cs">
       <DependentUpon>DataBaseModels.tt</DependentUpon>
@@ -286,9 +289,12 @@
     <Content Include="Views\Clans\Info.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Rules.cshtml" />
+    <Content Include="Views\Home\Add.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\images\announcementdata\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

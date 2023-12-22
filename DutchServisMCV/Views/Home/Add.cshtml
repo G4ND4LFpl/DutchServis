@@ -1,0 +1,58 @@
+﻿@model DutchServisMCV.Models.Announcement
+@{
+    ViewBag.Title = "Nowe ogłoszenie";
+}
+
+<header>
+    <h2>Nowe ogłoszenie</h2>
+</header>
+
+@using (Html.BeginForm("Add", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal wide">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Title">Tytuł</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Content">Treść</label>
+            <div class="col-md-10">
+                <textarea id="Content" name="Content" class="form-control" rows="5" cols="100"></textarea>
+                <div class="text-danger">@ViewBag.ContentValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="File">Obrazek</label>
+            <div class="col-md-10">
+                <input id="File" name="File" type="file" class="form-element" accept=".png,.jpg,.jpeg" />
+                <div class="text-danger">@ViewBag.FileValidationMsg</div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Opublikuj" class="btn-warning" />
+                <a href="@Url.Action("Index")">
+                    <div class="disp-inline-block buttonlike-heavy">
+                        Wróć
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+

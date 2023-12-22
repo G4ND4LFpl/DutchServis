@@ -53,6 +53,9 @@ input, select, textarea {
     min-height: 80px;
     max-height: 140px;
 }
+textarea {
+    resize: none;
+}
 table input.form-control:read-only {
     background: white;
     text-align: center;

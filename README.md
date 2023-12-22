@@ -28,7 +28,6 @@ Serwis pozwala na logowanie dla administartorów. Po zalogowaniu admini mają mo
 
 Lista elementów do implementacji w przyszłości
 
-- Implamentacja strony głównej z postami od administratorów
 - Panel admina
 - Możliwość tworzenia nowych kon admina z poziomu aplikacji
 - Dopracowanie gry z botem
@@ -51,6 +50,9 @@ Aktualnie znane błędy
 - Na ekranie mniejszym niż 992px pusta karta na początku wprowadza zamęt : Gra z botem
 - Koniec kart w deck'u wyrzuca błąd : Gra z botem
 - Więcej niż 8 kart wyrzuca błąd : Gra z botem
+- Ogłoszenia powinny również zapisywać godzinę
+- Zła responsywność okienek turniejów i ogłoszeń
+
 ## Licencja
 
 GNU GPL-3.0 (General Public License)

@@ -32,5 +32,6 @@ namespace DutchServisMCV.Models
         public virtual DbSet<Tournaments> Tournaments { get; set; }
         public virtual DbSet<Users> Users { get; set; }
         public virtual DbSet<PlayerSet> PlayerSet { get; set; }
+        public virtual DbSet<Announcement> Announcements { get; set; }
     }
 }

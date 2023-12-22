@@ -304,7 +304,7 @@ namespace DutchServisMCV.Logic.GameEngine
             playerCards[idx] = null;
             stack.Peek().BotKnown = true;
 
-            string visibleCard = "";
+            string visibleCard = null;
             for(int i = 0; i < 8; i++)
             {
                 if (playerCards[i] != null && playerCards[i].Visible == true)
@@ -317,14 +317,19 @@ namespace DutchServisMCV.Logic.GameEngine
 
             Mode = GameMode.AfterTurn;
             if (dutch != DutchState.None) count--;
+
             Dictionary<string, bool> refresh = new Dictionary<string, bool> { { "stack", true }, { "button", true } };
             if (round == 3) refresh.Add("dutch", true);
+
+            string[] args;
+            if (visibleCard != null) args = new string[] { str_id, visibleCard };
+            else args = new string[] { str_id };
 
             return new EngineResponse
             {
                 RefreshSingleCard = true,
                 Refresh = refresh,
-                Args = new string[] { str_id, visibleCard },
+                Args = args,
                 State = GetState(),
             };
         }

@@ -15,7 +15,7 @@
         @for (int i = 0; i < 8; i++)
         {
             string classes = "col-xs-4 col-sm-3 col-lg-2";
-            if (nr[i] == 4 || nr[i] > 3) { classes += " disp-none"; }
+            if (nr[i] > 3) { classes += " disp-none"; }
             else if (nr[i] == 0) { classes += " col-lg-offset-2"; }
 
             <div class="@classes" id="@("col_bot_card_" + nr[i].ToString())">
@@ -67,7 +67,7 @@
         @for (int i = 0; i < 8; i++)
         {
             string classes = "col-xs-4 col-sm-3 col-lg-2";
-            if (nr[i] == 4 || nr[i] > 3) { classes += " disp-none"; }
+            if (nr[i] > 3) { classes += " disp-none"; }
             else if (nr[i] == 0) { classes += " col-lg-offset-2"; }
 
             <div class="@classes" id="@("col_player_card_" + nr[i].ToString())">

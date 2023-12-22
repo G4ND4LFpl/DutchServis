@@ -5,6 +5,17 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="DutchDatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Announcements">
+          <Key>
+            <PropertyRef Name="AnnouncementId" />
+          </Key>
+          <Property Name="AnnouncementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="100" />
+          <Property Name="Content" Type="text" Nullable="false" />
+          <Property Name="Date" Type="date" />
+          <Property Name="Author" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Img" Type="varchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Clans">
           <Key>
             <PropertyRef Name="ClanId" />
@@ -88,6 +99,7 @@
           <Property Name="Pass" Type="char" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityContainer Name="DutchDatabaseModelStoreContainer">
+          <EntitySet Name="Announcements" EntityType="Self.Announcements" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Clans" EntityType="Self.Clans" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Matches" EntityType="Self.Matches" Schema="dbo" store:Type="Tables" />
@@ -161,7 +173,7 @@
           <Property Name="Theme" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Info" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ShowResults" Type="Boolean" DefaultValue="true" />
+          <Property Name="ShowResults" Type="Boolean" DefaultValue="false" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -190,7 +202,19 @@
           <EntitySet Name="Tournaments" EntityType="Self.Tournaments" />
           <EntitySet Name="Users" EntityType="Self.Users" />
           <EntitySet Name="PlayerSet" EntityType="Self.PlayerSet" />
+          <EntitySet Name="Announcements" EntityType="DutchDatabaseModel.Announcement" />
         </EntityContainer>
+        <EntityType Name="Announcement">
+          <Key>
+            <PropertyRef Name="AnnouncementId" />
+          </Key>
+          <Property Name="AnnouncementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Date" Type="DateTime" Precision="0" />
+          <Property Name="Author" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Img" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -283,6 +307,18 @@
                 <ScalarProperty Name="TournamentId" ColumnName="TournamentId" />
                 <ScalarProperty Name="Ranking" ColumnName="Ranking" />
                 <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Announcements">
+            <EntityTypeMapping TypeName="DutchDatabaseModel.Announcement">
+              <MappingFragment StoreEntitySet="Announcements">
+                <ScalarProperty Name="Img" ColumnName="Img" />
+                <ScalarProperty Name="Author" ColumnName="Author" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="AnnouncementId" ColumnName="AnnouncementId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

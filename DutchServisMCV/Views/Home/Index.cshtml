@@ -1,37 +1,80 @@
-﻿@{
+﻿@model IEnumerable<DutchServisMCV.Models.Announcement>
+
+@{
     ViewBag.Title = "Strona główna";
 }
 
+<script type="text/jscript">
+    var path = @Url.Content("~/Content/");
+</script>
+
 <header class="text-center">
-    <h1>Turnament Dutch Federation</h1>
+    <h1 class="mb-1">Turnament Dutch Federation</h1>
 </header>
 
-<h3>Wykonane poprawki</h3>
-<ul>
-    <li class="text-success">Wartości wpisane do tabeli w formularzu znikają po dodaniu lub usunięciu wiersza</li>
-    <li class="text-success">Edycja gracza - błąd unikalności</li>
-    <li class="text-success">Dodawanie zdjęć do turnieju oraz ligi</li>
-    <li class="text-success">Naprawa linków wróć z meczy, turniejów i lig</li>
-    <li class="text-success">Link powrót z dodawania meczu do ligi odnosi na widok turnieju</li>
-    <li class="text-success">Widok ligi i jej edycji nie wyświetla zapisanych graczy (jeżeli nie rozegrali meczy)</li>
-</ul>
+<section>
+    <p>
+        Witaj na stronie głównej federacji Dutcha! Znajdziesz tu wszystkie informacje dotyczące tej federacji i turniejów się odbywają w ramach
+        niej. <br />Aby dowiedzieć się więcej o federacji kliknij @Html.ActionLink("tutaj", "About").
+    </p>
+</section>
+<section>
+    <h3>Nie wiesz czym jest Dutch?</h3>
+    <p>
+        Dutch jest grą karcianą dla 2 lub więcej osób. Podobnie jak makao posiada wiele różnych wariacji i każdy zna inne zasady. Jeżeli jeszcze
+        nigdy nie grałeś w Dutch'a lub chcesz poznać zasady obowiązujące w rozgrywkach turniejowych przejdź do strony
+        @Html.ActionLink("zasad gry", "Rules").
+    </p>
+</section>
 
-<h3>Błędy</h3>
-<ul>
-    <li><span class="text-danger">Po logowaniu nie wracasz na stronę przekierowania</span><br/>Rozwiązanie: TempData przetrzymujący link z którego przekierowywało do logowania</li>
-    <li class="text-warning">Liga staje się turniejem [?]</li>
-    <li class="text-danger">Dodanie meczu nie zmienia elo graczy</li>
-</ul>
+<h2>Ogłoszenia</h2>
 
-<h3>Do zrobienia</h3>
-<ul>
-    <li class="text-success">Akcja kontrolera dodawania rozgrywki</li>
-    <li class="text-success">Widok z obsługą kontrolera do edycji rozgrywki</li>
-    <li class="text-success">Widok klanów</li>
-    <li class="text-success">Dodawanie i usuwanie klanów</li>
-    <li class="text-success">Strona z zasadami</li>
-    <li class="text-success">Strona z informacjami o federacji</li>
-    <li class="text-warning">Dokończenie gry z botem</li>
-    <li class="text-danger">Strona główna</li>
-    <li class="text-danger">panel admina</li>
-</ul>
+@if (Session["username"] != null)
+{
+    <a href="@Url.Action("Add")">
+        <div class="admincontroll">Napisz nowe ogłoszenie</div>
+    </a>
+}
+
+<section class="mt-1">
+    @foreach (DutchServisMCV.Models.Announcement announcement in Model)
+    {
+        <article class="row border-block">
+            @if (announcement.Img != null)
+            {
+                <div class="col-xs-12 col-sm-7 col-md-8">
+                    <h4>@announcement.Title</h4>
+                    <p class="italic f-right">
+                        @announcement.Date.Value.ToShortDateString()
+                    </p>
+                    <p>
+                        @announcement.Content
+                    </p>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <h4>@announcement.Title</h4>
+                    <p class="italic f-right">
+                        @announcement.Date.Value.ToShortDateString()
+                    </p>
+                    <p>
+                        @announcement.Content
+                    </p>
+                </div>
+            }
+
+            @if (announcement.Img != null)
+            {
+                <div class="col-xs-12 col-sm-5 col-md-4 cell-sm col-height">
+                    <img class="img-responsive img-rounded" id="@("post_" + announcement.AnnouncementId.ToString())" />
+
+                    <script type="text/jscript">
+                    SetPath('@("post_" + announcement.AnnouncementId.ToString())', 'announcementdata/', '@announcement.Img', 'empty.png');
+                    </script>
+                </div>
+            }
+        </article>
+    }
+</section>

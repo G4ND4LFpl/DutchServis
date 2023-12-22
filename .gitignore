@@ -6,3 +6,6 @@ DutchServisMCV/Content/css/bootstrap.css
 DutchServisMCV/Content/css/bootstrap.css.map
 DutchServisMCV/Logic/PasswordHasher.cs
 DutchServisMCV/obj/
+DutchServisMCV/Content/images/playerdata/
+DutchServisMCV/Content/images/tournamentdata/
+DutchServisMCV/Content/images/announcementdata/
