@@ -23,6 +23,11 @@ namespace DutchServisMCV.Controllers
             return hasher.Verify(userInfo.Pass, user.Pass);
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(Users userInfo)
@@ -41,21 +46,14 @@ namespace DutchServisMCV.Controllers
             return View();
         }
 
-        public ActionResult Login()
-        {
-            return View();
-        }
         public ActionResult Logout()
         {
             Session.Clear();
             return Redirect(Request.Headers["Referer"].ToString());
         }
-        public ActionResult Index(bool passchange = false)
+        public ActionResult Index()
         {
-            if(Session["Username"] != null)
-            {
-                return View();
-            }
+            if (Session["Username"] != null) return View();
             else return RedirectToAction("Login", "Admin");
         }
 
@@ -78,10 +76,6 @@ namespace DutchServisMCV.Controllers
 
         private SResponse PasswordIsValid(string password, string username)
         {
-            if (hasher.Verify(password, database.Users.Find(username).Pass))
-            {
-                return new SResponse(false, "Nowe hasło nie może być takie samo");
-            }
             if (password.Contains(username))
             {
                 return new SResponse(false, "Hasło nie może zawierać nazwy użytkownika");
@@ -110,6 +104,8 @@ namespace DutchServisMCV.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Index(Pass form)
         {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
             string username = Session["username"].ToString();
 
             // Current password
@@ -126,7 +122,12 @@ namespace DutchServisMCV.Controllers
                 ViewBag.ValidationText2 = response.Message;
                 return View();
             }
-            
+            if (hasher.Verify(form.NewPass, database.Users.Find(username).Pass))
+            {
+                ViewBag.ValidationText2 = "Nowe hasło nie może być takie samo";
+                return View();
+            }
+
             // Repeat password
             if (form.NewPass != form.RepeatPass)
             {
@@ -142,6 +143,52 @@ namespace DutchServisMCV.Controllers
             ModelState.Clear();
             ViewBag.Notification = "Hasło zostało poprawnie zmienione";
             return View();
+        }
+
+        public ActionResult Create()
+        {
+            if (Session["Username"] != null) return View();
+            else return RedirectToAction("Login", "Admin");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(NewUser user)
+        {
+            if (Session["username"] == null) return RedirectToAction("Login", "Admin");
+
+            // User
+            if(database.Users.Any(item => item.Username == user.Username))
+            {
+                ViewBag.UsernameValidationMsg = "Nazwa musi być unikalna";
+                return View();
+            }
+
+            // Password
+            SResponse response = PasswordIsValid(user.Pass, Session["username"].ToString());
+            if (!response.Good)
+            {
+                ViewBag.PassValidationMsg = response.Message;
+                return View();
+            }
+
+            // Repeat password
+            if (user.Pass != user.RepeatPass)
+            {
+                ViewBag.RepeatPassValidationMsg = "Powtórzone hasło musi być takie samo";
+                return View();
+            }
+
+            Users model = new Users
+            {
+                Username = user.Username,
+                Pass = hasher.Hash(user.Pass)
+            };
+
+            database.Users.Add(model);
+            database.SaveChanges();
+
+            return RedirectToAction("Index", "Admin");
         }
     }
 }

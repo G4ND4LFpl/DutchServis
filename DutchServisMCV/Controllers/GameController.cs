@@ -54,6 +54,10 @@ namespace DutchServisMCV.Controllers
                         if (id == "button") return Json(engine.EndTurn());
                         else return Json(engine.Dash(id));
                     }
+                case GameMode.Summary:
+                    {
+                        return Json(engine.Restart());
+                    }
                 default:
                     {
                         throw new NotImplementedException();

@@ -267,7 +267,13 @@ function GetDeclination(number) {
  * @param {number} bot_sum Suma punktów bota
  * @param {number} player_sum Suma punktów gracza
  */
-function ShowSummary(bot_sum, player_sum) {
+function ChangeVisibilitySummary(bot_sum, player_sum) {
+    if (bot_sum == -1 && player_sum == -1) {
+        document.getElementById("bot_cards_summary").innerHTML = "";
+        document.getElementById("player_cards_summary").innerHTML = "";
+        return;
+    }
+
     document.getElementById("bot_cards_summary").innerHTML = "Komputerowy przeciwnik ma " + String(bot_sum) + " " + GetDeclination(bot_sum) + ".";
     document.getElementById("player_cards_summary").innerHTML = "Ty masz " + String(player_sum) + " " + GetDeclination(player_sum) + ".";
 }
@@ -311,7 +317,7 @@ function Action(id) {
                 RefreshDutchButton(state["dutch"].Active);
             }
             if (data.Refresh["summary"] == true) {
-                ShowSummary(state["bot_summary"].Card.Value, state["player_summary"].Card.Value);
+                ChangeVisibilitySummary(state["bot_summary"].Card.Value, state["player_summary"].Card.Value);
             }
         },
         error: function () {

@@ -1,0 +1,54 @@
+﻿@model DutchServisMCV.Models.NewUser
+
+@{
+    ViewBag.Title = "Utwórz nowe konto";
+}
+
+<header>
+    <h2>Utwórz nowe konto administratora</h2>
+</header>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal wide">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        <label class="control-label col-md-3" for="Username">Nazwa użytkownika</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Username, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            <div class="text-danger">@ViewBag.UsernameValidationMsg</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-3" for="Pass">Hasło</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.Pass, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            <div class="text-danger">@ViewBag.PassValidationMsg</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-3" for="RepeatPass">Powtórz hasło</label>
+        <div class="col-md-9">
+            @Html.EditorFor(model => model.RepeatPass, new { htmlAttributes = new { @class = "form-control", @autocomplete = "off" } })
+            <div class="text-danger">@ViewBag.RepeatPassValidationMsg</div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <input type="submit" value="Utwórz" class="btn-warning" />
+            <a href="@Url.Action("Index")">
+                <div class="disp-inline-block buttonlike-heavy">
+                    Wróć
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+}

@@ -48,11 +48,13 @@ namespace DutchServisMCV.Logic.GameEngine
         {
             deck = new Deck();
             stack = new Stack<Card>();
-
             playerCards = new Card[8];
             botCards = new Card[8];
-
             bot = new GameBot(botCards);
+
+            dutch = DutchState.None;
+            round = 0;
+            count = 0;
         }
 
         private int GetIndex(string id)
@@ -121,7 +123,7 @@ namespace DutchServisMCV.Logic.GameEngine
             else state.Add("stack", new Slot(false));
 
             // Deck
-            state.Add("deck", new Slot(Mode == GameMode.Draw));
+            state.Add("deck", new Slot(Mode == GameMode.Draw || Mode == GameMode.Ready));
 
             // Button
             if (Mode == GameMode.Start)
@@ -138,7 +140,12 @@ namespace DutchServisMCV.Logic.GameEngine
             state.Add("round", new Slot(new Element(round.ToString()), (int)Mode > 1 && Mode != GameMode.Summary));
             state.Add("dutch", new Slot(round >= 3 && dutch == DutchState.None));
 
-            if(Mode == GameMode.Summary)
+            if (Mode == GameMode.Ready)
+            {
+                state.Add("bot_summary", new Slot(new Element(-1), false));
+                state.Add("player_summary", new Slot(new Element(-1), false));
+            }
+            if (Mode == GameMode.Summary)
             {
                 state.Add("bot_summary", new Slot(new Element(CountPoints(botCards)), true));
                 state.Add("player_summary", new Slot(new Element(CountPoints(playerCards)), true));
@@ -238,7 +245,7 @@ namespace DutchServisMCV.Logic.GameEngine
             {
                 RefreshAllCards = true,
                 Args = new string[] { },
-                Refresh = new Dictionary<string, bool>{ { "deck", true} },
+                Refresh = new Dictionary<string, bool>{ { "deck", true }},
                 State = GetState(),
             };
         }
@@ -426,6 +433,23 @@ namespace DutchServisMCV.Logic.GameEngine
                 RefreshAllCards = true,
                 Args = new string[] { },
                 Refresh = new Dictionary<string, bool> { { "button", true }, { "round", true }, { "summary", true } },
+                State = GetState(),
+            };
+        }
+        public EngineResponse Restart()
+        {
+            Mode = GameMode.Ready;
+
+            Initialize();
+
+            return new EngineResponse
+            {
+                RefreshAllCards = true,
+                Args = new string[] { },
+                Refresh = new Dictionary<string, bool>
+                {
+                    { "deck", true }, { "stack", true }, { "button", true }, { "round", true }, { "summary", true }
+                },
                 State = GetState(),
             };
         }
