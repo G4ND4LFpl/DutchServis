@@ -24,20 +24,16 @@ Serwer jest oparty na technologii .Net Framework 4.7.2. Wykorzystany został wzo
 ## Funkcjonalności administratora
 
 Serwis pozwala na logowanie dla administartorów. Po zalogowaniu admini mają możliwość dodawania oraz edycji graczy, turniejów, lig i meczy.
+
 ## Plany rozwoju
 
 Lista elementów do implementacji w przyszłości
 
-- Panel admina
-- Możliwość tworzenia nowych kon admina z poziomu aplikacji
-- Dopracowanie gry z botem
-
-### Dopracowanie gry z botem
+- Lepsze przekierowania przy logowaniu
 - Efekty specjalne kart
 - Wygrana przy clean board
-- Możliwość rozpoczęcia od nowa
 
-### Zmiana środowiska
+## Zmiana środowiska
 
 Ze względów kosztów hosting'u rozważam zmianę używanej technologii na .Net Core.
 
