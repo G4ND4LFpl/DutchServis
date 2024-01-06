@@ -42,7 +42,6 @@ Ze względów kosztów hosting'u rozważam zmianę używanej technologii na .Net
 Aktualnie znane błędy
 
 - Po logowaniu nie wracasz na stronę przekierowania
-- Dodanie meczu nie zmienia elo graczy
 - Na ekranie mniejszym niż 992px pusta karta na początku wprowadza zamęt : Gra z botem
 - Koniec kart w deck'u wyrzuca błąd : Gra z botem
 - Więcej niż 8 kart wyrzuca błąd : Gra z botem
