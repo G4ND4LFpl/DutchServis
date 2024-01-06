@@ -176,6 +176,8 @@ namespace DutchServisMCV.Controllers
             database.SaveChanges();
 
             // Add Games To Database
+            int wonby1 = 0, wonby2 = 0;
+
             for (int i = 0; i<match.Games.Count; i++)
             {
                 Games game = match.Games[i];
@@ -190,11 +192,29 @@ namespace DutchServisMCV.Controllers
                 // Win
                 int p1 = game.PointsPlayer1 ?? -1;
                 int p2 = game.PointsPlayer2 ?? -1;
-                if (p1 > p2 || (p1 == p2 && game.Dutch == 1)) game.Win = 2;
-                else game.Win = 1;
+                if (p1 > p2 || (p1 == p2 && game.Dutch == 1))
+                {
+                    game.Win = 2;
+                    wonby2++;
+                }
+                else
+                {
+                    game.Win = 1;
+                    wonby1++;
+                }
 
                 database.Games.Add(game);
             }
+            database.SaveChanges();
+
+            // Change players Rating
+            int won = 0;
+            if ((matchObject.BonusGamePlayer1 == true ? wonby1 + 1 : wonby1) > (matchObject.BonusGamePlayer2 == true ? wonby2 + 1 : wonby2))
+                won = 1;
+            else if ((matchObject.BonusGamePlayer1 == true ? wonby1 + 1 : wonby1) < (matchObject.BonusGamePlayer2 == true ? wonby2 + 1 : wonby2))
+                won = 2;
+
+            UpdatePlyersRating(match.PlayerId1, match.PlayerId2, wonby1, wonby2, won);
             database.SaveChanges();
 
             // Restart Model

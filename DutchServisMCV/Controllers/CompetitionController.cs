@@ -260,6 +260,36 @@ namespace DutchServisMCV.Controllers
             }
         }
 
+        protected void UpdatePlyersRating(int player1Id, int player2Id, int wonby1, int wonby2, int won)
+        {
+            int p1dif = 0, p2dif = 0;
+
+            if (won == 1)
+            {
+                p1dif = 9;
+                p2dif = -9;
+            }
+            if (won == 2)
+            {
+                p1dif = -9;
+                p2dif = 9;
+            }
+
+            p1dif += (wonby1 - wonby2);
+            p2dif += (wonby2 - wonby1);
+
+            Players player1 = database.Players.Find(player1Id);
+            Players player2 = database.Players.Find(player2Id);
+
+            int ratingdifference = (int)Math.Round((player1.Rating.Value - player2.Rating.Value)/100);
+
+            player1.Rating += (p1dif - ratingdifference);
+            database.Entry(player1).State = EntityState.Modified;
+
+            player2.Rating += (p2dif + ratingdifference);
+            database.Entry(player2).State = EntityState.Modified;
+        }
+
         // Validation Functions
         protected SResponse NameIsValid(string name, int id = -1)
         {
