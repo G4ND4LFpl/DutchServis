@@ -9,7 +9,7 @@ namespace DutchServisMCV.Controllers
 {
     public class DataController : Controller
     {
-        protected DutchDatabaseEntities database = new DutchDatabaseEntities();
+        protected DutchServisDBEntities database = new DutchServisDBEntities();
 
         protected override void Dispose(bool disposing)
         {

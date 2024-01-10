@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DutchServisMCV.Models.Announcement>
+﻿@model IEnumerable<DutchServisMCV.Models.Announcements>
 
 @{
     ViewBag.Title = "Strona główna";
@@ -37,7 +37,7 @@
 }
 
 <section class="mt-1">
-    @foreach (DutchServisMCV.Models.Announcement announcement in Model)
+    @foreach (DutchServisMCV.Models.Announcements announcement in Model)
     {
         <article class="row border-block">
             @if (announcement.Img != null)

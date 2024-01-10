@@ -150,37 +150,37 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\SResponse.cs" />
-    <Compile Include="Models\Announcement.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+    <Compile Include="Models\Announcements.cs">
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AzureDataBase.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AzureDataBase.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AzureDataBase.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AzureDataBase.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AzureDataBase.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\ClanInfo.cs" />
     <Compile Include="Models\Clans.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CompetitionInfo.cs" />
-    <Compile Include="Models\DataBaseModels.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataBaseModels.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataBaseModels.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DataBaseModels.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataBaseModels.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Models\GameNamespace.cs" />
     <Compile Include="Models\Games.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\MatchData.cs" />
     <Compile Include="Models\MatchInfo.cs" />
     <Compile Include="Models\Matches.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\NewUser.cs" />
     <Compile Include="Models\Pass.cs" />
@@ -189,21 +189,31 @@
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\LeagueInfo.cs" />
     <Compile Include="Models\Players.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\PlayerSet.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TournamentInfo.cs" />
     <Compile Include="Models\Tournaments.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Users.cs">
-      <DependentUpon>DataBaseModels.tt</DependentUpon>
+      <DependentUpon>AzureDataBase.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Models\AzureDataBase.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AzureDataBase.edmx</DependentUpon>
+      <LastGenOutput>AzureDataBase.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\AzureDataBase.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AzureDataBase.edmx</DependentUpon>
+      <LastGenOutput>AzureDataBase.cs</LastGenOutput>
+    </Content>
     <Content Include="Static\css\bootstrap-light.css" />
     <Content Include="Static\css\bootstrap.css" />
     <Content Include="Static\images\avatar.png" />
@@ -226,25 +236,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Static\css\Site.css" />
-    <Content Include="Models\DataBaseModels.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataBaseModels.edmx</DependentUpon>
-      <LastGenOutput>DataBaseModels.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\DataBaseModels.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DataBaseModels.edmx</DependentUpon>
-      <LastGenOutput>DataBaseModels.cs</LastGenOutput>
-    </Content>
     <Content Include="Models\Documentation.xml" />
     <Content Include="Scripts\dynamic_table.js" />
     <Content Include="Scripts\bootstrap.js" />
-    <EntityDeploy Include="Models\DataBaseModels.edmx">
+    <EntityDeploy Include="Models\AzureDataBase.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DataBaseModels.Designer.cs</LastGenOutput>
+      <LastGenOutput>AzureDataBase.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\DataBaseModels.edmx.diagram">
-      <DependentUpon>DataBaseModels.edmx</DependentUpon>
+    <Content Include="Models\AzureDataBase.edmx.diagram">
+      <DependentUpon>AzureDataBase.edmx</DependentUpon>
     </Content>
     <None Include="Properties\PublishProfiles\DutchService - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />

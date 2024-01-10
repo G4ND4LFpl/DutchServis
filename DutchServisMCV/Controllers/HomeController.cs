@@ -13,25 +13,7 @@ namespace DutchServisMCV.Controllers
     {
         public ActionResult Index(int? id)
         {
-            IQueryable<Announcement> announcements;
-            try
-            {
-                announcements = database.Announcements.OrderByDescending(a => a.Date);
-            }
-            catch(Exception ex)
-            {
-                List <Announcement> list = new List<Announcement>();
-                list.Add(new Announcement()
-                {
-                    AnnouncementId = 100,
-                    Title = "Błąd serwera",
-                    Content = ex.Message,
-                    Author = "serwer",
-                    Date = DateTime.Now
-                });
-
-                return View(list);
-            }
+            var announcements = database.Announcements.OrderByDescending(a => a.Date);
 
             return View(announcements);
         }
@@ -56,7 +38,7 @@ namespace DutchServisMCV.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(Announcement post)
+        public ActionResult Add(Announcements post)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 
@@ -111,7 +93,7 @@ namespace DutchServisMCV.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Announcement post)
+        public ActionResult Edit(Announcements post)
         {
             if (Session["username"] == null) return RedirectToAction("Login", "Admin");
 

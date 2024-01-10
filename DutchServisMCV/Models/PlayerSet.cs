@@ -20,12 +20,12 @@ namespace DutchServisMCV.Models
             this.Prize = 0D;
         }
     
+        public int EntryId { get; set; }
         public int TournamentId { get; set; }
-        public Nullable<double> Ranking { get; set; }
         public int PlayerId { get; set; }
+        public Nullable<double> Ranking { get; set; }
         public string Place { get; set; }
         public Nullable<double> RankingGet { get; set; }
         public Nullable<double> Prize { get; set; }
-        public int EntryId { get; set; }
     }
 }

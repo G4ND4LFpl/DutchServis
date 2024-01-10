@@ -13,10 +13,10 @@ namespace DutchServisMCV.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class DutchDatabaseEntities : DbContext
+    public partial class DutchServisDBEntities : DbContext
     {
-        public DutchDatabaseEntities()
-            : base("name=DutchDatabaseEntities")
+        public DutchServisDBEntities()
+            : base("name=DutchServisDBEntities")
         {
         }
     
@@ -25,13 +25,13 @@ namespace DutchServisMCV.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Announcements> Announcements { get; set; }
         public virtual DbSet<Clans> Clans { get; set; }
         public virtual DbSet<Games> Games { get; set; }
         public virtual DbSet<Matches> Matches { get; set; }
         public virtual DbSet<Players> Players { get; set; }
+        public virtual DbSet<PlayerSet> PlayerSet { get; set; }
         public virtual DbSet<Tournaments> Tournaments { get; set; }
         public virtual DbSet<Users> Users { get; set; }
-        public virtual DbSet<PlayerSet> PlayerSet { get; set; }
-        public virtual DbSet<Announcement> Announcements { get; set; }
     }
 }

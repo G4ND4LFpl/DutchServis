@@ -22,16 +22,16 @@ namespace DutchServisMCV.Models
             this.JoinDate = DateTime.Now;
             this.Active = true;
         }
-    
+
         public int PlayerId { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Nickname { get; set; }
+        public Nullable<System.DateTime> JoinDate { get; set; }
         public Nullable<int> ClanId { get; set; }
         public Nullable<double> Rating { get; set; }
-        public Nullable<bool> Active { get; set; }
-        public Nullable<System.DateTime> JoinDate { get; set; }
         public string Img { get; set; }
+        public Nullable<bool> Active { get; set; }
         public HttpPostedFileBase File { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace DutchServisMCV.Models
     using System.Collections.Generic;
     using System.Web;
 
-    public partial class Announcement
+    public partial class Announcements
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Announcement()
+        public Announcements()
         {
             this.Date = DateTime.Now;
         }
