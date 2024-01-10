@@ -231,7 +231,7 @@
 <script type="text/jscript">
     var collection = (@Html.Raw(Json.Encode(Model))).Players;
 
-    var path = @Url.Content("~/Content/");
+    var path = @Url.Content("~/Static/");
     SetPath('img', 'tournamentdata/', '@Model.Img', 'empty.png');
 
     let setTCG = new TableContentGenerator("Players", "set_table", [

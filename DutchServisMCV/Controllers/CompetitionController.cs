@@ -168,6 +168,34 @@ namespace DutchServisMCV.Controllers
             return playerlist.OrderBy(item => item.Nickname);
         }
 
+        protected int[] UpdatePlyersRating(double ratingPlayer1, double ratingPlayer2, int wonby1, int wonby2, int won)
+        {
+            int p1dif = 0, p2dif = 0;
+
+            if (won == 1)
+            {
+                p1dif = 9;
+                p2dif = -9;
+            }
+            if (won == 2)
+            {
+                p1dif = -9;
+                p2dif = 9;
+            }
+
+            p1dif += (wonby1 - wonby2);
+            p2dif += (wonby2 - wonby1);
+
+            int ratingdifference = (int)Math.Round((ratingPlayer1 - ratingPlayer2) / 100);
+
+            int[] differences = new int[2];
+
+            differences[0] = p1dif - ratingdifference;
+            differences[1] = p2dif + ratingdifference;
+
+            return differences;
+        }
+
         // Database Update Functions
         private void AddOrUpdate(PlayerSet player, int competitionId)
         {
@@ -258,36 +286,6 @@ namespace DutchServisMCV.Controllers
                     database.PlayerSet.Remove(playerItem);
                 }
             }
-        }
-
-        protected void UpdatePlyersRating(int player1Id, int player2Id, int wonby1, int wonby2, int won)
-        {
-            int p1dif = 0, p2dif = 0;
-
-            if (won == 1)
-            {
-                p1dif = 9;
-                p2dif = -9;
-            }
-            if (won == 2)
-            {
-                p1dif = -9;
-                p2dif = 9;
-            }
-
-            p1dif += (wonby1 - wonby2);
-            p2dif += (wonby2 - wonby1);
-
-            Players player1 = database.Players.Find(player1Id);
-            Players player2 = database.Players.Find(player2Id);
-
-            int ratingdifference = (int)Math.Round((player1.Rating.Value - player2.Rating.Value)/100);
-
-            player1.Rating += (p1dif - ratingdifference);
-            database.Entry(player1).State = EntityState.Modified;
-
-            player2.Rating += (p2dif + ratingdifference);
-            database.Entry(player2).State = EntityState.Modified;
         }
 
         // Validation Functions

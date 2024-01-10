@@ -13,7 +13,25 @@ namespace DutchServisMCV.Controllers
     {
         public ActionResult Index(int? id)
         {
-            var announcements = database.Announcements.OrderByDescending(a => a.Date);
+            IQueryable<Announcement> announcements;
+            try
+            {
+                announcements = database.Announcements.OrderByDescending(a => a.Date);
+            }
+            catch(Exception ex)
+            {
+                List <Announcement> list = new List<Announcement>();
+                list.Add(new Announcement()
+                {
+                    AnnouncementId = 100,
+                    Title = "Błąd serwera",
+                    Content = ex.Message,
+                    Author = "serwer",
+                    Date = DateTime.Now
+                });
+
+                return View(list);
+            }
 
             return View(announcements);
         }

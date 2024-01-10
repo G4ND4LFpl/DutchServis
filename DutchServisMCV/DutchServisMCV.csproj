@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -46,10 +47,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
@@ -203,30 +204,28 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\css\bootstrap-light.css" />
-    <Content Include="Content\css\bootstrap.css" />
-    <Content Include="Content\images\.gitignore" />
-    <Content Include="Content\images\avatar.png" />
-    <Content Include="Content\images\cards\card_empty.png" />
-    <Content Include="Content\images\cards\card_diamonds.png" />
-    <Content Include="Content\images\cards\card_heart.png" />
-    <Content Include="Content\images\cards\card_spades.png" />
-    <Content Include="Content\images\cards\card_reverse.png" />
-    <Content Include="Content\images\cards\card_clubs.png" />
-    <Content Include="Content\images\discord_icon.png" />
-    <Content Include="Content\images\empty.png" />
-    <Content Include="Content\images\facebook_icon.png" />
-    <Content Include="Content\images\logo.png" />
-    <Content Include="Content\images\playerdata\argset.png" />
-    <Content Include="Content\images\playerdata\gandalf.png" />
-    <Content Include="Content\images\playerdata\mostow.png" />
-    <Content Include="Content\images\playerdata\pablo.png" />
-    <Content Include="Content\images\playerdata\ruda.png" />
-    <Content Include="Content\images\tournamentdata\winner.jpg" />
+    <Content Include="Static\css\bootstrap-light.css" />
+    <Content Include="Static\css\bootstrap.css" />
+    <Content Include="Static\images\avatar.png" />
+    <Content Include="Static\images\cards\card_empty.png" />
+    <Content Include="Static\images\cards\card_diamonds.png" />
+    <Content Include="Static\images\cards\card_heart.png" />
+    <Content Include="Static\images\cards\card_spades.png" />
+    <Content Include="Static\images\cards\card_reverse.png" />
+    <Content Include="Static\images\cards\card_clubs.png" />
+    <Content Include="Static\images\discord_icon.png" />
+    <Content Include="Static\images\empty.png" />
+    <Content Include="Static\images\facebook_icon.png" />
+    <Content Include="Static\images\logo.png" />
+    <Content Include="Static\images\playerdata\argset.png" />
+    <Content Include="Static\images\playerdata\gandalf.png" />
+    <Content Include="Static\images\playerdata\mostow.png" />
+    <Content Include="Static\images\playerdata\pablo.png" />
+    <Content Include="Static\images\playerdata\ruda.png" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Content\css\Site.css" />
+    <Content Include="Static\css\Site.css" />
     <Content Include="Models\DataBaseModels.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
@@ -247,6 +246,7 @@
     <Content Include="Models\DataBaseModels.edmx.diagram">
       <DependentUpon>DataBaseModels.edmx</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\DutchService - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\game.js" />
     <Content Include="Scripts\general.js" />
@@ -296,14 +296,15 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\images\announcementdata\" />
+    <Folder Include="Static\images\announcementdata\" />
+    <Folder Include="Static\images\tournamentdata\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Content\css\bootstrap.css.map" />
+    <Content Include="Static\css\bootstrap.css.map" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -351,7 +352,10 @@
       <ErrorText>Ten projekt zawiera odwołania do pakietów NuGet, których nie ma na tym komputerze. Użyj przywracania pakietów NuGet, aby je pobrać. Aby uzyskać więcej informacji, zobacz http://go.microsoft.com/fwlink/?LinkID=322105. Brakujący plik: {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
   </Target>
+  <Import Project="..\packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

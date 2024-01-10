@@ -214,7 +214,33 @@ namespace DutchServisMCV.Controllers
             else if ((matchObject.BonusGamePlayer1 == true ? wonby1 + 1 : wonby1) < (matchObject.BonusGamePlayer2 == true ? wonby2 + 1 : wonby2))
                 won = 2;
 
-            UpdatePlyersRating(match.PlayerId1, match.PlayerId2, wonby1, wonby2, won);
+            double ratingPlayer1, ratingPlayer2;
+            if (database.Tournaments.Find(tournament.TournamentId).Type == "tournament")
+            {
+                ratingPlayer1 = database.PlayerSet.Where(
+                    x => x.TournamentId == tournament.TournamentId && x.PlayerId == match.PlayerId1
+                    ).FirstOrDefault().Ranking.Value;
+
+                ratingPlayer2 = database.PlayerSet.Where(
+                    x => x.TournamentId == tournament.TournamentId && x.PlayerId == match.PlayerId2
+                    ).FirstOrDefault().Ranking.Value;
+            }
+            else
+            {
+                ratingPlayer1 = database.Players.Find(match.PlayerId1).Rating.Value;
+                ratingPlayer2 = database.Players.Find(match.PlayerId2).Rating.Value;
+            }
+
+            int[] diff = UpdatePlyersRating(ratingPlayer1, ratingPlayer2, wonby1, wonby2, won);
+
+            Players player1 = database.Players.Find(match.PlayerId1);
+            player1.Rating += diff[0];
+            database.Entry(player1).State = EntityState.Modified;
+
+            Players player2 = database.Players.Find(match.PlayerId2);
+            player2.Rating += diff[1];
+            database.Entry(player2).State = EntityState.Modified;
+
             database.SaveChanges();
 
             // Restart Model

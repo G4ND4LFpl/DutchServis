@@ -2,10 +2,12 @@ DutchServisMCV/Scripts/jquery-3.4.1.js
 DutchServisMCV/Scripts/jquery.validate.js
 DutchServisMCV/Scripts/jquery-3.4.1.intellisense.js
 DutchServisMCV/Scripts/modernizr-2.8.3.js
-DutchServisMCV/Content/css/bootstrap.css
-DutchServisMCV/Content/css/bootstrap.css.map
+DutchServisMCV/Static/css/bootstrap.css
+DutchServisMCV/Static/css/bootstrap.css.map
 DutchServisMCV/Logic/PasswordHasher.cs
 DutchServisMCV/obj/
-DutchServisMCV/Content/images/playerdata/
-DutchServisMCV/Content/images/tournamentdata/
-DutchServisMCV/Content/images/announcementdata/
+DutchServisMCV/Static/images/playerdata/
+DutchServisMCV/Static/images/tournamentdata/
+DutchServisMCV/Static/images/announcementdata/
+DBMigration/
+packages/
