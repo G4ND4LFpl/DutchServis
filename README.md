@@ -48,6 +48,10 @@ Aktualnie znane błędy
 - Ogłoszenia powinny również zapisywać godzinę
 - Zła responsywność okienek turniejów i ogłoszeń
 
+## Serwis
+Serwis jest dostępny pod adresem
+https://dutchservice.azurewebsites.net/
+
 ## Licencja
 
 GNU GPL-3.0 (General Public License)
